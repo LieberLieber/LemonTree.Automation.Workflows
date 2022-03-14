@@ -1,0 +1,134 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+name: Publish Review Session
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+      - review_requested
+
+env:
+  ModelName: MyModel
+  ReviewSessionURL: https://my-artifactory.jfrog.com/artifactory/myRepo/ReviewSessions
+  LemonTreeAutomationFolder: C:\Program Files\LieberLieber\LemonTree.Automation
+
+jobs:
+  PublishReviewSession:
+    runs-on: [self-hosted, lemontree]
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          fetch-depth: 0
+          
+      - name: Debug vars
+        run: |
+          echo $env:GITHUB_EVENT_NAME
+          cat $env:GITHUB_EVENT_PATH
+
+      - name: Get relevant commit IDs
+        id: CommitIds
+        run: |
+          git fetch
+          $baseId = git merge-base origin/$env:GITHUB_BASE_REF origin/$env:GITHUB_HEAD_REF
+          echo "::set-output name=baseCommitId::$baseId"
+          $sourceId = git show-ref --hash origin/$env:GITHUB_HEAD_REF
+          echo "::set-output name=sourceCommitId::$sourceId"
+          $targetId = git show-ref --hash origin/$env:GITHUB_BASE_REF
+          echo "::set-output name=targetCommitId::$targetId"
+          echo "target branch: $env:GITHUB_BASE_REF"
+          echo "source branch: $env:GITHUB_HEAD_REF"
+          echo "target commit: $targetId"
+          echo "source commit: $sourceId"
+          echo "base commit: $baseId"
+
+      - name: Create sessionfile name
+        id: session_file
+        uses: actions/github-script@v5
+        with:
+          result-encoding: string
+          script: |
+            const repoName = context.payload.pull_request.base.repo.name
+            const prNumber = context.payload.pull_request.number
+            const baseSHA = '${{steps.CommitIds.outputs.targetCommitId}}'
+            const headSHA = '${{steps.CommitIds.outputs.sourceCommitId}}'
+            const filename = [repoName, 'PR', prNumber, baseSHA, headSHA].join('-') + '.ltsfs'
+            console.log(`Filename will be: ${filename}`)
+            return filename
+
+      - name: Download base-commit file
+        run: |
+          git fetch origin ${{steps.CommitIds.outputs.baseCommitId}}
+          $pointer = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.eapx
+          $sha = ($pointer[1] -split(":"))[1]
+          $shaPart1 = $sha.Substring(0,2)
+          $shaPart2 = $sha.Substring(2,2)
+          echo "Model SHA: $sha"
+          git cat-file --filters ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.eapx | Out-Null
+          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_base.eapx"
+
+      - name: Download source branch head file
+        run: |
+          git fetch origin $env:GITHUB_HEAD_REF
+          $pointer = git cat-file blob ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.eapx"
+          $sha = ($pointer[1] -split(":"))[1]
+          $shaPart1 = $sha.Substring(0,2)
+          $shaPart2 = $sha.Substring(2,2)
+          echo "Model SHA: $sha"
+          git cat-file --filters ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.eapx" | Out-Null
+          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.eapx"
+
+      - name: Check for merge conflicts
+        id: mergeCheck
+        run: |
+          &"${{env.LemonTreeAutomationFolder}}\LemonTree.Automation.exe" merge --base ${{env.ModelName}}_base.eapx --theirs ${{env.ModelName}}.eapx --mine ${{env.ModelName}}_head.eapx --out test.eapx --sfs ${{ steps.session_file.outputs.result }} --abortOnConflict true
+          echo "::set-output name=result::$LASTEXITCODE"
+          echo "Return code: $LASTEXITCODE"
+          if($LASTEXITCODE -eq 0){
+            echo "No merge conflicts, setting message"
+            echo "::set-output name=message::[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:heavy_check_mark: No merge conflicts in model"
+          }
+          elseif($LASTEXITCODE -eq 2){
+            echo "Internal Error when diffing. Please report such errors to support@lieberlieber.com"
+            exit 2
+          }
+          elseif($LASTEXITCODE -eq 3){
+            echo "Merge conflicts, setting message"
+            echo "::set-output name=message::[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:x: Please resolve merge conflicts in model first"
+            exit 0
+          }
+          elseif($LASTEXITCODE -eq 6){
+            echo "Licensing issue of LemonTree.Automation"
+          }
+          else{
+            echo "Unknown error"
+          }
+
+      - name: Create review session file
+        if: steps.mergeCheck.outputs.result == 0
+        run: |
+          &"${{env.LemonTreeAutomationFolder}}\LemonTree.Automation.exe" diff --theirs ${{env.ModelName}}_base.eapx --mine ${{env.ModelName}}_head.eapx --sfs ${{ steps.session_file.outputs.result }}
+
+      - name: Upload
+        shell: cmd
+        run: |
+          echo curl -u${{secrets.ARTIFACTORYUSER}}:${{ secrets.ARTIFACTORYTOKEN }} -T ${{ steps.session_file.outputs.result }} "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
+          curl -u${{secrets.ARTIFACTORYUSER}}:${{ secrets.ARTIFACTORYTOKEN }} -T ${{ steps.session_file.outputs.result }} "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
+
+      - name: Create PR comment
+        uses: actions/github-script@v5
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `${{ steps.mergeCheck.outputs.message }}`
+            })
