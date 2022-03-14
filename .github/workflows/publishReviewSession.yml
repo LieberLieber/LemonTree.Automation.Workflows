@@ -14,7 +14,7 @@ on:
       - review_requested
 
 env:
-  ModelName: MyModel
+  ModelName: DemoModel
   ReviewSessionURL: https://my-artifactory.jfrog.com/artifactory/myRepo/ReviewSessions
   LemonTreeAutomationFolder: C:\Program Files\LieberLieber\LemonTree.Automation
 
