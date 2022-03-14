@@ -15,7 +15,7 @@ on:
 
 env:
   ModelName: DemoModel
-  ReviewSessionURL: https://my-artifactory.jfrog.com/artifactory/myRepo/ReviewSessions
+  ReviewSessionURL: https://lieberlieber.jfrog.io/artifactory/lemontree-generic-local/
   LemonTreeAutomationFolder: C:\Program Files\LieberLieber\LemonTree.Automation
 
 jobs:
