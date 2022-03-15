@@ -10,7 +10,8 @@ The handling of the artifactory backend is transparent for the user in all ususa
 The current version of the workflows assumes, that the models are stored in LFS.
 
 When you have no transparent access to the internet, make sure to set your HTTP proxy properly
-`git config --global http.proxy myusername:mypassword@myproxyserver:8080`
+
+`git config --global http.proxy http://myusername:mypassword@myproxyserver:8080`
 
 # Requirements for Action Runners
 To support the current setup, the used runner has to be `self-hosted` on `Windows`.
