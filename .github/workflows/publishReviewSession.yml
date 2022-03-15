@@ -122,6 +122,13 @@ jobs:
           echo curl -u${{secrets.ARTIFACTORYUSER}}:${{ secrets.ARTIFACTORYTOKEN }} -T ${{ steps.session_file.outputs.result }} "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
           curl -u${{secrets.ARTIFACTORYUSER}}:${{ secrets.ARTIFACTORYTOKEN }} -T ${{ steps.session_file.outputs.result }} "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
 
+      - name: Archive Session Files
+        uses: actions/upload-artifact@v3
+        with:
+          name: Review Session File
+          path: ${{ steps.session_file.outputs.result }}
+          retention-days: 5
+
       - name: Create PR comment
         uses: actions/github-script@v5
         with:
