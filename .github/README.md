@@ -9,6 +9,9 @@ GIT LFS provides a transparent solution which stores only hashes of the binaries
 The handling of the artifactory backend is transparent for the user in all ususal operations.
 The current version of the workflows assumes, that the models are stored in LFS.
 
+When you have no transparent access to the internet, make sure to set your HTTP proxy properly
+`git config --global http.proxy myusername:mypassword@myproxyserver:8080`
+
 # Requirements for Action Runners
 To support the current setup, the used runner has to be `self-hosted` on `Windows`.
 * LemonTree.Automation has to be installed in the default directory and a valid license has to be accessible from the context of the `lemontree` runner.
