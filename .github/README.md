@@ -2,6 +2,13 @@ Automation of model handling workflows
 ==================================
 This folder contains automation workflows and actions which facilitate pull-request-based workflows with binary architecture models.
 
+# Requirements towards Repository
+Enterprise Architect files are binaries with usually several MB of size.
+Storing these files directly in the repository leads to a fast growth and unnecessarily large downloads for clone and pull operations.
+GIT LFS provides a transparent solution which stores only hashes of the binaries in the repository and hosts the large binaries in an artifactory.
+The handling of the artifactory backend is transparent for the user in all ususal operations.
+The current version of the workflows assumes, that the models are stored in LFS.
+
 # Requirements for Action Runners
 To support the current setup, the used runner has to be `self-hosted` on `Windows`.
 * LemonTree.Automation has to be installed in the default directory and a valid license has to be accessible from the context of the `lemontree` runner.
