@@ -10,8 +10,8 @@ on:
     types: [created]
     
 env:
-  ModelName: MyModel
-  GitHubProjectRoot: https://github.com/MyProject/MyRepository
+  ModelName: DemoModel
+  GitHubProjectRoot: https://github.com/LieberLieber/LemonTree.Automation.Workflows
   LemonTreeAutomationFolder: C:\Program Files\LieberLieber\LemonTree.Automation
 
 jobs:

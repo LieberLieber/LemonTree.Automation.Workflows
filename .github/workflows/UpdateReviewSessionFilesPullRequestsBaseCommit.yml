@@ -9,8 +9,8 @@ on:
   push:
 
 env:
-  ModelName: MyModel
-  ReviewSessionURL: https://my-artifactory.jfrog.com/artifactory/myRepo/ReviewSessions
+  ModelName: DemoModel
+  ReviewSessionURL: https://lieberlieber.jfrog.io/artifactory/lemontree-generic-local
   LemonTreeAutomationFolder: C:\Program Files\LieberLieber\LemonTree.Automation
   curl: C:\Program Files\Git\mingw64\bin\curl.exe
 
