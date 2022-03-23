@@ -65,17 +65,38 @@ jobs:
             return filename
 
       - name: Download base-commit file
+        id: baseDownload
         run: |
           git fetch origin ${{steps.CommitIds.outputs.baseCommitId}}
           $pointer = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.eapx
           $sha = ($pointer[1] -split(":"))[1]
-          $shaPart1 = $sha.Substring(0,2)
-          $shaPart2 = $sha.Substring(2,2)
-          echo "Model SHA: $sha"
-          git cat-file --filters ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.eapx | Out-Null
-          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_base.eapx"
-
+          if($sha -ne $null){
+            $shaPart1 = $sha.Substring(0,2)
+            $shaPart2 = $sha.Substring(2,2)
+            echo "Model SHA: $sha"
+            git cat-file --filters ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.eapx | Out-Null
+            copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_base.eapx"
+            echo "::set-output name=result::downloaded"
+          }
+          else{
+            echo "::set-output name=result::notFound"
+          }
+          
+      - name: Post new model comment to PR
+        if: steps.baseDownload.outputs.result == 'notFound'
+        uses: actions/github-script@v5
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `Model not found on base commit / fork-off point`
+            })
+            
       - name: Download source branch head file
+        if: steps.baseDownload.outputs.result == 'downloaded'
+        id: headDownload
         run: |
           git fetch origin $env:GITHUB_HEAD_REF
           $pointer = git cat-file blob ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.eapx"
@@ -87,6 +108,7 @@ jobs:
           copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.eapx"
 
       - name: Check for merge conflicts
+        if: steps.baseDownload.outputs.result == 'downloaded'
         id: mergeCheck
         run: |
           &"${{env.LemonTreeAutomationFolder}}\LemonTree.Automation.exe" merge --base ${{env.ModelName}}_base.eapx --theirs ${{env.ModelName}}.eapx --mine ${{env.ModelName}}_head.eapx --out test.eapx --sfs ${{ steps.session_file.outputs.result }} --abortOnConflict true
@@ -118,12 +140,14 @@ jobs:
           &"${{env.LemonTreeAutomationFolder}}\LemonTree.Automation.exe" diff --theirs ${{env.ModelName}}_base.eapx --mine ${{env.ModelName}}_head.eapx --sfs ${{ steps.session_file.outputs.result }}
 
       - name: Upload
+        if: steps.baseDownload.outputs.result == 'downloaded'
         shell: cmd
         run: |
           echo curl -u${{secrets.ARTIFACTORYUSER}}:${{ secrets.ARTIFACTORYTOKEN }} -T ${{ steps.session_file.outputs.result }} "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
           curl -u${{secrets.ARTIFACTORYUSER}}:${{ secrets.ARTIFACTORYTOKEN }} -T ${{ steps.session_file.outputs.result }} "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
 
       - name: Archive Session Files
+        if: steps.baseDownload.outputs.result == 'downloaded'
         uses: actions/upload-artifact@v3
         with:
           name: Review Session File
@@ -131,6 +155,7 @@ jobs:
           retention-days: 5
 
       - name: Create PR comment
+        if: steps.baseDownload.outputs.result == 'downloaded'
         uses: actions/github-script@v5
         with:
           script: |
