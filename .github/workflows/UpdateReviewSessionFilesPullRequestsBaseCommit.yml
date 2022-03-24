@@ -127,7 +127,7 @@ jobs:
               --base $baseFile `
               --theirs $targetFile `
               --mine $sourceFile `
-              --out test.eapx `
+              --dryrun `
               --sfs $sessionFileName `
               --abortOnConflict true
             
