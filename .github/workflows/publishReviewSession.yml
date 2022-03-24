@@ -16,8 +16,9 @@ on:
 
 env:
   ModelName: DemoModel
-  ReviewSessionURL: https://lieberlieber.jfrog.io/artifactory/lemontree-generic-local
+  ReviewSessionURL: https://owncloud.lieberlieber.com/remote.php/dav/files/dsiegl/Artifakte/
   LemonTreeAutomationFolder: C:\Program Files\LieberLieber\LemonTree.Automation
+  ReviewSessionURLDownload: https://owncloud.lieberlieber.com/index.php/s/C2AxO4XARSNBF5w/download?path=%2F&files=
 
 jobs:
   PublishReviewSession:
@@ -94,7 +95,7 @@ jobs:
           echo "Return code: $LASTEXITCODE"
           if($LASTEXITCODE -eq 0){
             echo "No merge conflicts, setting message"
-            echo "::set-output name=message::[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:heavy_check_mark: No merge conflicts in model"
+            echo "::set-output name=message::[Review Session file](${{env.ReviewSessionURLDownload}}/${{ steps.session_file.outputs.result }})\n:heavy_check_mark: No merge conflicts in model"
           }
           elseif($LASTEXITCODE -eq 2){
             echo "Internal Error when diffing. Please report such errors to support@lieberlieber.com"
@@ -102,7 +103,7 @@ jobs:
           }
           elseif($LASTEXITCODE -eq 3){
             echo "Merge conflicts, setting message"
-            echo "::set-output name=message::[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:x: Please resolve merge conflicts in model first"
+            echo "::set-output name=message::[Review Session file](${{env.ReviewSessionURLDownload}}/${{ steps.session_file.outputs.result }})\n:x: Please resolve merge conflicts in model first"
             exit 0
           }
           elseif($LASTEXITCODE -eq 6){
@@ -120,8 +121,8 @@ jobs:
       - name: Upload
         shell: cmd
         run: |
-          echo curl -u${{secrets.ARTIFACTORYUSER}}:${{ secrets.ARTIFACTORYTOKEN }} -T ${{ steps.session_file.outputs.result }} "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
-          curl -u${{secrets.ARTIFACTORYUSER}}:${{ secrets.ARTIFACTORYTOKEN }} -T ${{ steps.session_file.outputs.result }} "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
+          echo curl -u${{secrets.OWNCLOUDUSER}}:${{ secrets.OWNCLOUDSECRET }} -T ${{ steps.session_file.outputs.result }} "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}" -k
+          curl -u${{secrets.OWNCLOUDUSER}}:${{ secrets.OWNCLOUDSECRET }} -T ${{ steps.session_file.outputs.result }} "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}" -k
 
       - name: Archive Session Files
         uses: actions/upload-artifact@v3
