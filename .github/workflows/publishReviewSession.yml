@@ -22,7 +22,7 @@ env:
 jobs:
   PublishReviewSession:
     runs-on: [self-hosted, lemontree]
-
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v2
         with:
