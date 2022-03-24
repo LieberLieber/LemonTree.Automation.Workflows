@@ -127,7 +127,7 @@ jobs:
               --base $baseFile `
               --theirs $targetFile `
               --mine $sourceFile `
-              --out test.eapx `
+              --dryrun `
               --sfs $sessionFileName `
               --abortOnConflict true
             
@@ -141,7 +141,8 @@ jobs:
                 --sfs $sessionFileName `
                 
               echo "Uploading sessionfile to artifactory: $targetUrl"
-              &"${{env.curl}}" -u${{secrets.ARTIFACTORYUSER}}:${{ secrets.ARTIFACTORYTOKEN }} -T $sessionFileName $targetUrl
+              echo "SessionFile Exists" hashFiles($sessionFileName) != ''
+              &"${{env.curl}}" -u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}} -T $sessionFileName $targetUrl
               $prMessage =@{}
               $prMessage.number=$pr.number
               $prMessage.message="New commit on target branch\n[Review Session file]($targetUrl)\n:heavy_check_mark: No merge conflicts in model"
@@ -155,7 +156,7 @@ jobs:
             {
               echo "Merge conflicts"
               echo "Uploading sessionfile to artifactory: $targetUrl"
-              &"${{env.curl}}" -u${{secrets.ARTIFACTORYUSER}}:${{ secrets.ARTIFACTORYTOKEN }} -T $sessionFileName $targetUrl
+              &"${{env.curl}}" -u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}} -T $sessionFileName $targetUrl
               $prMessage =@{}
               $prMessage.number=$pr.number
               $prMessage.message="New commit on target branch\n[Review Session file]($targetUrl)\n:x: Please resolve merge conflicts in model first"
