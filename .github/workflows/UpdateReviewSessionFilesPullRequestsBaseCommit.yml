@@ -7,6 +7,8 @@ name: Update Review Session Files for Pull Requests on base commit
 
 on:
   push:
+    branches:
+      - "feature/*"
 
 env:
   ModelName: DemoModel
@@ -141,7 +143,6 @@ jobs:
                 --sfs $sessionFileName `
                 
               echo "Uploading sessionfile to artifactory: $targetUrl"
-              echo "SessionFile Exists" hashFiles($sessionFileName) != ''
               &"${{env.curl}}" -u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}} -T $sessionFileName $targetUrl
               $prMessage =@{}
               $prMessage.number=$pr.number
