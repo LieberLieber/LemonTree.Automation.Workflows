@@ -132,17 +132,12 @@ jobs:
             
             if($LASTEXITCODE -eq 0)
             {
-              
-              dir
-              
               echo "No merge conflicts, creating diff file"
               &"${{env.LemonTreeAutomationFolder}}\LemonTree.Automation.exe" `
                 diff `
                 --theirs $baseFile `
                 --mine $sourceFile `
                 --sfs $sessionFileName `
-              
-              dir              
               
               echo "Uploading sessionfile to artifactory: $targetUrl"
               &"${{env.curl}}" -u${{secrets.ARTIFACTORYUSER}}:${{ secrets.ARTIFACTORYTOKEN }} -T $sessionFileName $targetUrl
