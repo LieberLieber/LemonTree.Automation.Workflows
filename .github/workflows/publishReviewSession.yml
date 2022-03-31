@@ -94,7 +94,7 @@ jobs:
           echo "Return code: $LASTEXITCODE"
           if($LASTEXITCODE -eq 0){
             echo "No merge conflicts, setting message"
-            echo "::set-output name=message::[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:heavy_check_mark: No merge conflicts in model"
+            echo "::set-output name=message::[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}){:target="_blank" rel="noopener"} \n:heavy_check_mark: No merge conflicts in model"
           }
           elseif($LASTEXITCODE -eq 2){
             echo "Internal Error when diffing. Please report such errors to support@lieberlieber.com"
@@ -102,7 +102,7 @@ jobs:
           }
           elseif($LASTEXITCODE -eq 3){
             echo "Merge conflicts, setting message"
-            echo "::set-output name=message::[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:x: Please resolve merge conflicts in model first"
+            echo "::set-output name=message::[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}){:target="_blank" rel="noopener"} \n:x: Please resolve merge conflicts in model first"
             exit 0
           }
           elseif($LASTEXITCODE -eq 6){
