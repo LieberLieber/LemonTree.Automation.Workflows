@@ -120,8 +120,8 @@ jobs:
       - name: Upload
         shell: cmd
         run: |
-          echo curl -u${{secrets.ARTIFACTORYUSER}}:${{ secrets.ARTIFACTORYTOKEN }} -T ${{ steps.session_file.outputs.result }} "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
-          curl -u${{secrets.ARTIFACTORYUSER}}:${{ secrets.ARTIFACTORYTOKEN }} -T ${{ steps.session_file.outputs.result }} "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
+          echo curl -u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}} -T ${{ steps.session_file.outputs.result }} "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
+          curl -u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}} -T ${{ steps.session_file.outputs.result }} "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
 
       - name: Archive Session Files
         uses: actions/upload-artifact@v3
