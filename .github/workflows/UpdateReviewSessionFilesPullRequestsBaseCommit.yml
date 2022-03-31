@@ -12,7 +12,6 @@ env:
   ModelName: DemoModel
   ReviewSessionURL: https://lieberlieber.jfrog.io/artifactory/lemontree-generic-local
   LemonTreeAutomationFolder: C:\Program Files\LieberLieber\LemonTree.Automation
-  curl: C:\Program Files\Git\mingw64\bin\curl.exe
 
 jobs:
   build:
@@ -133,19 +132,18 @@ jobs:
             
             if($LASTEXITCODE -eq 0)
             {
-              dir
-              
               echo "No merge conflicts, creating diff file"
               &"${{env.LemonTreeAutomationFolder}}\LemonTree.Automation.exe" `
                 diff `
                 --theirs $baseFile `
                 --mine $sourceFile `
-                --sfs $sessionFileName `
+                --sfs $sessionFileName
               
-              dir 
+              dir
               
               echo "Uploading sessionfile to artifactory: $targetUrl"
-              &"${{env.curl}}" -u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}} -T $sessionFileName $targetUrl
+              echo curl -u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}} -T $sessionFileName $targetUrl
+              curl -u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}} -T $sessionFileName $targetUrl
               $prMessage =@{}
               $prMessage.number=$pr.number
               $prMessage.message="New commit on target branch\n[Review Session file]($targetUrl)\n:heavy_check_mark: No merge conflicts in model"
@@ -159,7 +157,8 @@ jobs:
             {
               echo "Merge conflicts"
               echo "Uploading sessionfile to artifactory: $targetUrl"
-              &"${{env.curl}}" -u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}} -T $sessionFileName $targetUrl
+              echo curl -u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}} -T $sessionFileName $targetUrl
+              curl -u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}} -T $sessionFileName $targetUrl
               $prMessage =@{}
               $prMessage.number=$pr.number
               $prMessage.message="New commit on target branch\n[Review Session file]($targetUrl)\n:x: Please resolve merge conflicts in model first"
