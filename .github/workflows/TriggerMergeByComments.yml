@@ -12,7 +12,7 @@ on:
 env:
   ModelName: DemoModel
   GitHubProjectRoot: https://github.com/LieberLieber/LemonTree.Automation.Workflows
-  LemonTreeAutomationFolder: C:\Program Files\LieberLieber\LemonTree.Automation
+  LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
 
 jobs:
   build:
@@ -119,7 +119,7 @@ jobs:
         id: mergeEA
         shell: pwsh
         run: |
-          &"${{env.LemonTreeAutomationFolder}}\LemonTree.Automation.exe" merge --base ${{env.ModelName}}_base.eapx --theirs ${{env.ModelName}}.eapx --mine ${{env.ModelName}}_head.eapx --out merged.eapx --abortOnConflict true
+          &"${{env.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.eapx --theirs ${{env.ModelName}}.eapx --mine ${{env.ModelName}}_head.eapx --out merged.eapx --abortOnConflict true
           echo "::set-output name=result::$LASTEXITCODE"
           echo "Return code: $LASTEXITCODE"
           

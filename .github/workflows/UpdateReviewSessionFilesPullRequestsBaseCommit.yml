@@ -11,7 +11,7 @@ on:
 env:
   ModelName: DemoModel
   ReviewSessionURL: https://lieberlieber.jfrog.io/artifactory/lemontree-generic-local
-  LemonTreeAutomationFolder: C:\Program Files\LieberLieber\LemonTree.Automation
+  LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
 
 jobs:
   build:
@@ -122,7 +122,7 @@ jobs:
             $sourceFile = $modelFileName +"_"+$commitIds.sourceId
             $targetUrl = "${{env.ReviewSessionURL}}/$sessionFileName"
             
-            &"${{env.LemonTreeAutomationFolder}}\LemonTree.Automation.exe" `
+            &"${{env.LemonTreeAutomationExecutable}}" `
               merge `
               --base $baseFile `
               --theirs $targetFile `
@@ -134,7 +134,7 @@ jobs:
             if($LASTEXITCODE -eq 0)
             {
               echo "No merge conflicts, creating diff file"
-              &"${{env.LemonTreeAutomationFolder}}\LemonTree.Automation.exe" `
+              &"${{env.LemonTreeAutomationExecutable}}" `
                 diff `
                 --theirs $baseFile `
                 --mine $sourceFile `
