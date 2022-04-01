@@ -10,6 +10,7 @@ on:
 
 env:
   ModelName: DemoModel
+  ModelExtension: eapx
   ReviewSessionURL: https://lieberlieber.jfrog.io/artifactory/lemontree-generic-local
   LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
 
@@ -100,12 +101,12 @@ jobs:
           
           $prList = $env:jsVar | ConvertFrom-Json
           $messageList = [System.Collections.ArrayList]::new()
-          $modelFileName = "${{env.ModelName}}.eapx"
+          $modelFileName = "${{env.ModelName}}.${{env.ModelExtension}}"
           foreach($pr in $prList)
           {
             echo "Processing PR $($pr.number)"
             $commitIds = getCommitIds $pr.base.ref $pr.head.ref
-            $sessionFileName = getSessionFileName "SysEngAutomationTest" $pr.number $commitIds.sourceId $commitIds.targetId
+            $sessionFileName = getSessionFileName ${{ github.repository }} $pr.number $commitIds.sourceId $commitIds.targetId
             echo "Session filename: $sessionFileName"
             
             echo "Downloading base file"

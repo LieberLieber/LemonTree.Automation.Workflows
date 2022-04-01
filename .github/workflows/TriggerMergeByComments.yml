@@ -11,6 +11,7 @@ on:
     
 env:
   ModelName: DemoModel
+  ModelExtension: eapx
   GitHubProjectRoot: https://github.com/LieberLieber/LemonTree.Automation.Workflows
   LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
 
@@ -94,32 +95,32 @@ jobs:
         shell: pwsh
         run: |
           git fetch origin ${{steps.CommitIds.outputs.baseCommitId}}
-          $pointer = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.eapx
+          $pointer = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
           $sha = ($pointer[1] -split(":"))[1]
           $shaPart1 = $sha.Substring(0,2)
           $shaPart2 = $sha.Substring(2,2)
           echo "Model SHA: $sha"
-          git cat-file --filters ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.eapx | Out-Null
-          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_base.eapx"
+          git cat-file --filters ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}} | Out-Null
+          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_base.${{env.ModelExtension}}"
 
       - name: Download source branch head file
         shell: pwsh
         run: |
           git fetch origin $env:GITHUB_HEAD_REF
-          $pointer = git cat-file blob ${{steps.CommitIds.outputs.sourceCommitId}}:${{env.ModelName}}.eapx
+          $pointer = git cat-file blob ${{steps.CommitIds.outputs.sourceCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
           $sha = ($pointer[1] -split(":"))[1]
           $shaPart1 = $sha.Substring(0,2)
           $shaPart2 = $sha.Substring(2,2)
           echo "Model SHA: $sha"
-          git cat-file --filters ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.eapx" | Out-Null
-          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.eapx"
+          git cat-file --filters ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}" | Out-Null
+          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.${{env.ModelExtension}}"
           
       - name: Merge EA model file
         if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
         id: mergeEA
         shell: pwsh
         run: |
-          &"${{env.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.eapx --theirs ${{env.ModelName}}.eapx --mine ${{env.ModelName}}_head.eapx --out merged.eapx --abortOnConflict true
+          &"${{env.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --out merged.${{env.ModelExtension}} --abortOnConflict true
           echo "::set-output name=result::$LASTEXITCODE"
           echo "Return code: $LASTEXITCODE"
           
@@ -158,8 +159,8 @@ jobs:
         if: ${{ steps.mergeEA.outputs.result == 0 }}
         shell: pwsh
         run: |
-         copy /Y merged.eapx ${{env.ModelName}}.eapx
-         git add ${{env.ModelName}}.eapx
+         copy /Y merged.${{env.ModelExtension}} ${{env.ModelName}}.${{env.ModelExtension}}
+         git add ${{env.ModelName}}.${{env.ModelExtension}}
          git commit -m "Merged PR ${{steps.pr_details.outputs.number}}"
          git push
         
