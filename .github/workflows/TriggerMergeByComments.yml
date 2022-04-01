@@ -65,7 +65,7 @@ jobs:
           token: ${{secrets.PAT}} #If default token of automation user is used, no workflows for merge commit are triggered
           
       - name: Configure merge driver for EA files
-        shell: pwsh
+        shell: powershell
         run: |
           echo "Setting lemontree merge-driver to 'no action'"
           git config merge.lemontree.name "lemontree merge driver"
@@ -73,7 +73,7 @@ jobs:
 
       - name: Get relevant commit IDs
         id: CommitIds
-        shell: pwsh
+        shell: powershell
         run: |
           git fetch
           $baseId = git merge-base origin/${{steps.pr_details.outputs.base}} origin/${{steps.pr_details.outputs.head}}
@@ -85,14 +85,14 @@ jobs:
           
       - name: Start merge
         if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
-        shell: pwsh
+        shell: powershell
         run: |
           git merge origin/${{steps.pr_details.outputs.head}} --no-commit --no-edit --no-ff
           git status
           
       - name: Download base-commit file
         if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
-        shell: pwsh
+        shell: powershell
         run: |
           git fetch origin ${{steps.CommitIds.outputs.baseCommitId}}
           $pointer = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
@@ -104,7 +104,7 @@ jobs:
           copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_base.${{env.ModelExtension}}"
 
       - name: Download source branch head file
-        shell: pwsh
+        shell: powershell
         run: |
           git fetch origin $env:GITHUB_HEAD_REF
           $pointer = git cat-file blob ${{steps.CommitIds.outputs.sourceCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
@@ -118,7 +118,7 @@ jobs:
       - name: Merge EA model file
         if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
         id: mergeEA
-        shell: pwsh
+        shell: powershell
         run: |
           &"${{env.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --out merged.${{env.ModelExtension}} --abortOnConflict true
           echo "::set-output name=result::$LASTEXITCODE"
@@ -148,7 +148,7 @@ jobs:
 
       - name: Cleanup failed merge
         if: failure()
-        shell: pwsh
+        shell: powershell
         run: |
          try{
            git merge --abort
@@ -157,7 +157,7 @@ jobs:
 
       - name: Create commit
         if: ${{ steps.mergeEA.outputs.result == 0 }}
-        shell: pwsh
+        shell: powershell
         run: |
          copy /Y merged.${{env.ModelExtension}} ${{env.ModelName}}.${{env.ModelExtension}}
          git add ${{env.ModelName}}.${{env.ModelExtension}}

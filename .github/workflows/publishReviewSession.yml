@@ -32,7 +32,7 @@ jobs:
           
       - name: Get relevant commit IDs
         id: CommitIds
-        shell: pwsh
+        shell: powershell
         run: |
           git fetch
           $baseId = git merge-base origin/$env:GITHUB_BASE_REF origin/$env:GITHUB_HEAD_REF
@@ -62,7 +62,7 @@ jobs:
             return filename
 
       - name: Download base-commit file
-        shell: pwsh
+        shell: powershell
         run: |
           git fetch origin ${{steps.CommitIds.outputs.baseCommitId}}
           $pointer = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
@@ -74,7 +74,7 @@ jobs:
           copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_base.${{env.ModelExtension}}"
 
       - name: Download source branch head file
-        shell: pwsh
+        shell: powershell
         run: |
           git fetch origin $env:GITHUB_HEAD_REF
           $pointer = git cat-file blob ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}"
@@ -87,7 +87,7 @@ jobs:
 
       - name: Check for merge conflicts
         id: mergeCheck
-        shell: pwsh
+        shell: powershell
         run: |
           &"${{env.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --out test.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }} --abortOnConflict true
           echo "::set-output name=result::$LASTEXITCODE"
@@ -114,12 +114,12 @@ jobs:
 
       - name: Create review session file
         if: steps.mergeCheck.outputs.result == 0
-        shell: pwsh
+        shell: powershell
         run: |
           &"${{env.LemonTreeAutomationExecutable}}" diff --theirs ${{env.ModelName}}_base.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }}
 
       - name: Upload
-        shell: pwsh
+        shell: powershell
         run: |
           $sessionFileName = "${{ steps.session_file.outputs.result }}"
           $targetUrl = "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
