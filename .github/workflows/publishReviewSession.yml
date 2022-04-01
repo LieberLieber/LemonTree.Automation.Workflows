@@ -29,13 +29,9 @@ jobs:
           lfs: true
           fetch-depth: 0
           
-      - name: Debug vars
-        run: |
-          echo $env:GITHUB_EVENT_NAME
-          cat $env:GITHUB_EVENT_PATH
-
       - name: Get relevant commit IDs
         id: CommitIds
+        shell: pwsh
         run: |
           git fetch
           $baseId = git merge-base origin/$env:GITHUB_BASE_REF origin/$env:GITHUB_HEAD_REF
@@ -65,6 +61,7 @@ jobs:
             return filename
 
       - name: Download base-commit file
+        shell: pwsh
         run: |
           git fetch origin ${{steps.CommitIds.outputs.baseCommitId}}
           $pointer = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.eapx
@@ -76,6 +73,7 @@ jobs:
           copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_base.eapx"
 
       - name: Download source branch head file
+        shell: pwsh
         run: |
           git fetch origin $env:GITHUB_HEAD_REF
           $pointer = git cat-file blob ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.eapx"
@@ -88,6 +86,7 @@ jobs:
 
       - name: Check for merge conflicts
         id: mergeCheck
+        shell: pwsh
         run: |
           &"${{env.LemonTreeAutomationFolder}}\LemonTree.Automation.exe" merge --base ${{env.ModelName}}_base.eapx --theirs ${{env.ModelName}}.eapx --mine ${{env.ModelName}}_head.eapx --out test.eapx --sfs ${{ steps.session_file.outputs.result }} --abortOnConflict true
           echo "::set-output name=result::$LASTEXITCODE"
@@ -114,14 +113,17 @@ jobs:
 
       - name: Create review session file
         if: steps.mergeCheck.outputs.result == 0
+        shell: pwsh
         run: |
           &"${{env.LemonTreeAutomationFolder}}\LemonTree.Automation.exe" diff --theirs ${{env.ModelName}}_base.eapx --mine ${{env.ModelName}}_head.eapx --sfs ${{ steps.session_file.outputs.result }}
 
       - name: Upload
-        shell: cmd
+        shell: pwsh
         run: |
-          echo curl -u${{secrets.ARTIFACTORYUSER}}:${{ secrets.ARTIFACTORYTOKEN }} -T ${{ steps.session_file.outputs.result }} "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
-          curl -u${{secrets.ARTIFACTORYUSER}}:${{ secrets.ARTIFACTORYTOKEN }} -T ${{ steps.session_file.outputs.result }} "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
+          $sessionFileName = "${{ steps.session_file.outputs.result }}"
+          $targetUrl = "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
+          echo "Uploading $sessionFileName to artifactory: $targetUrl"
+          while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
 
       - name: Archive Session Files
         uses: actions/upload-artifact@v3

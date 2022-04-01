@@ -64,6 +64,7 @@ jobs:
           token: ${{secrets.PAT}} #If default token of automation user is used, no workflows for merge commit are triggered
           
       - name: Configure merge driver for EA files
+        shell: pwsh
         run: |
           echo "Setting lemontree merge-driver to 'no action'"
           git config merge.lemontree.name "lemontree merge driver"
@@ -71,6 +72,7 @@ jobs:
 
       - name: Get relevant commit IDs
         id: CommitIds
+        shell: pwsh
         run: |
           git fetch
           $baseId = git merge-base origin/${{steps.pr_details.outputs.base}} origin/${{steps.pr_details.outputs.head}}
@@ -82,12 +84,14 @@ jobs:
           
       - name: Start merge
         if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
+        shell: pwsh
         run: |
           git merge origin/${{steps.pr_details.outputs.head}} --no-commit --no-edit --no-ff
           git status
           
       - name: Download base-commit file
         if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
+        shell: pwsh
         run: |
           git fetch origin ${{steps.CommitIds.outputs.baseCommitId}}
           $pointer = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.eapx
@@ -99,6 +103,7 @@ jobs:
           copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_base.eapx"
 
       - name: Download source branch head file
+        shell: pwsh
         run: |
           git fetch origin $env:GITHUB_HEAD_REF
           $pointer = git cat-file blob ${{steps.CommitIds.outputs.sourceCommitId}}:${{env.ModelName}}.eapx
@@ -112,6 +117,7 @@ jobs:
       - name: Merge EA model file
         if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
         id: mergeEA
+        shell: pwsh
         run: |
           &"${{env.LemonTreeAutomationFolder}}\LemonTree.Automation.exe" merge --base ${{env.ModelName}}_base.eapx --theirs ${{env.ModelName}}.eapx --mine ${{env.ModelName}}_head.eapx --out merged.eapx --abortOnConflict true
           echo "::set-output name=result::$LASTEXITCODE"
@@ -141,6 +147,7 @@ jobs:
 
       - name: Cleanup failed merge
         if: failure()
+        shell: pwsh
         run: |
          try{
            git merge --abort
@@ -149,7 +156,7 @@ jobs:
 
       - name: Create commit
         if: ${{ steps.mergeEA.outputs.result == 0 }}
-        shell: cmd
+        shell: pwsh
         run: |
          copy /Y merged.eapx ${{env.ModelName}}.eapx
          git add ${{env.ModelName}}.eapx
