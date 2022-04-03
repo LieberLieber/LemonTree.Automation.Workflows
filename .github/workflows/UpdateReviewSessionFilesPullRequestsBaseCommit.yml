@@ -10,8 +10,9 @@ on:
 
 env:
   ModelName: DemoModel
+  ModelExtension: eapx
   ReviewSessionURL: https://lieberlieber.jfrog.io/artifactory/lemontree-generic-local
-  LemonTreeAutomationFolder: C:\Program Files\LieberLieber\LemonTree.Automation
+  LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
 
 jobs:
   build:
@@ -59,6 +60,7 @@ jobs:
         id: WorkOnPr
         env:
          jsVar: ${{steps.linked_prs.outputs.result}}
+        shell: powershell
         run: |
           #Create review session files for each pull requestReviewers
           echo "Starting process"
@@ -99,12 +101,12 @@ jobs:
           
           $prList = $env:jsVar | ConvertFrom-Json
           $messageList = [System.Collections.ArrayList]::new()
-          $modelFileName = "${{env.ModelName}}.eapx"
+          $modelFileName = "${{env.ModelName}}.${{env.ModelExtension}}"
           foreach($pr in $prList)
           {
             echo "Processing PR $($pr.number)"
             $commitIds = getCommitIds $pr.base.ref $pr.head.ref
-            $sessionFileName = getSessionFileName "SysEngAutomationTest" $pr.number $commitIds.sourceId $commitIds.targetId
+            $sessionFileName = getSessionFileName ${{ github.repository }} $pr.number $commitIds.sourceId $commitIds.targetId
             echo "Session filename: $sessionFileName"
             
             echo "Downloading base file"
@@ -121,7 +123,7 @@ jobs:
             $sourceFile = $modelFileName +"_"+$commitIds.sourceId
             $targetUrl = "${{env.ReviewSessionURL}}/$sessionFileName"
             
-            &"${{env.LemonTreeAutomationFolder}}\LemonTree.Automation.exe" `
+            &"${{env.LemonTreeAutomationExecutable}}" `
               merge `
               --base $baseFile `
               --theirs $targetFile `
@@ -133,7 +135,7 @@ jobs:
             if($LASTEXITCODE -eq 0)
             {
               echo "No merge conflicts, creating diff file"
-              &"${{env.LemonTreeAutomationFolder}}\LemonTree.Automation.exe" `
+              &"${{env.LemonTreeAutomationExecutable}}" `
                 diff `
                 --theirs $baseFile `
                 --mine $sourceFile `
@@ -141,9 +143,9 @@ jobs:
               
               dir
               
-              echo "Uploading sessionfile to artifactory: $targetUrl"
-              &echo curl -u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}} -T $sessionFileName $targetUrl
-              &curl -u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}} -T $sessionFileName $targetUrl
+              echo "Uploading $sessionFileName to artifactory: $targetUrl"
+              while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+              curl "-u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}}" -T $sessionFileName $targetUrl
               $prMessage =@{}
               $prMessage.number=$pr.number
               $prMessage.message="New commit on target branch\n[Review Session file]($targetUrl)\n:heavy_check_mark: No merge conflicts in model"
@@ -156,9 +158,9 @@ jobs:
             elseif($LASTEXITCODE -eq 3)
             {
               echo "Merge conflicts"
-              echo "Uploading sessionfile to artifactory: $targetUrl"
-              &echo curl -u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}} -T $sessionFileName $targetUrl
-              &curl -u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}} -T $sessionFileName $targetUrl
+              echo "Uploading $sessionFileName to artifactory: $targetUrl"
+              while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+              curl "-u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}}" -T $sessionFileName $targetUrl
               $prMessage =@{}
               $prMessage.number=$pr.number
               $prMessage.message="New commit on target branch\n[Review Session file]($targetUrl)\n:x: Please resolve merge conflicts in model first"

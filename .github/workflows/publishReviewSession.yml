@@ -16,8 +16,9 @@ on:
 
 env:
   ModelName: DemoModel
+  ModelExtension: eapx
   ReviewSessionURL: https://lieberlieber.jfrog.io/artifactory/lemontree-generic-local
-  LemonTreeAutomationFolder: C:\Program Files\LieberLieber\LemonTree.Automation
+  LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
 
 jobs:
   PublishReviewSession:
@@ -29,13 +30,9 @@ jobs:
           lfs: true
           fetch-depth: 0
           
-      - name: Debug vars
-        run: |
-          echo $env:GITHUB_EVENT_NAME
-          cat $env:GITHUB_EVENT_PATH
-
       - name: Get relevant commit IDs
         id: CommitIds
+        shell: powershell
         run: |
           git fetch
           $baseId = git merge-base origin/$env:GITHUB_BASE_REF origin/$env:GITHUB_HEAD_REF
@@ -65,31 +62,34 @@ jobs:
             return filename
 
       - name: Download base-commit file
+        shell: powershell
         run: |
           git fetch origin ${{steps.CommitIds.outputs.baseCommitId}}
-          $pointer = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.eapx
+          $pointer = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
           $sha = ($pointer[1] -split(":"))[1]
           $shaPart1 = $sha.Substring(0,2)
           $shaPart2 = $sha.Substring(2,2)
           echo "Model SHA: $sha"
-          git cat-file --filters ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.eapx | Out-Null
-          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_base.eapx"
+          git cat-file --filters ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}} | Out-Null
+          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_base.${{env.ModelExtension}}"
 
       - name: Download source branch head file
+        shell: powershell
         run: |
           git fetch origin $env:GITHUB_HEAD_REF
-          $pointer = git cat-file blob ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.eapx"
+          $pointer = git cat-file blob ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}"
           $sha = ($pointer[1] -split(":"))[1]
           $shaPart1 = $sha.Substring(0,2)
           $shaPart2 = $sha.Substring(2,2)
           echo "Model SHA: $sha"
-          git cat-file --filters ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.eapx" | Out-Null
-          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.eapx"
+          git cat-file --filters ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}" | Out-Null
+          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.${{env.ModelExtension}}"
 
       - name: Check for merge conflicts
         id: mergeCheck
+        shell: powershell
         run: |
-          &"${{env.LemonTreeAutomationFolder}}\LemonTree.Automation.exe" merge --base ${{env.ModelName}}_base.eapx --theirs ${{env.ModelName}}.eapx --mine ${{env.ModelName}}_head.eapx --out test.eapx --sfs ${{ steps.session_file.outputs.result }} --abortOnConflict true
+          &"${{env.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --out test.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }} --abortOnConflict true
           echo "::set-output name=result::$LASTEXITCODE"
           echo "Return code: $LASTEXITCODE"
           if($LASTEXITCODE -eq 0){
@@ -114,14 +114,17 @@ jobs:
 
       - name: Create review session file
         if: steps.mergeCheck.outputs.result == 0
+        shell: powershell
         run: |
-          &"${{env.LemonTreeAutomationFolder}}\LemonTree.Automation.exe" diff --theirs ${{env.ModelName}}_base.eapx --mine ${{env.ModelName}}_head.eapx --sfs ${{ steps.session_file.outputs.result }}
+          &"${{env.LemonTreeAutomationExecutable}}" diff --theirs ${{env.ModelName}}_base.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }}
 
       - name: Upload
-        shell: cmd
+        shell: powershell
         run: |
-          echo curl -u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}} -T ${{ steps.session_file.outputs.result }} "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
-          curl -u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}} -T ${{ steps.session_file.outputs.result }} "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
+          $sessionFileName = "${{ steps.session_file.outputs.result }}"
+          $targetUrl = "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
+          echo "Uploading $sessionFileName to artifactory: $targetUrl"
+          while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
 
       - name: Archive Session Files
         uses: actions/upload-artifact@v3

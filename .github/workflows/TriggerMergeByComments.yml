@@ -11,8 +11,9 @@ on:
     
 env:
   ModelName: DemoModel
+  ModelExtension: eapx
   GitHubProjectRoot: https://github.com/LieberLieber/LemonTree.Automation.Workflows
-  LemonTreeAutomationFolder: C:\Program Files\LieberLieber\LemonTree.Automation
+  LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
 
 jobs:
   build:
@@ -64,6 +65,7 @@ jobs:
           token: ${{secrets.PAT}} #If default token of automation user is used, no workflows for merge commit are triggered
           
       - name: Configure merge driver for EA files
+        shell: powershell
         run: |
           echo "Setting lemontree merge-driver to 'no action'"
           git config merge.lemontree.name "lemontree merge driver"
@@ -71,6 +73,7 @@ jobs:
 
       - name: Get relevant commit IDs
         id: CommitIds
+        shell: powershell
         run: |
           git fetch
           $baseId = git merge-base origin/${{steps.pr_details.outputs.base}} origin/${{steps.pr_details.outputs.head}}
@@ -82,38 +85,42 @@ jobs:
           
       - name: Start merge
         if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
+        shell: powershell
         run: |
           git merge origin/${{steps.pr_details.outputs.head}} --no-commit --no-edit --no-ff
           git status
           
       - name: Download base-commit file
         if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
+        shell: powershell
         run: |
           git fetch origin ${{steps.CommitIds.outputs.baseCommitId}}
-          $pointer = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.eapx
+          $pointer = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
           $sha = ($pointer[1] -split(":"))[1]
           $shaPart1 = $sha.Substring(0,2)
           $shaPart2 = $sha.Substring(2,2)
           echo "Model SHA: $sha"
-          git cat-file --filters ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.eapx | Out-Null
-          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_base.eapx"
+          git cat-file --filters ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}} | Out-Null
+          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_base.${{env.ModelExtension}}"
 
       - name: Download source branch head file
+        shell: powershell
         run: |
           git fetch origin $env:GITHUB_HEAD_REF
-          $pointer = git cat-file blob ${{steps.CommitIds.outputs.sourceCommitId}}:${{env.ModelName}}.eapx
+          $pointer = git cat-file blob ${{steps.CommitIds.outputs.sourceCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
           $sha = ($pointer[1] -split(":"))[1]
           $shaPart1 = $sha.Substring(0,2)
           $shaPart2 = $sha.Substring(2,2)
           echo "Model SHA: $sha"
-          git cat-file --filters ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.eapx" | Out-Null
-          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.eapx"
+          git cat-file --filters ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}" | Out-Null
+          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.${{env.ModelExtension}}"
           
       - name: Merge EA model file
         if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
         id: mergeEA
+        shell: powershell
         run: |
-          &"${{env.LemonTreeAutomationFolder}}\LemonTree.Automation.exe" merge --base ${{env.ModelName}}_base.eapx --theirs ${{env.ModelName}}.eapx --mine ${{env.ModelName}}_head.eapx --out merged.eapx --abortOnConflict true
+          &"${{env.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --out merged.${{env.ModelExtension}} --abortOnConflict true
           echo "::set-output name=result::$LASTEXITCODE"
           echo "Return code: $LASTEXITCODE"
           
@@ -141,6 +148,7 @@ jobs:
 
       - name: Cleanup failed merge
         if: failure()
+        shell: powershell
         run: |
          try{
            git merge --abort
@@ -149,10 +157,10 @@ jobs:
 
       - name: Create commit
         if: ${{ steps.mergeEA.outputs.result == 0 }}
-        shell: cmd
+        shell: powershell
         run: |
-         copy /Y merged.eapx ${{env.ModelName}}.eapx
-         git add ${{env.ModelName}}.eapx
+         copy /Y merged.${{env.ModelExtension}} ${{env.ModelName}}.${{env.ModelExtension}}
+         git add ${{env.ModelName}}.${{env.ModelExtension}}
          git commit -m "Merged PR ${{steps.pr_details.outputs.number}}"
          git push
         
