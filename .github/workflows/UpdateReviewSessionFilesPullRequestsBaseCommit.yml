@@ -95,7 +95,7 @@ jobs:
           
           function getSessionFileName($repoName, $prNumber, $sourceCommit, $targetCommit)
           {
-            $filename = $repoName+"-"+'PR'+"-"+$prNumber+"-"+$sourceCommit+"-"+$targetCommit+'.ltsfs'
+            $filename = $repoName.Split('/')[1]+"-"+'PR'+"-"+$prNumber+"-"+$sourceCommit+"-"+$targetCommit+'.ltsfs'
             return $fileName
           }
           
