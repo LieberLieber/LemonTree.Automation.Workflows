@@ -22,7 +22,7 @@ To support the current setup, the used runner has to be `self-hosted` on `Window
 * ModelName: name of the eapx file without extension
 * LemonTreeAutomationFolder: installation folder of LemonTree.Automation, by default `C:\Program Files\LieberLieber\LemonTree.Automation`
 * ReviewSessionURL: URL to JFrog artifactory, which is used as binary repository for review session files
-* GitHubProjectRoot: Repository root URL on GitHub, e.g. https://github.com/MyProject/MyRepository
+* GitHubProjectRoot: Repository root URL on GitHub, e.g. https://github.com/LieberLieber/LemonTree.Automation.Workflows
 * curl: Path to `curl.exe`, e.g. C:\Program Files\Git\mingw64\bin\curl.exe
 
 #### Customization by secrets
