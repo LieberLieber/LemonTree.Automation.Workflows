@@ -63,7 +63,7 @@ jobs:
 
       - name: Download base-commit file
         id: baseDownload
-	shell: powershell
+        shell: powershell
         run: |
           git fetch origin ${{steps.CommitIds.outputs.baseCommitId}}
           $pointer = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
@@ -95,7 +95,7 @@ jobs:
       - name: Download source branch head file
         if: steps.baseDownload.outputs.result == 'downloaded'
         id: headDownload
-	shell: powershell
+        shell: powershell
         run: |
           git fetch origin $env:GITHUB_HEAD_REF
           $pointer = git cat-file blob ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}"
