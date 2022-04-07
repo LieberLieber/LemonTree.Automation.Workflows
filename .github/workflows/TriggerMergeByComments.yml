@@ -146,6 +146,13 @@ jobs:
             echo "::set-output name=message:::x: Merge failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details"
           }
 
+      - name: Archive Model Files
+        uses: actions/upload-artifact@v3
+        with:
+          name: Review Session File
+          path: "*.eap*"
+          retention-days: 5
+
       - name: Cleanup failed merge
         if: failure()
         shell: powershell
