@@ -180,6 +180,6 @@ jobs:
               issue_number: ${{steps.pr_details.outputs.number}},
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '${{steps.mergeEA.outputs.message}}'
+              body: 'Message ${{steps.mergeEA.outputs.message}}'
             })        
             

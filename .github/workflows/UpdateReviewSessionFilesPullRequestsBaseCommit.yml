@@ -95,7 +95,7 @@ jobs:
           
           function getSessionFileName($repoName, $prNumber, $sourceCommit, $targetCommit)
           {
-            $filename = $repoName+"-"+'PR'+"-"+$prNumber+"-"+$sourceCommit+"-"+$targetCommit+'.ltsfs'
+            $filename = $repoName.Split('/')[1]+"-"+'PR'+"-"+$prNumber+"-"+$sourceCommit+"-"+$targetCommit+'.ltsfs'
             return $fileName
           }
           
@@ -140,8 +140,6 @@ jobs:
                 --theirs $baseFile `
                 --mine $sourceFile `
                 --sfs $sessionFileName
-              
-              dir
               
               echo "Uploading $sessionFileName to artifactory: $targetUrl"
               while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
