@@ -149,7 +149,7 @@ jobs:
       - name: Archive Model Files
         uses: actions/upload-artifact@v3
         with:
-          name: Review Session File
+          name: Model File Archive
           path: "*.eap*"
           retention-days: 5
 
