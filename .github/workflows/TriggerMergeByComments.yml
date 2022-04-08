@@ -89,6 +89,20 @@ jobs:
         run: |
           git merge origin/${{steps.pr_details.outputs.head}} --no-commit --no-edit --no-ff
           git status
+
+      - name: Download target branch head file
+        if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
+        shell: powershell
+        run: |
+          $targetCommitId = git rev-parse HEAD
+          git fetch origin $targetCommitId
+          $pointer = git cat-file blob $targetCommitId:${{env.ModelName}}.${{env.ModelExtension}}
+          $sha = ($pointer[1] -split(":"))[1]
+          $shaPart1 = $sha.Substring(0,2)
+          $shaPart2 = $sha.Substring(2,2)
+          echo "Model SHA: $sha"
+          git cat-file --filters targetCommitId:${{env.ModelName}}.${{env.ModelExtension}} | Out-Null
+          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_target.${{env.ModelExtension}}"     
           
       - name: Download base-commit file
         if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
@@ -120,7 +134,7 @@ jobs:
         id: mergeEA
         shell: powershell
         run: |
-          &"${{env.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --out merged.${{env.ModelExtension}} --abortOnConflict true
+          &"${{env.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}_target.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --out merged.${{env.ModelExtension}} --abortOnConflict true
           echo "::set-output name=result::$LASTEXITCODE"
           echo "Return code: $LASTEXITCODE"
           
