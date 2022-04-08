@@ -80,8 +80,11 @@ jobs:
           echo "::set-output name=baseCommitId::$baseId"
           $sourceId = git show-ref --hash origin/${{steps.pr_details.outputs.head}}
           echo "::set-output name=sourceCommitId::$sourceId"
+          $targetId = git rev-parse HEAD
+          echo "::set-output name=targetCommitId::$targetId"
           echo "source commit: $sourceId"
           echo "base commit: $baseId"
+          echo "target commit: $targetId"
           
       - name: Start merge
         if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
@@ -94,15 +97,14 @@ jobs:
         if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
         shell: powershell
         run: |
-          $targetCommitId = git rev-parse HEAD
-          git fetch origin $targetCommitId
-          $pointer = git cat-file blob $targetCommitId:${{env.ModelName}}.${{env.ModelExtension}}
+          git fetch origin ${{steps.CommitIds.outputs.targetCommitId}}
+          $pointer = git cat-file blob ${{steps.CommitIds.outputs.targetCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
           $sha = ($pointer[1] -split(":"))[1]
           $shaPart1 = $sha.Substring(0,2)
           $shaPart2 = $sha.Substring(2,2)
           echo "Model SHA: $sha"
-          git cat-file --filters targetCommitId:${{env.ModelName}}.${{env.ModelExtension}} | Out-Null
-          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_target.${{env.ModelExtension}}"     
+          git cat-file --filters ${{steps.CommitIds.outputs.targetCommitId}}:${{env.ModelName}}.${{env.ModelExtension}} | Out-Null
+          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_target.${{env.ModelExtension}}"
           
       - name: Download base-commit file
         if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
