@@ -80,7 +80,7 @@ jobs:
           echo "::set-output name=baseCommitId::$baseId"
           $sourceId = git show-ref --hash origin/${{steps.pr_details.outputs.head}}
           echo "::set-output name=sourceCommitId::$sourceId"
-          $targetId = git rev-parse HEAD
+          $targetId = git show-ref --hash origin/${{steps.pr_details.outputs.base}}
           echo "::set-output name=targetCommitId::$targetId"
           echo "source commit: $sourceId"
           echo "base commit: $baseId"
