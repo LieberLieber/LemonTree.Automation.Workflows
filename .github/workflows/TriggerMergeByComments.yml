@@ -181,9 +181,8 @@ jobs:
       - name: Create commit
         if: ${{ steps.mergeEA.outputs.result == 0 }}
         shell: powershell
-        
         run: |
-         copy /Y merged.${{env.ModelExtension}} ${{env.ModelName}}.${{env.ModelExtension}}
+         copy -Force merged.${{env.ModelExtension}} ${{env.ModelName}}.${{env.ModelExtension}}
          git config --global user.name 'LemonTree.Automation'
          git config --global user.email 'support@lieberlieber.com'
          git add ${{env.ModelName}}.${{env.ModelExtension}}
