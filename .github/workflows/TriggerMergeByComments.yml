@@ -14,6 +14,7 @@ env:
   ModelExtension: eapx
   GitHubProjectRoot: https://github.com/LieberLieber/LemonTree.Automation.Workflows
   LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
+  CommitAuthor: AutomationBot <noreply@lieberlieber.com>
 
 jobs:
   build:
@@ -184,7 +185,7 @@ jobs:
         run: |
          copy -Force merged.${{env.ModelExtension}} ${{env.ModelName}}.${{env.ModelExtension}}
          git add ${{env.ModelName}}.${{env.ModelExtension}}
-         git commit -m "Merged PR ${{steps.pr_details.outputs.number}}"
+         git commit --author="${{env.CommitAuthor}}" -m "Merged PR ${{steps.pr_details.outputs.number}}"
          git push
         
       - name: Create Finish Message in PR
