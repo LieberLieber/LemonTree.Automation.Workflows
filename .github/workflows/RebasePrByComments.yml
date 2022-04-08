@@ -1,0 +1,204 @@
+# Copyright (c) Robert Bosch GmbH
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+name: Trigger Merge by Comments
+
+on:
+  issue_comment:
+    types: [created]
+    
+env:
+  ModelName: DemoModel
+  ModelExtension: eapx
+  GitHubProjectRoot: https://github.com/LieberLieber/LemonTree.Automation.Workflows
+  LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
+
+jobs:
+  build:
+    runs-on: [self-hosted, lemontree]
+    timeout-minutes: 15
+    if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
+    steps:
+      - name: Post start message in PR
+        uses: actions/github-script@v5
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              issue_number: ${{github.event.issue.number}},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Starting auto-merge'
+            })  
+            
+      - name: Retrieve Rull Request details
+        id: pr_details
+        uses: actions/github-script@v5
+        with:
+          result-encoding: string
+          script: |
+            const response = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            })
+            if (response.status != 200) {
+              console.error("ohnoes")
+              process.exit()
+            }
+            const openPR = response.data
+            const filteredPRs = openPR.filter(pr => pr.number == ${{github.event.issue.number}})
+            const triggeredPR = filteredPRs[0]
+            console.log(`Number: ${triggeredPR.number}`)
+            console.log(`Head: ${triggeredPR.head.ref}`)
+            console.log(`Base: ${triggeredPR.base.ref}`)
+            core.setOutput('number', triggeredPR.number)
+            core.setOutput('head', triggeredPR.head.ref)
+            core.setOutput('base', triggeredPR.base.ref)
+            
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          fetch-depth: 0
+          ref: ${{steps.pr_details.outputs.base}}
+          persist-credentials: false
+          token: ${{secrets.PAT}} #If default token of automation user is used, no workflows for merge commit are triggered
+          
+      - name: Configure merge driver for EA files
+        shell: powershell
+        run: |
+          echo "Setting lemontree merge-driver to 'no action'"
+          git config merge.lemontree.name "lemontree merge driver"
+          git config merge.lemontree.driver "echo Do nothing, manual merge required"
+
+      - name: Get relevant commit IDs
+        id: CommitIds
+        shell: powershell
+        run: |
+          git fetch
+          $baseId = git merge-base origin/${{steps.pr_details.outputs.base}} origin/${{steps.pr_details.outputs.head}}
+          echo "::set-output name=baseCommitId::$baseId"
+          $sourceId = git show-ref --hash origin/${{steps.pr_details.outputs.head}}
+          echo "::set-output name=sourceCommitId::$sourceId"
+          $targetId = git show-ref --hash origin/${{steps.pr_details.outputs.base}}
+          echo "::set-output name=targetCommitId::$targetId"
+          echo "source commit: $sourceId"
+          echo "base commit: $baseId"
+          echo "target commit: $targetId"
+          
+      - name: Start merge
+        if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
+        shell: powershell
+        run: |
+          git merge origin/${{steps.pr_details.outputs.head}} --no-commit --no-edit --no-ff
+          git status
+
+      - name: Download target branch head file
+        if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
+        shell: powershell
+        run: |
+          git fetch origin ${{steps.CommitIds.outputs.targetCommitId}}
+          $pointer = git cat-file blob ${{steps.CommitIds.outputs.targetCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
+          $sha = ($pointer[1] -split(":"))[1]
+          $shaPart1 = $sha.Substring(0,2)
+          $shaPart2 = $sha.Substring(2,2)
+          echo "Model SHA: $sha"
+          git cat-file --filters ${{steps.CommitIds.outputs.targetCommitId}}:${{env.ModelName}}.${{env.ModelExtension}} | Out-Null
+          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_target.${{env.ModelExtension}}"
+          
+      - name: Download base-commit file
+        if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
+        shell: powershell
+        run: |
+          git fetch origin ${{steps.CommitIds.outputs.baseCommitId}}
+          $pointer = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
+          $sha = ($pointer[1] -split(":"))[1]
+          $shaPart1 = $sha.Substring(0,2)
+          $shaPart2 = $sha.Substring(2,2)
+          echo "Model SHA: $sha"
+          git cat-file --filters ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}} | Out-Null
+          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_base.${{env.ModelExtension}}"
+
+      - name: Download source branch head file
+        shell: powershell
+        run: |
+          git fetch origin $env:GITHUB_HEAD_REF
+          $pointer = git cat-file blob ${{steps.CommitIds.outputs.sourceCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
+          $sha = ($pointer[1] -split(":"))[1]
+          $shaPart1 = $sha.Substring(0,2)
+          $shaPart2 = $sha.Substring(2,2)
+          echo "Model SHA: $sha"
+          git cat-file --filters ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}" | Out-Null
+          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.${{env.ModelExtension}}"
+          
+      - name: Merge EA model file
+        if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
+        id: mergeEA
+        shell: powershell
+        run: |
+          &"${{env.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}_target.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --out merged.${{env.ModelExtension}} --abortOnConflict true
+          echo "::set-output name=result::$LASTEXITCODE"
+          echo "Return code: $LASTEXITCODE"
+          
+          if($LASTEXITCODE -eq 0){
+            echo "No merge conflicts, setting message"
+            echo "::set-output name=message:::heavy_check_mark: Merge performed successfully"
+          }
+          elseif($LASTEXITCODE -eq 2){
+            echo "::error::Internal Error when diffing. Please report such errors to support@lieberlieber.com"
+            echo "::set-output name=message:::x: Merge failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details"
+          }
+          elseif($LASTEXITCODE -eq 3){
+            echo "Merge conflicts present, auto-merge failed"
+            echo "::set-output name=message:::x: Merge conflicts present, auto-merge failed"
+            exit 0
+          }
+          elseif($LASTEXITCODE -eq 6){
+            echo "::warning::Licensing issue of LemonTree.Automation"
+            echo "::set-output name=message:::x: Merge failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details"
+          }
+          else{
+            echo "::error::Unknown error"
+            echo "::set-output name=message:::x: Merge failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details"
+          }
+
+      - name: Archive Model Files
+        uses: actions/upload-artifact@v3
+        with:
+          name: Model File Archive
+          path: "*.eap*"
+          retention-days: 5
+
+      - name: Cleanup failed merge
+        if: failure()
+        shell: powershell
+        run: |
+         try{
+           git merge --abort
+         }
+         catch{}
+
+      - name: Create commit
+        if: ${{ steps.mergeEA.outputs.result == 0 }}
+        shell: powershell
+        run: |
+         copy -Force merged.${{env.ModelExtension}} ${{env.ModelName}}.${{env.ModelExtension}}
+         git config --global user.name 'LemonTree.Automation'
+         git config --global user.email 'support@lieberlieber.com'
+         git add ${{env.ModelName}}.${{env.ModelExtension}}
+         git remote set-url origin https://x-access-token:${{secrets.PAT}}@github.com/${{ github.repository }}
+         git commit -m "Merged PR ${{steps.pr_details.outputs.number}}"
+         git push
+           
+      - name: Create Finish Message in PR
+        if: always()
+        uses: actions/github-script@v5
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              issue_number: ${{steps.pr_details.outputs.number}},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Message ${{steps.mergeEA.outputs.message}}'
+            })        
+            
