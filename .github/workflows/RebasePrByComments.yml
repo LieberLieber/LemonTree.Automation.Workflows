@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-name: Trigger Merge by Comments
+name: Trigger Rebase by Comments
 
 on:
   issue_comment:
@@ -19,7 +19,7 @@ jobs:
   build:
     runs-on: [self-hosted, lemontree]
     timeout-minutes: 15
-    if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
+    if: ${{ github.event.issue.pull_request && github.event.comment.body == '/rebase/'}}
     steps:
       - name: Post start message in PR
         uses: actions/github-script@v5
@@ -60,7 +60,7 @@ jobs:
         with:
           lfs: true
           fetch-depth: 0
-          ref: ${{steps.pr_details.outputs.base}}
+          ref: ${{steps.pr_details.outputs.head}} #head instead of base for rebase
           persist-credentials: false
           token: ${{secrets.PAT}} #If default token of automation user is used, no workflows for merge commit are triggered
           
@@ -90,7 +90,7 @@ jobs:
         if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
         shell: powershell
         run: |
-          git merge origin/${{steps.pr_details.outputs.head}} --no-commit --no-edit --no-ff
+          git merge origin/${{steps.pr_details.outputs.base}} --no-commit --no-edit --no-ff #merge in base branch to head
           git status
 
       - name: Download target branch head file
@@ -136,7 +136,7 @@ jobs:
         id: mergeEA
         shell: powershell
         run: |
-          &"${{env.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}_target.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --out merged.${{env.ModelExtension}} --abortOnConflict true
+          &"${{env.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --mine ${{env.ModelName}}_target.${{env.ModelExtension}} --theirs ${{env.ModelName}}_head.${{env.ModelExtension}} --out merged.${{env.ModelExtension}} --abortOnConflict true
           echo "::set-output name=result::$LASTEXITCODE"
           echo "Return code: $LASTEXITCODE"
           
