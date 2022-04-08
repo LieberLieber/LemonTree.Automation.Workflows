@@ -179,9 +179,6 @@ jobs:
          catch{}
 
       - name: Create commit
-        uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.PAT }}
         if: ${{ steps.mergeEA.outputs.result == 0 }}
         shell: powershell
         
