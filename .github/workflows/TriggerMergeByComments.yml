@@ -184,12 +184,18 @@ jobs:
         if: ${{ steps.mergeEA.outputs.result == 0 }}
         shell: powershell
         run: |
+         echo "Copy merge result to target file"
          copy -Force merged.${{env.ModelExtension}} ${{env.ModelName}}.${{env.ModelExtension}}
+         echo "Configure GIT user"
+         git config --global user.name "${{env.AuthorName}}"
+         git config --global user.name "${{env.AuthorEmail}}"
+         echo "Stage merged file"
          git add ${{env.ModelName}}.${{env.ModelExtension}}
-         git config user.name "${{env.AuthorName}}"
-         git config user.name "${{env.AuthorEmail}}"
+         echo "create commit"
          git commit -m "Merged PR ${{steps.pr_details.outputs.number}}"
+         echo "push commit"
          git push
+         echo "done"
         
       - name: Create Finish Message in PR
         if: always()
