@@ -1,10 +1,10 @@
 GitHub Actions and other Example Scripts to be used with LemonTree.Automation and Sparx Systems Enterprise Architect Models
 ==================================
+Disclaimer: we use this Repo to develop and test the scripts.
 This Repo contains:
 * DemoModel.eapx
 * GitHub Actions that automate and support the handling of Sparx Systems Enterprise Architect Models with LemonTree.Automation
 * A set of generic scripts to be used with LemonTree.Automation in other environments Jenkins, Teamcity, Azure Devops, ...
-Disclaimer: we use this Repo to develop and test the scripts.
 
 Automation of model handling workflows
 ==================================
