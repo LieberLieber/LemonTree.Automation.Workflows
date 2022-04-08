@@ -14,8 +14,6 @@ env:
   ModelExtension: eapx
   GitHubProjectRoot: https://github.com/LieberLieber/LemonTree.Automation.Workflows
   LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
-  AuthorName: AutomationBot
-  AuthorEmail: noreply@lieberlieber.com
 
 jobs:
   build:
@@ -186,9 +184,6 @@ jobs:
         run: |
          echo "Copy merge result to target file"
          copy -Force merged.${{env.ModelExtension}} ${{env.ModelName}}.${{env.ModelExtension}}
-         echo "Configure GIT user"
-         git config --global user.name "${{env.AuthorName}}"
-         git config --global user.name "${{env.AuthorEmail}}"
          echo "Stage merged file"
          git add ${{env.ModelName}}.${{env.ModelExtension}}
          echo "create commit"
