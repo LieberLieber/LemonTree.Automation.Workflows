@@ -179,18 +179,19 @@ jobs:
          catch{}
 
       - name: Create commit
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.PAT }}
         if: ${{ steps.mergeEA.outputs.result == 0 }}
         shell: powershell
+        
         run: |
-         echo "Copy merge result to target file"
-         copy -Force merged.${{env.ModelExtension}} ${{env.ModelName}}.${{env.ModelExtension}}
-         echo "Stage merged file"
+         copy /Y merged.${{env.ModelExtension}} ${{env.ModelName}}.${{env.ModelExtension}}
+         git config --global user.name 'LemonTree.Automation'
+         git config --global user.email 'support@lieberlieber.com'
          git add ${{env.ModelName}}.${{env.ModelExtension}}
-         echo "create commit"
          git commit -m "Merged PR ${{steps.pr_details.outputs.number}}"
-         echo "push commit"
          git push
-         echo "done"
         
       - name: Create Finish Message in PR
         if: always()
