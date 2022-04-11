@@ -52,5 +52,5 @@ Generate a review-session file, upload it to artifactory and post a message in t
 Merge down the pull request on `/merge/` comment in the PR. Perform a merge of the architecture model, commit and push the changes.
 This automatically closes the pull request and deletes the feature branch.
 
-## RebasePrByComments.yml
-Rebase the pull request on `/rebase/` comment in the PR. Perform a merge of the architecture model, commit and push the changes on the feature branch.
+## PublishComponents
+On push to Master the LemonTree Components defined in the Model specified in the Environment are written to disk. In the next steps they are published as artifacts.
