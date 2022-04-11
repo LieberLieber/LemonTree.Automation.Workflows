@@ -1,0 +1,170 @@
+# Copyright (c) Robert Bosch GmbH
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+name: Publish Review Session
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+      - review_requested
+
+env:
+  ModelName: DemoModel
+  ModelExtension: eapx
+  ReviewSessionURL: https://lieberlieber.jfrog.io/artifactory/lemontree-generic-local
+  LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
+
+jobs:
+  PublishReviewSession:
+    runs-on: [self-hosted, lemontree]
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          fetch-depth: 0
+          
+      - name: Get relevant commit IDs
+        id: CommitIds
+        shell: powershell
+        run: |
+          git fetch
+          $baseId = git merge-base origin/$env:GITHUB_BASE_REF origin/$env:GITHUB_HEAD_REF
+          echo "::set-output name=baseCommitId::$baseId"
+          $sourceId = git show-ref --hash origin/$env:GITHUB_HEAD_REF
+          echo "::set-output name=sourceCommitId::$sourceId"
+          $targetId = git show-ref --hash origin/$env:GITHUB_BASE_REF
+          echo "::set-output name=targetCommitId::$targetId"
+          echo "target branch: $env:GITHUB_BASE_REF"
+          echo "source branch: $env:GITHUB_HEAD_REF"
+          echo "target commit: $targetId"
+          echo "source commit: $sourceId"
+          echo "base commit: $baseId"
+
+      - name: Create sessionfile name
+        id: session_file
+        uses: actions/github-script@v5
+        with:
+          result-encoding: string
+          script: |
+            const repoName = context.payload.pull_request.base.repo.name
+            const prNumber = context.payload.pull_request.number
+            const baseSHA = '${{steps.CommitIds.outputs.targetCommitId}}'
+            const headSHA = '${{steps.CommitIds.outputs.sourceCommitId}}'
+            const filename = [repoName, 'PR', prNumber, baseSHA, headSHA].join('-') + '.ltsfs'
+            console.log(`Filename will be: ${filename}`)
+            return filename
+
+      - name: Download base-commit file
+        id: baseDownload
+        shell: powershell
+        run: |
+          git fetch origin ${{steps.CommitIds.outputs.baseCommitId}}
+          $pointer = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
+          $sha = ($pointer[1] -split(":"))[1]
+          if($sha -ne $null){
+            $shaPart1 = $sha.Substring(0,2)
+            $shaPart2 = $sha.Substring(2,2)
+            echo "Model SHA: $sha"
+            git cat-file --filters ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}} | Out-Null
+            copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_base.${{env.ModelExtension}}"
+            echo "::set-output name=result::downloaded"
+          }
+          else{
+            echo "::set-output name=result::notFound"
+          }
+          
+      - name: Post new model comment to PR
+        if: steps.baseDownload.outputs.result == 'notFound'
+        uses: actions/github-script@v5
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `Model not found on base commit / fork-off point`
+            })
+            
+      - name: Download source branch head file
+        if: steps.baseDownload.outputs.result == 'downloaded'
+        id: headDownload
+        shell: powershell
+        run: |
+          git fetch origin $env:GITHUB_HEAD_REF
+          $pointer = git cat-file blob ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}"
+          $sha = ($pointer[1] -split(":"))[1]
+          $shaPart1 = $sha.Substring(0,2)
+          $shaPart2 = $sha.Substring(2,2)
+          echo "Model SHA: $sha"
+          git cat-file --filters ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}" | Out-Null
+          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.${{env.ModelExtension}}"
+
+      - name: Check for merge conflicts
+        if: steps.baseDownload.outputs.result == 'downloaded'
+        id: mergeCheck
+        shell: powershell
+        run: |
+          &"${{env.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --out test.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }} --abortOnConflict true
+          echo "::set-output name=result::$LASTEXITCODE"
+          echo "Return code: $LASTEXITCODE"
+          if($LASTEXITCODE -eq 0){
+            echo "No merge conflicts, setting message"
+            echo "::set-output name=message::[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:heavy_check_mark: No merge conflicts in model"
+          }
+          elseif($LASTEXITCODE -eq 2){
+            echo "Internal Error when diffing. Please report such errors to support@lieberlieber.com"
+            exit 2
+          }
+          elseif($LASTEXITCODE -eq 3){
+            echo "Merge conflicts, setting message"
+            echo "::set-output name=message::[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:x: Please resolve merge conflicts in model first"
+            exit 0
+          }
+          elseif($LASTEXITCODE -eq 6){
+            echo "Licensing issue of LemonTree.Automation"
+          }
+          else{
+            echo "Unknown error"
+          }
+
+      - name: Create review session file
+        if: steps.mergeCheck.outputs.result == 0
+        shell: powershell
+        run: |
+          &"${{env.LemonTreeAutomationExecutable}}" diff --theirs ${{env.ModelName}}_base.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }}
+
+      - name: Upload
+        if: steps.baseDownload.outputs.result == 'downloaded'
+        shell: powershell
+        run: |
+          $sessionFileName = "${{ steps.session_file.outputs.result }}"
+          $targetUrl = "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
+          echo "Uploading $sessionFileName to artifactory: $targetUrl"
+          while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+
+      - name: Archive Session Files
+        if: steps.baseDownload.outputs.result == 'downloaded'
+        uses: actions/upload-artifact@v3
+        with:
+          name: Review Session File
+          path: ${{ steps.session_file.outputs.result }}
+          retention-days: 5
+
+      - name: Create PR comment
+        if: steps.baseDownload.outputs.result == 'downloaded'
+        uses: actions/github-script@v5
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `${{ steps.mergeCheck.outputs.message }}`
+            })
