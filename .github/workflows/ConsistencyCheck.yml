@@ -1,0 +1,46 @@
+# Copyright (c) Robert Bosch GmbH
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+name: Publish Components
+
+on:
+ push:
+  branches:
+      - main
+env:
+  ModelName: DemoModel
+  ModelExtension: eapx
+  ReviewSessionURL: https://lieberlieber.jfrog.io/artifactory/lemontree-generic-local
+  LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
+  ComponentModelShortCut: C:\tools\Shortcuts\Shortcut_LL_TEST_COMPONENTS.eap
+
+jobs:
+  PublishComponents:
+    runs-on: [self-hosted, lemontree]
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          fetch-depth: 0
+                      
+      - name: Publish Components
+        shell: powershell
+        run: |
+          &"${{env.LemonTreeAutomationExecutable}}" publish --Model ${{env.ModelName}}.${{env.ModelExtension}} --PackageDirectory ".\\" --All
+      
+      - name: Import Components on SQL
+        shell: powershell
+        run: |
+          &"${{env.LemonTreeAutomationExecutable}}" import --Model ${{env.ComponentModelShortCut}} --Components "*.mpms"
+
+      - name: Archive Session Files
+        uses: actions/upload-artifact@v3
+        with:
+          name: Model Components
+          path: "*.mpms"
+          retention-days: 5
+
+    
