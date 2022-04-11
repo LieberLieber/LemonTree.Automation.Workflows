@@ -28,7 +28,7 @@ jobs:
       - name: Create review session file
         shell: powershell
         run: |
-          &"${{env.LemonTreeAutomationExecutable}}" publish --Model ${{env.ModelName}}.${{env.ModelExtension}} --PackageDirectory \"\\\"" --All
+          &"${{env.LemonTreeAutomationExecutable}}" publish --Model ${{env.ModelName}}.${{env.ModelExtension}} --PackageDirectory "\"\\\"" --All
          
       - name: Archive Session Files
         uses: actions/upload-artifact@v3
