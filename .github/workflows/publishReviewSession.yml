@@ -150,6 +150,7 @@ jobs:
           $targetUrl = "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
           echo "Uploading $sessionFileName to artifactory: $targetUrl"
           while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+          curl "-u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}}" -T $sessionFileName $targetUrl
 
       - name: Archive Session Files
         if: steps.baseDownload.outputs.result == 'downloaded'
