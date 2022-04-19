@@ -42,7 +42,7 @@ jobs:
           $targetUrl = "${{env.ReviewSessionURL}}"
           echo "Uploading $sessionFileName to Nexus: $targetUrl"
           while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-          curl "-u${{secrets.NEXUSAUTHENTICATION}}" -T *.mpms $targetUrl
+          curl "-u${{secrets.NEXUSAUTHENTICATION}}" -T .\out.mpms $targetUrl
          
       - name: Archive Session Files
         uses: actions/upload-artifact@v3
