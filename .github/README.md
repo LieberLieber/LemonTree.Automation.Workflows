@@ -24,6 +24,7 @@ When you have no transparent access to the internet, make sure to set your HTTP 
 # Requirements for Action Runners
 To support the current setup, the used runner has to be `self-hosted` on `Windows`.
 * LemonTree.Automation has to be installed in the default directory and a valid license has to be accessible from the context of the `lemontree` runner.
+* both powershell and pwsh (powershell core) are supported - to be platform independ we set everything to pwsh now.  (shell: powershell/pwsh)
 
 # Explanation of Workflows
 ## Customization by environment variables
@@ -55,6 +56,7 @@ This automatically closes the pull request and deletes the feature branch.
 ## PublishComponents
 On push to Master the LemonTree Components defined in the Model specified in the Environment are written to disk. In the next steps they are published as artifacts.
 The MPMS packages are then imported on a "Pro Cloud" repository and can be accesed via: https://test.lieberlieber.com/webea/index.php?m=3
+Additionally the "LemonTree Component" files are also published on a Nexus artifact repository: https://nexus.lieberlieber.com/#browse/browse:lemontree-component
 
 ## ConsistencyCheck
 On push the model consistency check is run, for now the results are just in the action output

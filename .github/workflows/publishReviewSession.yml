@@ -32,7 +32,7 @@ jobs:
           
       - name: Get relevant commit IDs
         id: CommitIds
-        shell: powershell
+        shell: pwsh
         run: |
           git fetch
           $baseId = git merge-base origin/$env:GITHUB_BASE_REF origin/$env:GITHUB_HEAD_REF
@@ -63,7 +63,7 @@ jobs:
 
       - name: Download base-commit file
         id: baseDownload
-        shell: powershell
+        shell: pwsh
         run: |
           git fetch origin ${{steps.CommitIds.outputs.baseCommitId}}
           $pointer = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
@@ -95,7 +95,7 @@ jobs:
       - name: Download source branch head file
         if: steps.baseDownload.outputs.result == 'downloaded'
         id: headDownload
-        shell: powershell
+        shell: pwsh
         run: |
           git fetch origin $env:GITHUB_HEAD_REF
           $pointer = git cat-file blob ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}"
@@ -109,7 +109,7 @@ jobs:
       - name: Check for merge conflicts
         if: steps.baseDownload.outputs.result == 'downloaded'
         id: mergeCheck
-        shell: powershell
+        shell: pwsh
         run: |
           &"${{env.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --out test.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }} --abortOnConflict true
           echo "::set-output name=result::$LASTEXITCODE"
@@ -138,13 +138,13 @@ jobs:
 
       - name: Create review session file
         if: steps.mergeCheck.outputs.result == 0
-        shell: powershell
+        shell: pwsh
         run: |
           &"${{env.LemonTreeAutomationExecutable}}" diff --theirs ${{env.ModelName}}_base.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }}
 
       - name: Upload
         if: steps.baseDownload.outputs.result == 'downloaded'
-        shell: powershell
+        shell: pwsh
         run: |
           $sessionFileName = "${{ steps.session_file.outputs.result }}"
           $targetUrl = "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"

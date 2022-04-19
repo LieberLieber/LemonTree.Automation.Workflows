@@ -12,7 +12,7 @@ on:
 env:
   ModelName: DemoModel
   ModelExtension: eapx
-  ReviewSessionURL: https://lieberlieber.jfrog.io/artifactory/lemontree-generic-local
+  ReviewSessionURL: https://nexus.lieberlieber.com/repository/lemontree-component/
   LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
   ComponentModelShortCut: C:\tools\Shortcuts\Shortcut_LL_TEST_COMPONENTS.eap
 
@@ -26,16 +26,25 @@ jobs:
           lfs: true
           fetch-depth: 0
                       
-      - name: Publish Components
-        shell: powershell
+
+      - name: Publish LemonTree Components
+        shell: pwsh
         run: |
           &"${{env.LemonTreeAutomationExecutable}}" publish --Model ${{env.ModelName}}.${{env.ModelExtension}} --PackageDirectory ".\\" --All
-      
-      - name: Import Components on SQL
-        shell: powershell
+
+      - name: Import LemonTree Components on MSSQL Repository 
+        shell: pwsh
         run: |
           &"${{env.LemonTreeAutomationExecutable}}" import --Model ${{env.ComponentModelShortCut}} --Components "*.mpms"
 
+      - name: Upload LemonTree Components to Nexus
+        shell: pwsh
+        run: |
+          $targetUrl = "${{env.ReviewSessionURL}}Platform-d6f215d1-803d-1db6-5888-87c8a49d8062.mpms"
+          echo "Uploading $sessionFileName to Nexus: $targetUrl"
+          while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+          curl "-u${{secrets.NEXUSAUTHENTICATION}}" -T .\Platform-d6f215d1-803d-1db6-5888-87c8a49d8062.mpms $targetUrl
+         
       - name: Archive Session Files
         uses: actions/upload-artifact@v3
         with:
