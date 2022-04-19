@@ -24,6 +24,7 @@ When you have no transparent access to the internet, make sure to set your HTTP 
 # Requirements for Action Runners
 To support the current setup, the used runner has to be `self-hosted` on `Windows`.
 * LemonTree.Automation has to be installed in the default directory and a valid license has to be accessible from the context of the `lemontree` runner.
+* both powershell and pwsh (powershell core) are supported - to be platform independ we set everything to pwsh now.  (shell: powershell/pwsh)
 
 # Explanation of Workflows
 ## Customization by environment variables
