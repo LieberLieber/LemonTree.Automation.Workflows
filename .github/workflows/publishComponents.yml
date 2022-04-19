@@ -39,7 +39,7 @@ jobs:
       - name: Upload LemonTree Components to Nexus
         shell: powershell
         run: |
-          $targetUrl = "${{env.ReviewSessionURL}}"/Platform-d6f215d1-803d-1db6-5888-87c8a49d8062.mpms
+          $targetUrl = "${{env.ReviewSessionURL}}Platform-d6f215d1-803d-1db6-5888-87c8a49d8062.mpms"
           echo "Uploading $sessionFileName to Nexus: $targetUrl"
           while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
           curl "-u${{secrets.NEXUSAUTHENTICATION}}" -T .\Platform-d6f215d1-803d-1db6-5888-87c8a49d8062.mpms $targetUrl
