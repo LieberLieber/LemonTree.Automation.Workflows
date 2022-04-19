@@ -11,7 +11,7 @@ on:
 env:
   ModelName: DemoModel
   ModelExtension: eapx
-  ReviewSessionURL:  https://nexus.lieberlieber.com/repository/lemontree-session/
+  ReviewSessionURL:  https://nexus.lieberlieber.com/repository/lemontree-session
   LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
 
 jobs:
