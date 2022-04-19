@@ -37,19 +37,26 @@ jobs:
         run: |
           &"${{env.LemonTreeAutomationExecutable}}" import --Model ${{env.ComponentModelShortCut}} --Components "*.mpms"
 
-      - name: Upload LemonTree Components to Nexus
-        shell: pwsh
-        run: |
-          $targetUrl = "${{env.ReviewSessionURL}}Platform-d6f215d1-803d-1db6-5888-87c8a49d8062.mpms"
-          echo "Uploading $sessionFileName to Nexus: $targetUrl"
-          while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-          curl "-u${{secrets.NEXUSAUTHENTICATION}}" -T .\Platform-d6f215d1-803d-1db6-5888-87c8a49d8062.mpms $targetUrl
-         
       - name: Archive Session Files
         uses: actions/upload-artifact@v3
         with:
           name: Model Components
           path: "*.mpms"
           retention-days: 5
+
+      - name: Upload LemonTree Components to Nexus
+        shell: pwsh
+        run: |
+          $files = Get-ChildItem *.mpms
+          foreach ($file in $files) 
+          {
+            $sfName =  $file.Name
+            $targetUrl = "${{env.ReviewSessionURL}}$sfName"
+            echo "Uploading $sfName to Nexus: $targetUrl"
+            while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+            curl "-u${{secrets.NEXUSAUTHENTICATION}}" -T .\$sfName $targetUrl
+          }
+         
+   
 
     
