@@ -51,7 +51,7 @@ jobs:
           foreach ($file in $files) 
           {
             $sfName =  $file.Name
-            $targetUrl = "${{env.ReviewSessionURL}}$sfName"
+            $targetUrl = "${{env.ReviewSessionURL}}[uri]::EscapeDataString($sfName)"
             echo "Uploading $sfName to Nexus: $targetUrl"
             while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
             curl "-u${{secrets.NEXUSAUTHENTICATION}}" -T ".\$sfName" "$targetUrl"
