@@ -55,6 +55,7 @@ This automatically closes the pull request and deletes the feature branch.
 ## PublishComponents
 On push to Master the LemonTree Components defined in the Model specified in the Environment are written to disk. In the next steps they are published as artifacts.
 The MPMS packages are then imported on a "Pro Cloud" repository and can be accesed via: https://test.lieberlieber.com/webea/index.php?m=3
+Additionally the "LemonTree Component" files are also published on a Nexus artifact repository: https://nexus.lieberlieber.com/#browse/browse:lemontree-component
 
 ## ConsistencyCheck
 On push the model consistency check is run, for now the results are just in the action output
