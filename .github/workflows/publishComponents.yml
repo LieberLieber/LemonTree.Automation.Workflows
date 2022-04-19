@@ -27,12 +27,12 @@ jobs:
           fetch-depth: 0
                       
       - name: Publish Components
-        shell: powershell
+        shell: pwsh
         run: |
           &"${{env.LemonTreeAutomationExecutable}}" publish --Model ${{env.ModelName}}.${{env.ModelExtension}} --PackageDirectory ".\\" --All
       
       - name: Import Components on SQL
-        shell: powershell
+        shell: pwsh
         run: |
           &"${{env.LemonTreeAutomationExecutable}}" import --Model ${{env.ComponentModelShortCut}} --Components "*.mpms"
 

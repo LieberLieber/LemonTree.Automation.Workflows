@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 0
                       
       - name: ConsistencyCheck
-        shell: powershell
+        shell: pwsh
         run: |
           &"${{env.LemonTreeAutomationExecutable}}" ConsistencyCheck --Model ${{env.ModelName}}.${{env.ModelExtension}}
  

@@ -42,7 +42,7 @@ jobs:
             
       - name: Check number of affected PRs
         id: checkNumber
-        shell: powershell
+        shell: pwsh
         env:
           jsVar: ${{steps.linked_prs.outputs.result}}
         run: |
@@ -60,7 +60,7 @@ jobs:
         id: WorkOnPr
         env:
          jsVar: ${{steps.linked_prs.outputs.result}}
-        shell: powershell
+        shell: pwsh
         run: |
           #Create review session files for each pull requestReviewers
           echo "Starting process"
