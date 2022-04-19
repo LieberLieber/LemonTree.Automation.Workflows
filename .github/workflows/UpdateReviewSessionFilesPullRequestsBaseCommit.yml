@@ -11,7 +11,7 @@ on:
 env:
   ModelName: DemoModel
   ModelExtension: eapx
-  ReviewSessionURL: https://lieberlieber.jfrog.io/artifactory/lemontree-generic-local
+  ReviewSessionURL:  https://nexus.lieberlieber.com/repository/lemontree-session/
   LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
 
 jobs:
@@ -141,9 +141,10 @@ jobs:
                 --mine $sourceFile `
                 --sfs $sessionFileName
               
-              echo "Uploading $sessionFileName to artifactory: $targetUrl"
+              echo "Uploading $sessionFileName to Nexus: $targetUrl"
               while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-              curl "-u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}}" -T $sessionFileName $targetUrl
+              curl "-u${{secrets.NEXUSAUTHENTICATION}}" -T $sessionFileName $targetUrl
+              
               $prMessage =@{}
               $prMessage.number=$pr.number
               $prMessage.message="New commit on target branch\n[Review Session file]($targetUrl)\n:heavy_check_mark: No merge conflicts in model"
@@ -156,9 +157,9 @@ jobs:
             elseif($LASTEXITCODE -eq 3)
             {
               echo "Merge conflicts"
-              echo "Uploading $sessionFileName to artifactory: $targetUrl"
+              echo "Uploading $sessionFileName to Nexus: $targetUrl"
               while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-              curl "-u${{secrets.ARTIFACTORYUSER}}:${{secrets.ARTIFACTORYTOKEN}}" -T $sessionFileName $targetUrl
+              curl "-u${{secrets.NEXUSAUTHENTICATION}}" -T $sessionFileName $targetUrl
               $prMessage =@{}
               $prMessage.number=$pr.number
               $prMessage.message="New commit on target branch\n[Review Session file]($targetUrl)\n:x: Please resolve merge conflicts in model first"
