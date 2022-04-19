@@ -12,7 +12,7 @@ on:
 env:
   ModelName: DemoModel
   ModelExtension: eapx
-  ReviewSessionURL: http://nexus.lieberlieber.com/repository/lemontree-component/
+  ReviewSessionURL: https://nexus.lieberlieber.com/repository/lemontree-component/
   LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
   ComponentModelShortCut: C:\tools\Shortcuts\Shortcut_LL_TEST_COMPONENTS.eap
 
