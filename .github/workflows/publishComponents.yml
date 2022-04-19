@@ -26,18 +26,19 @@ jobs:
           lfs: true
           fetch-depth: 0
                       
+
       - name: Publish LemonTree Components
-        shell: powershell
+        shell: pwsh
         run: |
           &"${{env.LemonTreeAutomationExecutable}}" publish --Model ${{env.ModelName}}.${{env.ModelExtension}} --PackageDirectory ".\\" --All
 
       - name: Import LemonTree Components on MSSQL Repository 
-        shell: powershell
+        shell: pwsh
         run: |
           &"${{env.LemonTreeAutomationExecutable}}" import --Model ${{env.ComponentModelShortCut}} --Components "*.mpms"
 
       - name: Upload LemonTree Components to Nexus
-        shell: powershell
+        shell: pwsh
         run: |
           $targetUrl = "${{env.ReviewSessionURL}}Platform-d6f215d1-803d-1db6-5888-87c8a49d8062.mpms"
           echo "Uploading $sessionFileName to Nexus: $targetUrl"
