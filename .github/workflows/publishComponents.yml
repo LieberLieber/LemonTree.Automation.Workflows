@@ -28,7 +28,7 @@ jobs:
       - name: Publish LemonTree Components
         shell: powershell
         run: |
-          &"${{env.LemonTreeAutomationExecutable}}" publish --Model ${{env.ModelName}}.${{env.ModelExtension}} --PackageDirectory \"\\\"" --All
+          &"${{env.LemonTreeAutomationExecutable}}" publish --Model ${{env.ModelName}}.${{env.ModelExtension}} --PackageDirectory ".\\" --All
 
       - name: Import LemonTree Components on MSSQL Repository 
         shell: powershell
