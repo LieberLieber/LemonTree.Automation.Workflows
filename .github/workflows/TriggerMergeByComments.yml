@@ -46,18 +46,19 @@ jobs:
       - id: SelectAuthResult
         run: |
             $result = "False"
-            if ("${{env.AuthMode}}" == "Association")
+            if ("${{env.AuthMode}}" -eq "Association")
             {
               echo "Setting auth result based on association"
               $result = "${{ steps.userAuthByAssociation.outputs.result }}"  
             }
             else
             {
-              if "${{env.AuthMode}}" == "PositiveList" {
+              if ("${{env.AuthMode}}" -eq "PositiveList") {
                 echo "Setting auth result based on positive list"
                 result = "${{ steps.userAuthByPositiveList.outputs.result }}"  
               }
-              else {
+              else
+              {
                 echo "Unknown authentication mode - Failed"
               }
             }
