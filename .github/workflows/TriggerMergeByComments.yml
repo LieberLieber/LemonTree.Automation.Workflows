@@ -16,13 +16,38 @@ env:
   LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
 
 jobs:
-  build:
+  Check_Rights:
+    if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
+    runs-on: [self-hosted]
+    outputs:
+      userAuthentication: ${{ steps.userAuthByAssociation.outputs.result }}
+      #userAuthentication: ${{ steps.userAuthByPositiveList.outputs.result }}
+    steps:
+      - id: userAuthByAssociation
+        if: (
+          github.event.comment.author_association == 'OWNER' ||
+          github.event.comment.author_association == 'MEMBER' ||
+          github.event.comment.author_association == 'COLLABORATOR')
+        run: |
+          echo "org member or invited collaborator: ${{github.event.comment.author_association}}"
+          echo "::set-output name=result::True"
+             
+      - id: userAuthByPositiveList
+        env:
+          authUsers: "'danielsiegl','FlorianBeerRB'"
+        run: |
+            echo "${{github.event.comment.user.login}}"
+            echo "${{env.authUsers}}"
+            $result = ${{env.authUsers}} -contains "${{github.event.comment.user.login}}"
+            echo "User is in authentication list: $result"
+            echo "::set-output name=result::$result"  
+  PerformMerge:
     defaults:
       run:
         shell: pwsh
     runs-on: [self-hosted, lemontree]
     timeout-minutes: 15
-    if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
+    if: needs.Check_Rights.outputs.userAuthentication == 'True'
     
     steps:
       - name: Post start message in PR
