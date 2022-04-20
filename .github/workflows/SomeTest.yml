@@ -12,6 +12,7 @@ on:
 jobs: 
   Check_Rights:
     if: ${{ github.event.issue.pull_request }}
+    runs-on: [self-hosted]
     outputs:
       userAuthentication: ${{ steps.userAuthByAssociation.outputs.result }}
       #userAuthentication: ${{ steps.userAuthByPositiveList.outputs.result }}
@@ -36,6 +37,7 @@ jobs:
         
   Do_Something:
     if: needs.Check_Rights.outputs.userAuthentication == 'True'
+    runs-on: [self-hosted]
     needs: Check_Rights
     steps:
     - run: echo "${{ needs.Check_Rights.outputs.userAuthentication }}"
