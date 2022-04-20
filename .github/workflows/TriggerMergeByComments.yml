@@ -20,6 +20,7 @@ jobs:
     runs-on: [self-hosted, lemontree]
     timeout-minutes: 15
     if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
+    
     steps:
       - name: Post start message in PR
         uses: actions/github-script@v5
@@ -87,14 +88,12 @@ jobs:
           echo "target commit: $targetId"
           
       - name: Start merge
-        if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
         shell: pwsh
         run: |
           git merge origin/${{steps.pr_details.outputs.head}} --no-commit --no-edit --no-ff
           git status
 
       - name: Download target branch head file
-        if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
         shell: pwsh
         run: |
           git fetch origin ${{steps.CommitIds.outputs.targetCommitId}}
@@ -107,7 +106,6 @@ jobs:
           copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_target.${{env.ModelExtension}}"
           
       - name: Download base-commit file
-        if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
         shell: pwsh
         run: |
           git fetch origin ${{steps.CommitIds.outputs.baseCommitId}}
@@ -132,7 +130,6 @@ jobs:
           copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.${{env.ModelExtension}}"
           
       - name: Merge EA model file
-        if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
         id: mergeEA
         shell: pwsh
         run: |
