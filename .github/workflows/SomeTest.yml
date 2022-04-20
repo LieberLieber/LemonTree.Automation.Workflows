@@ -24,7 +24,7 @@ jobs:
           github.event.comment.author_association == 'COLLABORATOR')
         run: |
           echo "org member or invited collaborator: ${{github.event.comment.author_association}}"
-          echo "::set-output name=result::$result"
+          echo "::set-output name=result::True"
              
       - id: userAuthByPositiveList
         env:
