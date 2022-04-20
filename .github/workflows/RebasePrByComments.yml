@@ -30,7 +30,7 @@ jobs:
               issue_number: ${{github.event.issue.number}},
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Starting auto-merge'
+              body: 'Starting auto-rebase'
             })  
             
       - name: Retrieve Rull Request details
@@ -139,24 +139,24 @@ jobs:
           
           if($LASTEXITCODE -eq 0){
             echo "No merge conflicts, setting message"
-            echo "::set-output name=message:::heavy_check_mark: Merge performed successfully"
+            echo "::set-output name=message:::heavy_check_mark: Rebase performed successfully"
           }
           elseif($LASTEXITCODE -eq 2){
             echo "::error::Internal Error when diffing. Please report such errors to support@lieberlieber.com"
-            echo "::set-output name=message:::x: Merge failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details"
+            echo "::set-output name=message:::x: Rebase failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details"
           }
           elseif($LASTEXITCODE -eq 3){
             echo "Merge conflicts present, auto-merge failed"
-            echo "::set-output name=message:::x: Merge conflicts present, auto-merge failed"
+            echo "::set-output name=message:::x: Merge conflicts present, auto-rebase failed"
             exit 0
           }
           elseif($LASTEXITCODE -eq 6){
             echo "::warning::Licensing issue of LemonTree.Automation"
-            echo "::set-output name=message:::x: Merge failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details"
+            echo "::set-output name=message:::x: Rebase failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details"
           }
           else{
             echo "::error::Unknown error"
-            echo "::set-output name=message:::x: Merge failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details"
+            echo "::set-output name=message:::x: Rebase failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details"
           }
 
       - name: Archive Model Files
@@ -184,7 +184,7 @@ jobs:
          git config --global user.email 'support@lieberlieber.com'
          git add ${{env.ModelName}}.${{env.ModelExtension}}
          git remote set-url origin https://x-access-token:${{secrets.PAT}}@github.com/${{ github.repository }}
-         git commit -m "Merged PR ${{steps.pr_details.outputs.number}}"
+         git commit -m "Rebased PR ${{steps.pr_details.outputs.number}}" to current ${{steps.pr_details.outputs.base}}
          git push
            
       - name: Create Finish Message in PR
