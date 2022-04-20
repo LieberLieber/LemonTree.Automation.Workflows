@@ -15,6 +15,9 @@ env:
 
 jobs:
   ConsistencyCheck:
+    defaults:
+      run:
+        shell: pwsh
     runs-on: [self-hosted, lemontree]
     timeout-minutes: 15
     steps:
@@ -24,7 +27,6 @@ jobs:
           fetch-depth: 0
                       
       - name: ConsistencyCheck
-        shell: pwsh
         run: |
           &"${{env.LemonTreeAutomationExecutable}}" ConsistencyCheck --Model ${{env.ModelName}}.${{env.ModelExtension}}
  

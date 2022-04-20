@@ -16,6 +16,9 @@ env:
 
 jobs:
   build:
+    defaults:
+      run:
+        shell: pwsh
     # The type of runner that the job will run on
     runs-on: [self-hosted, lemontree]
     timeout-minutes: 15
@@ -42,7 +45,6 @@ jobs:
             
       - name: Check number of affected PRs
         id: checkNumber
-        shell: pwsh
         env:
           jsVar: ${{steps.linked_prs.outputs.result}}
         run: |
@@ -60,7 +62,6 @@ jobs:
         id: WorkOnPr
         env:
          jsVar: ${{steps.linked_prs.outputs.result}}
-        shell: pwsh
         run: |
           #Create review session files for each pull requestReviewers
           echo "Starting process"

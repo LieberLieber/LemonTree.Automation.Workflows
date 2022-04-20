@@ -18,6 +18,9 @@ env:
 
 jobs:
   PublishComponents:
+    defaults:
+      run:
+        shell: pwsh
     runs-on: [self-hosted, lemontree]
     timeout-minutes: 15
     steps:
@@ -28,12 +31,10 @@ jobs:
                       
 
       - name: Publish LemonTree Components
-        shell: pwsh
         run: |
           &"${{env.LemonTreeAutomationExecutable}}" publish --Model ${{env.ModelName}}.${{env.ModelExtension}} --PackageDirectory ".\\" --All
 
       - name: Import LemonTree Components on MSSQL Repository 
-        shell: pwsh
         run: |
           &"${{env.LemonTreeAutomationExecutable}}" import --Model ${{env.ComponentModelShortCut}} --Components "*.mpms"
 
@@ -45,7 +46,6 @@ jobs:
           retention-days: 5
 
       - name: Upload LemonTree Components to Nexus
-        shell: pwsh
         run: |
           $files = Get-ChildItem *.mpms
           foreach ($file in $files) 
