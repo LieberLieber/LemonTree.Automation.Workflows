@@ -14,14 +14,15 @@ env:
   ModelExtension: eapx
   GitHubProjectRoot: https://github.com/LieberLieber/LemonTree.Automation.Workflows
   LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
+  #AuthMode: PositiveList
+  AuthMode: Association
 
 jobs:
   Check_Rights:
     if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
     runs-on: [self-hosted]
     outputs:
-      userAuthentication: ${{ steps.userAuthByAssociation.outputs.result }}
-      #userAuthentication: ${{ steps.userAuthByPositiveList.outputs.result }}
+      userAuthentication: ${{ steps.SelectAuthResult.outputs.result }}
     steps:
       - id: userAuthByAssociation
         if: (
@@ -41,6 +42,21 @@ jobs:
             $result = ${{env.authUsers}} -contains "${{github.event.comment.user.login}}"
             echo "User is in authentication list: $result"
             echo "::set-output name=result::$result"  
+            
+      - id: SelectAuthResult
+        run: |
+            if "${{env.AuthMode}}" == "Association" {
+              echo "Setting auth result based on association"
+              echo "::set-output name=result::${{ steps.userAuthByAssociation.outputs.result }}"  
+            }
+            else if "${{env.AuthMode}}" == "PositiveList" {
+              echo "Setting auth result based on positive list"
+              echo "::set-output name=result::${{ steps.userAuthByPositiveList.outputs.result }}"  
+            }
+            else {
+              echo "Unknown authentication mode - Failed"
+              echo "::set-output name=result::False"  
+            }
             
   PerformMerge:
     defaults:
