@@ -41,12 +41,14 @@ jobs:
             $result = ${{env.authUsers}} -contains "${{github.event.comment.user.login}}"
             echo "User is in authentication list: $result"
             echo "::set-output name=result::$result"  
+            
   PerformMerge:
     defaults:
       run:
         shell: pwsh
     runs-on: [self-hosted, lemontree]
     timeout-minutes: 15
+    needs: Check_Rights
     if: needs.Check_Rights.outputs.userAuthentication == 'True'
     
     steps:
