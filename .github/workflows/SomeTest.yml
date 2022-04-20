@@ -12,7 +12,6 @@ on:
 jobs: 
   Check_Rights:
     if: ${{ github.event.issue.pull_request }}
-    runs-on: [ self-hosted, Windows ]
     outputs:
       userAuthentication: ${{ steps.userAuthByAssociation.outputs.result }}
       #userAuthentication: ${{ steps.userAuthByPositiveList.outputs.result }}
@@ -23,7 +22,7 @@ jobs:
           github.event.comment.author_association == 'MEMBER' ||
           github.event.comment.author_association == 'COLLABORATOR')
         run: |
-          echo "org member or invited collaborator"
+          echo "org member or invited collaborator: ${{github.event.comment.author_association}}"
           echo "::set-output name=result::$result"
              
       - id: userAuthByPositiveList
@@ -37,7 +36,6 @@ jobs:
         
   Do_Something:
     if: needs.Check_Rights.outputs.userAuthentication == 'True'
-    runs-on: [ self-hosted, Windows ]
     needs: Check_Rights
     steps:
     - run: echo "${{ needs.Check_Rights.outputs.userAuthentication }}"
