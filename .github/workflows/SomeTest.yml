@@ -33,6 +33,7 @@ jobs:
             echo "${{github.event.comment.user.login}}"
             echo "${{env.authUsers}}"
             $result = ${{env.authUsers}} -contains "${{github.event.comment.user.login}}"
+            echo "User is in authentication list: $result"
             echo "::set-output name=result::$result"  
         
   Do_Something:
