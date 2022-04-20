@@ -45,17 +45,26 @@ jobs:
             
       - id: SelectAuthResult
         run: |
-            if "${{env.AuthMode}}" == "Association" {
+            $result = "False"
+            if ("${{env.AuthMode}}" == "Association")
+            {
               echo "Setting auth result based on association"
-              echo "::set-output name=result::${{ steps.userAuthByAssociation.outputs.result }}"  
+              $result = "${{ steps.userAuthByAssociation.outputs.result }}"  
             }
-            else if "${{env.AuthMode}}" == "PositiveList" {
-              echo "Setting auth result based on positive list"
-              echo "::set-output name=result::${{ steps.userAuthByPositiveList.outputs.result }}"  
+            else
+            {
+              if "${{env.AuthMode}}" == "PositiveList" {
+                echo "Setting auth result based on positive list"
+                result = "${{ steps.userAuthByPositiveList.outputs.result }}"  
+              }
+              else {
+                echo "Unknown authentication mode - Failed"
+              }
             }
-            else {
-              echo "Unknown authentication mode - Failed"
-              echo "::set-output name=result::False"  
+            echo "::set-output name=result::$result"
+            if ($result -ne "True")
+            {
+              echo "::error User not Authenticated"
             }
             
   PerformMerge:
