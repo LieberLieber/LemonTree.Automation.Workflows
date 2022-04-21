@@ -115,7 +115,7 @@ jobs:
           echo "Return code: $LASTEXITCODE"
           if($LASTEXITCODE -eq 0){
             echo "No merge conflicts, setting message"
-            echo "::set-output name=message::[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:heavy_check_mark: No merge conflicts in model\nPlease install [LemonTree 3.3+](https://www.lieberlieber.com/lemontree/en/) to open the Review Session file."
+            echo "::set-output name=message::[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:heavy_check_mark: **No merge conflicts in model**\n\nInstall [LemonTree 3.3+](https://www.lieberlieber.com/lemontree/en/) to open the Review Session file."
             echo "[Stackoverflow The Key](https://stackoverflow.blog/2021/03/31/the-key-copy-paste/){:target="_blank" rel="noopener"}"
           }
           elseif($LASTEXITCODE -eq 2){
@@ -124,7 +124,7 @@ jobs:
           }
           elseif($LASTEXITCODE -eq 3){
             echo "Merge conflicts, setting message"
-            echo "::set-output name=message::[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:x: Please resolve merge conflicts in model first\nPlease install [LemonTree 3.3+](https://www.lieberlieber.com/lemontree/en/) to open the Review Session file."
+            echo "::set-output name=message::[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:x: **Please resolve merge conflicts in model first**\n\nInstall [LemonTree 3.3+](https://www.lieberlieber.com/lemontree/en/) to open the Review Session file."
             echo "[Stackoverflow The Key](https://stackoverflow.blog/2021/03/31/the-key-copy-paste/){:target="_blank" rel="noopener"}"
             exit 0
           }
