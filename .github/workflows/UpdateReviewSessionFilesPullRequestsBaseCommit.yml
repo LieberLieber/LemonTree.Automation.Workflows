@@ -148,7 +148,7 @@ jobs:
               
               $prMessage =@{}
               $prMessage.number=$pr.number
-              $prMessage.message="New commit on target branch\n[Review Session file]($targetUrl)\n:heavy_check_mark: No merge conflicts in model"
+              $prMessage.message="New commit on target branch\n[Review Session file]($targetUrl)\n:heavy_check_mark: No merge conflicts in model\n:Pls install [LemonTree 3.3](https://www.lieberlieber.com/lemontree/en/) to open the files."
               $messageList.Add($prMessage)
             }
             elseif($LASTEXITCODE -eq 2)
@@ -163,7 +163,7 @@ jobs:
               curl "-u${{secrets.NEXUSAUTHENTICATION}}" -T $sessionFileName $targetUrl
               $prMessage =@{}
               $prMessage.number=$pr.number
-              $prMessage.message="New commit on target branch\n[Review Session file]($targetUrl)\n:x: Please resolve merge conflicts in model first"
+              $prMessage.message="New commit on target branch\n[Review Session file]($targetUrl)\n:x: Please resolve merge conflicts in model first\n:Pls install [LemonTree 3.3](https://www.lieberlieber.com/lemontree/en/) to open the files."
               $messageList.Add($prMessage)
             }
             elseif($LASTEXITCODE -eq 6)
