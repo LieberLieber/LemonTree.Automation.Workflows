@@ -110,7 +110,7 @@ jobs:
         if: steps.baseDownload.outputs.result == 'downloaded'
         id: mergeCheck
         run: |
-          &"${{env.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --out test.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }} --abortOnConflict true
+          &"${{env.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --dryrun --sfs ${{ steps.session_file.outputs.result }} --abortOnConflict true
           echo "::set-output name=result::$LASTEXITCODE"
           echo "Return code: $LASTEXITCODE"
           if($LASTEXITCODE -eq 0){
