@@ -3,5 +3,6 @@ foreach ($url in $json.items.assets.downloadUrl) {
   $url = $url.Insert(4,"s")
   $file = $url.Substring($url.lastIndexOf('/') + 1)
   Write-Host $file
-  Invoke-RestMethod -Uri $url -Method Get > $file
+  $content = ((Invoke-RestMethod -Uri $url -Method Get) -replace "﻿")
+  [IO.File]::WriteAllLines($file, $content)
 }
