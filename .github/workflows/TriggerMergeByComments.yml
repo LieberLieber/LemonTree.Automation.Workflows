@@ -232,7 +232,7 @@ jobs:
          git add ${{env.ModelName}}.${{env.ModelExtension}}
          git remote set-url origin https://x-access-token:${{secrets.PAT}}@github.com/${{ github.repository }}
          git status --porcelain --untracked-files=no --ignored=no
-         git commit -a -m "Merged PR ${{steps.pr_details.outputs.number}}"
+         git commit -m "Merged PR ${{steps.pr_details.outputs.number}}"
          git push
            
       - name: Create Finish Message in PR
