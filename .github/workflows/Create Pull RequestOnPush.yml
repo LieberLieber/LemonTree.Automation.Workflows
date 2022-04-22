@@ -7,21 +7,26 @@ name: Create Pull Request
 on:
  push:
   branches-ignore:
-      - main
+    - main
 
 jobs:
   create-pull-request:
     runs-on: ubuntu-latest
+    
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
           destination_branch: "main"
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          pr_label: "feature, automated pr"
-          pr_title: "[Example] Simple demo"
+          pr_label: "automated pr"
+          pr_title: "${{ steps.extract_branch.outputs.branch }}"
  
      
     
