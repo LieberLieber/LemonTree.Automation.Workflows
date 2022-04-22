@@ -7,7 +7,7 @@ name: Pull Request Action
 on:
   push:
     branches:
-      - feature/*
+      - !main
 
 jobs:
   create-pull-request:
