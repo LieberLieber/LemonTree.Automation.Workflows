@@ -178,10 +178,8 @@ jobs:
          echo "set user config"
          git config --global user.name 'LemonTree.Automation'
          git config --global user.email 'support@lieberlieber.com'
-         git status
          echo "adding merged file"
          git add ${{env.ModelName}}.${{env.ModelExtension}}
-         git status
          echo "setting remote state"
          git remote set-url origin https://x-access-token:${{secrets.PAT}}@github.com/${{ github.repository }}
          echo "creating commit"
