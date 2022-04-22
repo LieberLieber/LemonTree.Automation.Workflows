@@ -6,8 +6,8 @@
 name: Create Pull Request
 on:
   push:
-   branches-ignore:
-    - main   # excludes main
+   branches:
+    - 94-demo-issue
 
 jobs:
   create-pull-request:
