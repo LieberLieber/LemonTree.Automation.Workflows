@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-name: Pull Request Action
+name: Create Pull Request
 on:
   push:
     branches:
@@ -14,7 +14,7 @@ on:
 
 jobs:
   create-pull-request:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, lemontree]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
