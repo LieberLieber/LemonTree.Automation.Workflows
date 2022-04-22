@@ -6,15 +6,12 @@
 name: Create Pull Request
 on:
   push:
-    branches:
-      - '*'         # matches every branch that doesn't contain a '/'
-      - '*/*'       # matches every branch containing a single '/'
-      - '**'        # matches every branch
-      - '!master'   # excludes master
+    branches-ignore:
+      - '!main'   # excludes master
 
 jobs:
   create-pull-request:
-    runs-on: [self-hosted, lemontree]
+    runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
