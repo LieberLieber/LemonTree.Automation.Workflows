@@ -5,9 +5,7 @@
 
 name: Create Pull Request
 on:
-  push:
-   branches:
-    - 94-demo-issue
+ push:
 
 jobs:
   create-pull-request:
