@@ -19,6 +19,7 @@ env:
   ModelExtension: eapx
   ReviewSessionURL: https://nexus.lieberlieber.com/repository/lemontree-session
   LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
+  LemonTreePipelineToolsRemovePrerenderedDiagramsExecutable: https://nexus.lieberlieber.com/repository/lemontree-pipeline-tools/LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe 
 
 jobs:
   PublishReviewSession:
@@ -133,8 +134,16 @@ jobs:
           }
           else{
             echo "Unknown error"
-          }
+          }    
 
+      - name: Remove DIAGRAMIMAGEMAPS for Diff
+        if: steps.mergeCheck.outputs.result == 0
+        run: |
+          while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+          curl "${{env.LemonTreePipelineToolsRemovePrerenderedDiagramsExecutable}}" --output LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe
+          &LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe ${{env.ModelName}}_base.${{env.ModelExtension}}
+          &LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe ${{env.ModelName}}_head.${{env.ModelExtension}}
+          
       - name: Create review session file
         if: steps.mergeCheck.outputs.result == 0
         run: |
