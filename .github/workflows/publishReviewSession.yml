@@ -141,8 +141,8 @@ jobs:
         run: |
           while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
           curl "${{env.LemonTreePipelineToolsRemovePrerenderedDiagramsExecutable}}" --output LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe
-          .\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe ${{env.ModelName}}_base.${{env.ModelExtension}}
-          .\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe ${{env.ModelName}}_head.${{env.ModelExtension}}
+          ".\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe" remove --Model ${{env.ModelName}}_base.${{env.ModelExtension}}
+          ".\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe" remove --Model ${{env.ModelName}}_head.${{env.ModelExtension}}
           
       - name: Create review session file
         if: steps.mergeCheck.outputs.result == 0
