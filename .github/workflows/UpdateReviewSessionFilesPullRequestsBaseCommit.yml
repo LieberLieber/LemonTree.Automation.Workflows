@@ -139,8 +139,8 @@ jobs:
               echo "Remove DIAGRAMIMAGEMAP"
               while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
               curl "${{env.LemonTreePipelineToolsRemovePrerenderedDiagramsExecutable}}" --output LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe
-              .\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --model ${{baseFile}}
-              .\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --model ${{sourceFile}}
+              .\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --model $baseFile
+              .\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --model $sourceFile
               
               echo "No merge conflicts, creating diff file"
               &"${{env.LemonTreeAutomationExecutable}}" `
