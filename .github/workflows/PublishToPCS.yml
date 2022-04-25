@@ -14,7 +14,7 @@ env:
   LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
 
 jobs:
-  ConsistencyCheck:
+  PublishToPCS:
     defaults:
       run:
         shell: pwsh
@@ -28,6 +28,7 @@ jobs:
                       
       - name: ConsistencyCheck
         run: |
+          echo run
           &"${{env.LemonTreeAutomationExecutable}}" ConsistencyCheck --Model ${{env.ModelName}}.${{env.ModelExtension}}
 
       - name: get empty.qeax
