@@ -31,17 +31,22 @@ jobs:
           &"${{env.LemonTreeAutomationExecutable}}" ConsistencyCheck --Model ${{env.ModelName}}.${{env.ModelExtension}}
 
       - name: get empty.qeax
+        run: echo Hello, world!
 
       - name: convert
+        run: echo Hello, world!
 
       - name: takeoffline
+        run: echo Hello, world!
 
       - name: backup
+        run: echo Hello, world!
 
       - name: copytoPCS
+        run: echo Hello, world!
 
       - name: takeonline
-
+        run: echo Hello, world!
  
      
     
