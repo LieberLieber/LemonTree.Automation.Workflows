@@ -1,0 +1,47 @@
+# Copyright (c) Robert Bosch GmbH
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+name: Publish to PCS
+
+on:
+ push:
+
+env:
+  ModelName: DemoModel
+  ModelExtension: eapx
+  LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
+
+jobs:
+  ConsistencyCheck:
+    defaults:
+      run:
+        shell: pwsh
+    runs-on: [self-hosted, lemontree, pcs]
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          fetch-depth: 0
+                      
+      - name: ConsistencyCheck
+        run: |
+          &"${{env.LemonTreeAutomationExecutable}}" ConsistencyCheck --Model ${{env.ModelName}}.${{env.ModelExtension}}
+
+      - name: get empty.qeax
+
+      - name: convert
+
+      - name: takeoffline
+
+      - name: backup
+
+      - name: copytoPCS
+
+      - name: takeonline
+
+ 
+     
+    
