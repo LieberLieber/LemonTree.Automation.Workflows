@@ -29,7 +29,7 @@ jobs:
       - name: ConsistencyCheck
         run: |
           echo run
-          &"${{env.LemonTreeAutomationExecutable}}" ConsistencyCheck --Model ${{env.ModelName}}.${{env.ModelExtension}}
+          &"${{env.LemonTreeAutomationExecutable}}" ConsistencyCheck --Model ${{env.ModelName}}.${{env.ModelExtension}} --License "C:\Program Files\LieberLieber\LemonTree.Automation\license000_8c8caa7efd77.lic"
 
       - name: get empty.qeax
         run: echo Hello, world!
