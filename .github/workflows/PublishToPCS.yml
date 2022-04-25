@@ -17,7 +17,7 @@ jobs:
   PublishToPCS:
     defaults:
       run:
-        shell: pwsh
+        shell: powershell
     runs-on: [self-hosted, lemontree, pcs]
     timeout-minutes: 15
     steps:
