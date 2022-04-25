@@ -12,6 +12,9 @@ env:
   ModelName: DemoModel
   ModelExtension: eapx
   LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
+  TemplateModelLocation: https://nexus.lieberlieber.com/repository/lemontree-pipeline-tools/templatemodels/empty.qeax
+  TemplateModel: templatemodel
+  TemplateModelExtension: qeax
 
 jobs:
   PublishToPCS:
@@ -32,10 +35,13 @@ jobs:
           &"${{env.LemonTreeAutomationExecutable}}" ConsistencyCheck --Model ${{env.ModelName}}.${{env.ModelExtension}} #--License "license000_8c8caa7efd77.lic"
 
       - name: get empty.qeax
-        run: echo Hello, world!
+        run: |
+          while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+          curl "${{env.TemplateModelLocation}}" --output ${{env.TemplateModel}}.${{env.TemplateModelExtension}} -k
 
-      - name: convert
-        run: echo Hello, world!
+      - name: convert DemoModel to qeax
+        run: |
+          &"${{env.LemonTreeAutomationExecutable}}" merge --theirs ${{env.TemplateModel}}.${{env.TemplateModelExtension}} --mine ${{env.ModelName}}.${{env.ModelExtension}} --out ${{env.ModelName}}.${{env.TemplateModelExtension}}
 
       - name: takeoffline
         run: echo Hello, world!
