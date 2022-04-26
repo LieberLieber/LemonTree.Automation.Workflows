@@ -8,15 +8,14 @@ param(
 )
 
 echo "Download LemonTree.Automtion from Repo"
-echo "***$License**"
 while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
 curl "$LemonTreePackageURL" --output LTA.zip -k
 Expand-Archive LTA.zip -DestinationPath .\LTA\ -Force
 
 IF([string]::IsNullOrWhiteSpace($License)) {            
-    echo "No License provided."         
+    echo "No License info provided."         
 } else {            
-    echo "Create License File ${License}"
+    echo "Create License File from provided info"
     $License | Out-File -FilePath lta.lic #if you deploy the license on the fly
 }  
 

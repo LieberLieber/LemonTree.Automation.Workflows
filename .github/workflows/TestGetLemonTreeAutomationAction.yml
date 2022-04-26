@@ -33,7 +33,6 @@ jobs:
 
       - name: ConsistencyCheck
         run: |
-          echo '***${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}***'
           &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" ConsistencyCheck --Model ${{env.ModelName}}.${{env.ModelExtension}}
  
      
