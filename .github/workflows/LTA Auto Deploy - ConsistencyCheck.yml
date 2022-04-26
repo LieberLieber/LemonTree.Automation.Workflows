@@ -29,7 +29,7 @@ jobs:
         with:
           lfs: true
           fetch-depth: 0
-          
+
       - name: Get LemonTree
         run: |
          while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
@@ -38,7 +38,7 @@ jobs:
 
       - name: Create LemonTreeLicense
         run: |
-          "${{secrets.LTALICENSE}}" | Out-File -FilePath ${{env.TempLicense}}
+          ${{secrets.LTALICENSE}} | Out-File -FilePath ${{env.TempLicense}}
 
       - name: ConsistencyCheck
         run: |
