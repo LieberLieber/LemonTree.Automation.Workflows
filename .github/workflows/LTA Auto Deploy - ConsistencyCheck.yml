@@ -38,7 +38,7 @@ jobs:
 
       - name: Create LemonTreeLicense
         run: |
-          ${{secrets.LTALICENSE}} | Out-File -FilePath ${{env.TempLicense}}
+          '${{secrets.LTALICENSE}}' | Out-File -FilePath ${{env.TempLicense}}
 
       - name: ConsistencyCheck
         run: |
