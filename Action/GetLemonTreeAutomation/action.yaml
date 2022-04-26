@@ -18,5 +18,5 @@ runs:
   using: 'composite'
   steps:
     - id: DownloadLTA
-      run: '& $env:GITHUB_ACTION_PATH/getLTA.ps1 -LemonTreePackageURL ${{inputs.LemonTreePackageURL}} -License ${{inputs.License}}'
+      run: "& $env:GITHUB_ACTION_PATH/getLTA.ps1 -LemonTreePackageURL '${{inputs.LemonTreePackageURL}}'' -License '${{inputs.License}}'"
       shell: pwsh
