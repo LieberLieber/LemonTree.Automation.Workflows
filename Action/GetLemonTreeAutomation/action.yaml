@@ -12,5 +12,5 @@ outputs:
 runs:
   using: 'composite'
   steps:
-    - run: '& $env:GITHUB_ACTION_PATH/getLTA.ps1'
+    - run: '& $env:GITHUB_ACTION_PATH/getLTA.ps1 -LemonTreePackageURL ${{inputs.LemonTreePackageURL}}'
       shell: pwsh
