@@ -9,7 +9,7 @@ inputs:
 outputs:
   LemonTreeAutomationExecutable:
     description: 'Path to the Executable'
-    value: "${{ steps.DownloadLTA.outputs.password }}"
+    value: "${{steps.DownloadLTA.outputs.LemonTreeAutomationExecutable}}"
 runs:
   using: 'composite'
   steps:
