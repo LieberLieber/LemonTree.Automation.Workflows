@@ -5,10 +5,11 @@ inputs:
   LemonTreePackageURL:
     description: 'the url for deployment'
     required: false
-    default: "https://nexus.lieberlieber.com/repository/lemontree-release/LemonTree.Automation/LemonTree.Automation.Zip_Deploy.zip"
+    default: https://nexus.lieberlieber.com/repository/lemontree-release/LemonTree.Automation/LemonTree.Automation.Zip_Deploy.zip
 outputs:
   LemonTreeAutomationExecutable:
     description: 'Path to the Executable'
+    value: ''
 runs:
   using: 'composite'
   steps:
