@@ -14,6 +14,7 @@ env:
   LemonTreePackageURL: https://nexus.lieberlieber.com/repository/lemontree-release/LemonTree.Automation/LemonTree.Automation.Zip_Deploy.zip
   LemonTreeArchiveName: LTA.zip
   LemonTreeAutomationExecutable: LTA\LemonTree.Automation.exe
+  TempLicense: lta.lic
   
 
 jobs:
@@ -28,14 +29,20 @@ jobs:
         with:
           lfs: true
           fetch-depth: 0
+          
       - name: Get LemonTree
         run: |
          while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
          curl "${{env.LemonTreePackageURL}}" --output ${{env.LemonTreeArchiveName}} -k
-         Expand-Archive ${{env.LemonTreeArchiveName}} -DestinationPath LTA\ -Force             
+         Expand-Archive ${{env.LemonTreeArchiveName}} -DestinationPath LTA\ -Force
+
+      - name: Create LemonTreeLicense
+        run: |
+          "${{secrets.LTALICENSE}}" | Out-File -FilePath ${{env.TempLicense}}
+
       - name: ConsistencyCheck
         run: |
-          &"${{env.LemonTreeAutomationExecutable}}" ConsistencyCheck --Model ${{env.ModelName}}.${{env.ModelExtension}}
+          &"${{env.LemonTreeAutomationExecutable}}" ConsistencyCheck --Model ${{env.ModelName}}.${{env.ModelExtension}} --License ${{env.TempLicense}}
  
      
     
