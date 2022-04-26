@@ -11,8 +11,7 @@ on:
 env:
   ModelName: DemoModel
   ModelExtension: eapx
-  LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
-
+  
 jobs:
   ConsistencyCheck:
     defaults:
@@ -27,12 +26,13 @@ jobs:
           fetch-depth: 0
 
       - name: GetLTA
-        uses: ./Action/GetLemonTreeAutomation/ # Uses an action in the root directory
+        uses: ./Action/GetLemonTreeAutomation/
         id: GetLTA
 
-     # - name: ConsistencyCheck
-     #   run: |
-     #     &"${{env.LemonTreeAutomationExecutable}}" ConsistencyCheck --Model ${{env.ModelName}}.${{env.ModelExtension}}
+      - name: ConsistencyCheck
+        run: |
+          echo '***${{GetLTA.outputs.LemonTreeAutomationExecutable}}***'
+          &"${{GetLTA.outputs.LemonTreeAutomationExecutable}}" ConsistencyCheck --Model ${{env.ModelName}}.${{env.ModelExtension}}
  
      
     

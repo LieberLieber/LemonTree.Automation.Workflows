@@ -9,9 +9,10 @@ inputs:
 outputs:
   LemonTreeAutomationExecutable:
     description: 'Path to the Executable'
-    value: ''
+    value: "${{ steps.DownloadLTA.outputs.password }}"
 runs:
   using: 'composite'
   steps:
-    - run: '& $env:GITHUB_ACTION_PATH/getLTA.ps1 -LemonTreePackageURL ${{inputs.LemonTreePackageURL}}'
+    - id: DownloadLTA
+      run: '& $env:GITHUB_ACTION_PATH/getLTA.ps1 -LemonTreePackageURL ${{inputs.LemonTreePackageURL}}'
       shell: pwsh
