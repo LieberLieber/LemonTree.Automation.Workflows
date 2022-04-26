@@ -3,7 +3,7 @@ param(
     [parameter(Mandatory = $true)]
     [string]$LemonTreePackageURL,
 
-    [parameter(Mandatory = $true)]
+    [parameter(Mandatory = $false)]
     [string]$License
 )
 
