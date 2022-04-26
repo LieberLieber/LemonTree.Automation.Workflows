@@ -11,7 +11,7 @@ on:
 env:
   ModelName: DemoModel
   ModelExtension: eapx
-  
+
 jobs:
   ConsistencyCheck:
     defaults:
@@ -31,8 +31,8 @@ jobs:
 
       - name: ConsistencyCheck
         run: |
-          echo '***${{GetLTA.outputs.LemonTreeAutomationExecutable}}***'
-          &"${{GetLTA.outputs.LemonTreeAutomationExecutable}}" ConsistencyCheck --Model ${{env.ModelName}}.${{env.ModelExtension}}
+          echo '***${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}***'
+          &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" ConsistencyCheck --Model ${{env.ModelName}}.${{env.ModelExtension}}
  
      
     
