@@ -11,6 +11,7 @@ on:
 env:
   ModelName: DemoModel
   ModelExtension: eapx
+  LemonTreeAutomationExecutable: LTA\LemonTree.Automation.exe
 
 jobs:
   ConsistencyCheck:
@@ -30,10 +31,14 @@ jobs:
         id: GetLTA
         with:
           License: ${{secrets.LTALICENSE}}
+      
+      - name: Set Environment LemonTreeAutomationExecutable
+        run: |
+           $env.LemonTreeAutomationExecutable = $steps.GetLTA.outputs.LemonTreeAutomationExecutable
 
       - name: ConsistencyCheck
         run: |
-          &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" ConsistencyCheck --Model ${{env.ModelName}}.${{env.ModelExtension}}
+          &"${{env.LemonTreeAutomationExecutable}}" ConsistencyCheck --Model ${{env.ModelName}}.${{env.ModelExtension}}
  
      
     
