@@ -6,6 +6,10 @@ inputs:
     description: 'the url for deployment'
     required: false
     default: https://nexus.lieberlieber.com/repository/lemontree-release/LemonTree.Automation/LemonTree.Automation.Zip_Deploy.zip
+  License:
+    description: 'A string containing the license information'
+    required: false
+    default: ''
 outputs:
   LemonTreeAutomationExecutable:
     description: 'Path to the Executable'
@@ -14,5 +18,5 @@ runs:
   using: 'composite'
   steps:
     - id: DownloadLTA
-      run: '& $env:GITHUB_ACTION_PATH/getLTA.ps1 -LemonTreePackageURL ${{inputs.LemonTreePackageURL}}'
+      run: '& $env:GITHUB_ACTION_PATH/getLTA.ps1 -LemonTreePackageURL ${{inputs.LemonTreePackageURL}} -License ${{inputs.License}}'
       shell: pwsh

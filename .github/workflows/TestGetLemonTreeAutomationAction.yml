@@ -28,6 +28,8 @@ jobs:
       - name: GetLTA
         uses: ./Action/GetLemonTreeAutomation/
         id: GetLTA
+        with:
+          License: $secrets.LTALICENSE
 
       - name: ConsistencyCheck
         run: |
