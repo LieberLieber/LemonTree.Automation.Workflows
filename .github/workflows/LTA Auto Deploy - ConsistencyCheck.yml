@@ -31,7 +31,7 @@ jobs:
       - name: Get LemonTree
         run: |
          while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-         curl "${env.LemonTreePackageURL}}" --output ${{env.LemonTreeArchiveName}} -k
+         curl "${{env.LemonTreePackageURL}}" --output ${{env.LemonTreeArchiveName}} -k
          Expand-Archive ${{env.LemonTreeArchiveName}} -DestinationPath LTA\ -Force             
       - name: ConsistencyCheck
         run: |
