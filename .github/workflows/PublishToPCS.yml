@@ -1,0 +1,60 @@
+# Copyright (c) Robert Bosch GmbH
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+name: Publish to PCS
+
+on:
+ push:
+
+env:
+  ModelName: DemoModel
+  ModelExtension: eapx
+  LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
+  TemplateModelLocation: https://nexus.lieberlieber.com/repository/lemontree-pipeline-tools/templatemodels/empty.qeax
+  TemplateModel: templatemodel
+  TemplateModelExtension: qeax
+  PCSModelPath: C:\Program Files (x86)\Sparx Systems\Pro Cloud Server\Service\Models
+
+jobs:
+  PublishToPCS:
+    defaults:
+      run:
+        shell: pwsh
+    runs-on: [self-hosted, lemontree, pcs]
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          fetch-depth: 0
+                      
+      - name: ConsistencyCheck
+        run: |
+          echo run
+          &"${{env.LemonTreeAutomationExecutable}}" ConsistencyCheck --Model ${{env.ModelName}}.${{env.ModelExtension}} #--License "license000_8c8caa7efd77.lic"
+
+      - name: get empty.qeax
+        run: |
+          while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+          curl "${{env.TemplateModelLocation}}" --output ${{env.TemplateModel}}.${{env.TemplateModelExtension}} -k
+
+      - name: convert DemoModel to qeax
+        run: |
+          &"${{env.LemonTreeAutomationExecutable}}" merge --theirs ${{env.TemplateModel}}.${{env.TemplateModelExtension}} --mine ${{env.ModelName}}.${{env.ModelExtension}} --out ${{env.ModelName}}.${{env.TemplateModelExtension}}
+
+      - name: takeoffline
+        run: echo Hello, world!
+
+      - name: backup
+        run: echo Hello, world!
+
+      - name: copytoPCS
+        run: echo Hello, world!
+
+      - name: takeonline
+        run: echo Hello, world!
+ 
+     
+    
