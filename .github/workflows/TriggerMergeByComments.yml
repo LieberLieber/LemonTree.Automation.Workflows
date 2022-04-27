@@ -13,14 +13,13 @@ env:
   ModelName: DemoModel
   ModelExtension: eapx
   GitHubProjectRoot: https://github.com/LieberLieber/LemonTree.Automation.Workflows
-  LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
   #AuthMode: PositiveList
   AuthMode: Association
 
 jobs:
   Check_Rights:
     if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
-    runs-on: [self-hosted]
+    runs-on: windows-latest
     outputs:
       userAuthentication: ${{ steps.SelectAuthResult.outputs.result }}
     steps:
@@ -72,7 +71,7 @@ jobs:
     defaults:
       run:
         shell: pwsh
-    runs-on: [self-hosted, lemontree]
+    runs-on: windows-latest
     timeout-minutes: 15
     needs: Check_Rights
     if: needs.Check_Rights.outputs.userAuthentication == 'True'
@@ -178,11 +177,20 @@ jobs:
           echo "Model SHA: $sha"
           git cat-file --filters ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}" | Out-Null
           copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.${{env.ModelExtension}}"
-          
+
+      # download Lemontree.Automation on a runner and setup the license
+      - name: GetLTA
+        if: ${{ steps.checkNumber.outputs.count > 0}}
+        uses: LieberLieber/setup-LemonTree.Automation@v0.6
+        id: GetLTA
+        with:
+          License: ${{secrets.LTALICENSE}} 
+      #ExeLocation &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}"
+
       - name: Merge EA model file
         id: mergeEA
         run: |
-          &"${{env.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}_target.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --out merged.${{env.ModelExtension}} --abortOnConflict true
+          &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}_target.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --out merged.${{env.ModelExtension}} --abortOnConflict true
           echo "::set-output name=result::$LASTEXITCODE"
           echo "Return code: $LASTEXITCODE"
           
