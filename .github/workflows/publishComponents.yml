@@ -38,7 +38,7 @@ jobs:
 
       - name: Publish LemonTree Components
         run: |
-          &"${{env.LemonTreeAutomationExecutable}}" publish --Model ${{env.ModelName}}.${{env.ModelExtension}} --PackageDirectory ".\\" --All
+          &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" publish --Model ${{env.ModelName}}.${{env.ModelExtension}} --PackageDirectory ".\\" --All
 
       # doesn't work on public runner because it can not access the SQL Server Repository
       #- name: Import LemonTree Components on MSSQL Repository 
