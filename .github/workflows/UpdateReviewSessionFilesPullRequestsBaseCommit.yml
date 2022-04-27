@@ -20,7 +20,7 @@ jobs:
       run:
         shell: pwsh
     # The type of runner that the job will run on
-    runs-on: [self-hosted, lemontree]
+    runs-on: windows-latest
     timeout-minutes: 15
     steps:
       - name: Check for related Pull Requests
