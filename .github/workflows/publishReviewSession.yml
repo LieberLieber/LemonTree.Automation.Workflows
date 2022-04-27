@@ -18,7 +18,6 @@ env:
   ModelName: DemoModel
   ModelExtension: eapx
   ReviewSessionURL: https://nexus.lieberlieber.com/repository/lemontree-session
-  LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
   LemonTreePipelineToolsRemovePrerenderedDiagramsExecutable: https://nexus.lieberlieber.com/repository/lemontree-pipeline-tools/LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe 
 
 jobs:
@@ -26,7 +25,7 @@ jobs:
     defaults:
       run:
         shell: pwsh
-    runs-on: [self-hosted, lemontree]
+    runs-on: windows-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v2
@@ -106,12 +105,20 @@ jobs:
           echo "Model SHA: $sha"
           git cat-file --filters ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}" | Out-Null
           copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.${{env.ModelExtension}}"
-
+      
+      # download Lemontree.Automation on a runner and setup the license
+      - name: GetLTA
+        uses: LieberLieber/setup-LemonTree.Automation@v0.6
+        id: GetLTA
+        with:
+          License: ${{secrets.LTALICENSE}} 
+      #ExeLocation &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}"
+      
       - name: Check for merge conflicts
         if: steps.baseDownload.outputs.result == 'downloaded'
         id: mergeCheck
         run: |
-          &"${{env.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --dryrun --sfs ${{ steps.session_file.outputs.result }} --abortOnConflict true
+          &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --dryrun --sfs ${{ steps.session_file.outputs.result }} --abortOnConflict true
           echo "::set-output name=result::$LASTEXITCODE"
           echo "Return code: $LASTEXITCODE"
           if($LASTEXITCODE -eq 0){
@@ -149,7 +156,7 @@ jobs:
       - name: Create review session file
         if: steps.mergeCheck.outputs.result == 0
         run: |
-          &"${{env.LemonTreeAutomationExecutable}}" diff --theirs ${{env.ModelName}}_base.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }}
+          &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" diff --theirs ${{env.ModelName}}_base.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }}
 
       - name: Upload
         if: steps.baseDownload.outputs.result == 'downloaded'

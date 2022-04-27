@@ -13,15 +13,14 @@ env:
   ModelName: DemoModel
   ModelExtension: eapx
   ReviewSessionURL: https://nexus.lieberlieber.com/repository/lemontree-component/
-  LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
-  ComponentModelShortCut: C:\tools\Shortcuts\Shortcut_LL_TEST_COMPONENTS.eap
+  #ComponentModelShortCut: C:\tools\Shortcuts\Shortcut_LL_TEST_COMPONENTS.eap
 
 jobs:
   PublishComponents:
     defaults:
       run:
         shell: pwsh
-    runs-on: [self-hosted, lemontree]
+    runs-on: windows-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v2
@@ -29,14 +28,22 @@ jobs:
           lfs: true
           fetch-depth: 0
                       
+      # download Lemontree.Automation on a runner and setup the license
+      - name: GetLTA
+        uses: LieberLieber/setup-LemonTree.Automation@v0.6
+        id: GetLTA
+        with:
+          License: ${{secrets.LTALICENSE}} 
+      #ExeLocation &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}"
 
       - name: Publish LemonTree Components
         run: |
           &"${{env.LemonTreeAutomationExecutable}}" publish --Model ${{env.ModelName}}.${{env.ModelExtension}} --PackageDirectory ".\\" --All
 
-      - name: Import LemonTree Components on MSSQL Repository 
-        run: |
-          &"${{env.LemonTreeAutomationExecutable}}" import --Model ${{env.ComponentModelShortCut}} --Components "*.mpms"
+      # doesn't work on public runner because it can not access the SQL Server Repository
+      #- name: Import LemonTree Components on MSSQL Repository 
+      #  run: |
+      #    &"${{env.LemonTreeAutomationExecutable}}" import --Model ${{env.ComponentModelShortCut}} --Components "*.mpms"
 
       - name: Archive Session Files
         uses: actions/upload-artifact@v3
