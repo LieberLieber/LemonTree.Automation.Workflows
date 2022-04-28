@@ -2,6 +2,9 @@
 #.\CherryPicking.ps1 -Model ..\..\DemoModel.eapx
 #.\CherryPicking.ps1 -Model C:\GitHub\LemonTree.Automation.Workflows\DemoModel.eapx
 
+#Comment this in to run in x86 space with Jet Driver
+#$script = Start-Job -ScriptBlock {
+
 param(
     [parameter(Mandatory = $false)]
     [string]$Model,
@@ -20,11 +23,9 @@ function Get-Fullname {
 if ((Test-Path -Path $Model -PathType Leaf)) {
      try {
         #model exists we can party
- 
-        $absoluteModel = Get-Fullname($Model)
         echo "Before"
+        $absoluteModel = Get-Fullname($Model)
         echo $Model
-            
         echo "after"
         echo $absoluteModel
 
@@ -50,13 +51,18 @@ if ((Test-Path -Path $Model -PathType Leaf)) {
 
         $results
 
+        &'C:\Program Files\LieberLieber\LemonTree\LemonTree.exe' 
+
      }
      catch {
          throw $_.Exception.Message
      }
  }
-# If the file already exists, show the message and do nothing.
+# If the file doesn't exists, show the message and do nothing.
  else {
      Write-Host "Model doesn't exist!"
  }
 
+#Comment this in to run in x86 space with Jet Driver
+# } -RunAs32
+#'$script | Wait-Job | Receive-Job
