@@ -20,6 +20,24 @@ function Get-Fullname {
        }
   }
 
+function DownloadModelfromBranch{
+  param($branchname)
+  process{
+  #this is a workaround for now to see if the rest works.
+  while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+   curl "https://github.com/LieberLieber/LemonTree.Automation.Workflows/raw/77-auto-deploy-lemontree-automation-demo-via-zip-file/DemoModel.eapx" --output 'DemoModel_Branch.eapx' -k
+   $pointer = git cat-file blob 'DemoModel_Branch.eapx'
+          $sha = ($pointer[1] -split(":"))[1]
+          if($sha -ne $null){
+            $shaPart1 = $sha.Substring(0,2)
+            $shaPart2 = $sha.Substring(2,2)
+            echo "Model SHA: $sha"
+            git cat-file --filters 'DemoModel_Branch.eapx' | Out-Null
+            copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "'DemoModel_Branch_Inflated.eapx'
+            echo "::set-output name=result::downloaded"}
+  }
+}
+
 function Get-ModelRootIds  {
         param($absoluteModel)
         $conn = New-Object System.Data.OleDb.OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0; Data Source='$absoluteModel'") 
@@ -54,12 +72,13 @@ if ((Test-Path -Path $Model -PathType Leaf)) {
         echo $absoluteModel
 
        
+        DownloadModelfromBranch($Branch)
 
         $results = Get-ModelRootIds($absoluteModel);
        
         $results
 
-       # &'C:\Program Files\LieberLieber\LemonTree\LemonTree.exe' 
+       &'C:\Program Files\LieberLieber\LemonTree\LemonTree.exe' -merge --theirs 'DemoModel_Branch.eapx' --mine '$absoluteModel'
 
      }
      catch {

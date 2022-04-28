@@ -351,3 +351,4 @@ MigrationBackup/
 /example-scripts/powershell/LTA.zip
 /example-scripts/LTA
 /DemoModel.ldb
+/example-scripts/powershell/DemoModel_Branch.eapx
