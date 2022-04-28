@@ -1,15 +1,20 @@
 ﻿#CherryPicking.ps1
+#Supported:
+#.\example-scripts\powershell\CherryPicking.ps1 -Model DemoModel.eapx -Branch 70-test-for-discussion
+
+
+# Currently not supported - script needs to be run next to the model.
 #.\CherryPicking.ps1 -Model ..\..\DemoModel.eapx
-#.\CherryPicking.ps1 -Model C:\GitHub\LemonTree.Automation.Workflows\DemoModel.eapx
+#.\CherryPicking.ps1 -Model C:\GitHub\LemonTree.Automation.Workflows\DemoModel.eapx 
 
 #Comment this in to run in x86 space with Jet Driver
 #$script = Start-Job -ScriptBlock {
 
 param(
-    [parameter(Mandatory = $false)]
+    [parameter(Mandatory = $true)]
     [string]$Model,
 
-    [parameter(Mandatory = $false)]
+    [parameter(Mandatory = $true)]
     [string]$Branch
 )
 
@@ -21,20 +26,27 @@ function Get-Fullname {
   }
 
 function DownloadModelfromBranch{
-  param($branchname)
+ Param
+    (
+        [Parameter(Mandatory = $true)]  $filename,
+        [Parameter(Mandatory = $true)]  $Branch,
+        [Parameter(Mandatory = $true)] $tempFilename
+    )
+
   process{
+  Echo "Inside Method filename $filename"
+  Echo "Inside Method Branch $Branch"
+  Echo "Inside Method tempFilename $tempFilename"
+  $url = "https://github.com/LieberLieber/LemonTree.Automation.Workflows/raw/$Branch/$filename"
+  echo "***"
+  echo $url
+  echo "***"
+
+  echo "curl '$url' --output '$tempFilename' -L -k"
   #this is a workaround for now to see if the rest works.
   while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-   curl "https://github.com/LieberLieber/LemonTree.Automation.Workflows/raw/77-auto-deploy-lemontree-automation-demo-via-zip-file/DemoModel.eapx" --output 'DemoModel_Branch.eapx' -k
-   $pointer = git cat-file blob 'DemoModel_Branch.eapx'
-          $sha = ($pointer[1] -split(":"))[1]
-          if($sha -ne $null){
-            $shaPart1 = $sha.Substring(0,2)
-            $shaPart2 = $sha.Substring(2,2)
-            echo "Model SHA: $sha"
-            git cat-file --filters 'DemoModel_Branch.eapx' | Out-Null
-            copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "'DemoModel_Branch_Inflated.eapx'
-            echo "::set-output name=result::downloaded"}
+  curl "$url" --output '$tempFilename' -L -k #-L follows the redirect to get the LFS file.
+   
   }
 }
 
@@ -70,15 +82,19 @@ if ((Test-Path -Path $Model -PathType Leaf)) {
         echo $Model
         echo "after"
         echo $absoluteModel
-
-       
-        DownloadModelfromBranch($Branch)
+        $tempFilename = "$Model"
+        echo $tempFilename
+        $absolutetempFilename = "$env:TEMP\$tempFilename"
+        echo $absolutetempFilename
+      
+        echo "Branch $Branch"
+        DownloadModelfromBranch $Model $Branch $absolutetempFilename
 
         $results = Get-ModelRootIds($absoluteModel);
        
         $results
 
-       &'C:\Program Files\LieberLieber\LemonTree\LemonTree.exe' -merge --theirs 'DemoModel_Branch.eapx' --mine '$absoluteModel'
+       &'C:\Program Files\LieberLieber\LemonTree\LemonTree.exe' -merge --base "$absolutetempFilename" --theirs "$absolutetempFilename" --mine "$absoluteModel" 
 
      }
      catch {
