@@ -10,51 +10,55 @@
 #Comment this in to run in x86 space with Jet Driver
 #$script = Start-Job -ScriptBlock {
 
-param(
-    [parameter(Mandatory = $true)]
-    [string]$Model,
-
-    [parameter(Mandatory = $true)]
-    [string]$Branch
-)
-
-function Get-Fullname {
-  param($filename)
-  process{
-      if (Test-Path $filename) {(Get-Item $fileName).FullName} 
-       }
-  }
-
-function DownloadModelfromBranch{
- Param
+    param
     (
-        [Parameter(Mandatory = $true)]  $filename,
-        [Parameter(Mandatory = $true)]  $Branch,
-        [Parameter(Mandatory = $true)] $tempFilename
+        [parameter(Mandatory = $true)][string]$Model,
+        [parameter(Mandatory = $true)][string]$Branch
     )
 
-  process{
-  Echo "Inside Method filename $filename"
-  Echo "Inside Method Branch $Branch"
-  Echo "Inside Method tempFilename $tempFilename"
-  $url = "https://github.com/LieberLieber/LemonTree.Automation.Workflows/raw/$Branch/$filename"
-  echo "***"
-  echo $url
-  echo "***"
+function Get-Fullname 
+{
+    param
+    (
+        [Parameter(Mandatory = $true)][string]$filename
+    )
+    process
+    {
+        if (Test-Path $filename) 
+        {
+        (Get-Item $fileName).FullName} 
+        }
+    }
 
-  echo "curl '$url' --output '$tempFilename' -L -k"
-  #this is a workaround for now to see if the rest works.
-  while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-  curl "$url" --output '$tempFilename' -L -k #-L follows the redirect to get the LFS file.
-   
-  }
+function DownloadModelfromBranch
+{
+    param
+    (
+        [Parameter(Mandatory = $true)][string] $filename,
+        [Parameter(Mandatory = $true)][string] $Branch,
+        [Parameter(Mandatory = $true)][string] $tempFilename
+    )
+    process
+    {
+        $url = "https://github.com/LieberLieber/LemonTree.Automation.Workflows/raw/$Branch/$filename"
+        echo "Downloading from $url"
+        while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+        curl "$url" --output '$tempFilename' -L -k #-L follows the redirect to get the LFS file.
+    
+    }
 }
 
-function Get-ModelRootIds  {
-        param($absoluteModel)
+function Get-ModelRootIds  
+{
+    param
+    (
+        [Parameter(Mandatory = $true)][string] $absoluteModel
+    )
+    process
+    {
         $conn = New-Object System.Data.OleDb.OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0; Data Source='$absoluteModel'") 
         $conn.Open()
-    
+
         $cmd = $conn.CreateCommand()
         $cmd.CommandText ="select ea_guid from t_package where parent_id = 0"
         $reader = $cmd.ExecuteReader()   
@@ -68,10 +72,12 @@ function Get-ModelRootIds  {
                 $row[$reader.GetName($i)] = $reader.GetValue($i)
             }
             $results += new-object psobject -property $row  
-                  
+                    
         }
         $conn.Close();
-        return @($results)
+
+        return @($results);
+    }
 }
 
 if ((Test-Path -Path $Model -PathType Leaf)) {
