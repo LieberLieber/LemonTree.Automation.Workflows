@@ -20,15 +20,8 @@ function Get-Fullname {
        }
   }
 
-if ((Test-Path -Path $Model -PathType Leaf)) {
-     try {
-        #model exists we can party
-        echo "Before"
-        $absoluteModel = Get-Fullname($Model)
-        echo $Model
-        echo "after"
-        echo $absoluteModel
-
+function Get-ModelRootIds  {
+        param($absoluteModel)
         $conn = New-Object System.Data.OleDb.OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0; Data Source='$absoluteModel'") 
         $conn.Open()
     
@@ -48,10 +41,25 @@ if ((Test-Path -Path $Model -PathType Leaf)) {
                   
         }
         $conn.Close();
+        return @($results)
+}
 
+if ((Test-Path -Path $Model -PathType Leaf)) {
+     try {
+        #model exists we can party
+        echo "Before"
+        $absoluteModel = Get-Fullname($Model)
+        echo $Model
+        echo "after"
+        echo $absoluteModel
+
+       
+
+        $results = Get-ModelRootIds($absoluteModel);
+       
         $results
 
-        &'C:\Program Files\LieberLieber\LemonTree\LemonTree.exe' 
+       # &'C:\Program Files\LieberLieber\LemonTree\LemonTree.exe' 
 
      }
      catch {
