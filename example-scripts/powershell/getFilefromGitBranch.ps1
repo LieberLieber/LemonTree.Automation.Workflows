@@ -44,6 +44,7 @@ function Get-GitMappedFilePaths
     }
 }
 
+#Get the files from the remotes by commitid via http and curl - no LFS or not LFS handling needed
 function Get-DownloadedFilename  
 {
     param
@@ -59,7 +60,7 @@ function Get-DownloadedFilename
         $tempFilename = Join-Path -Path "$env:TEMP" -ChildPath "$stripPathFilename"
         $url = "$gitUri/raw/$baseId/$gitFilename"
         while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-        curl "$url" --output '$tempFilename' -L -k #-L follows the redirect to get the LFS file.
+        curl "$url" --output '$tempFilename' -L -k -s #-L follows the redirect to get the LFS file.
         return @($tempFilename);
     }
 }
@@ -86,7 +87,7 @@ echo "Currently activ Branch: $currentBranch"
 echo "Base commit id: $baseId"
 echo "$compareToBranch commit id: $branchId"
 
-#Get the files
+#Get the files from the remotes by commitid via http and curl - no LFS or not LFS handling needed
 $baseFileName = Get-DownloadedFilename $gitFilename $baseId
 $branchFileName = Get-DownloadedFilename $gitFilename $branchId
 Echo "Base:   $baseFileName"
