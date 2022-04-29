@@ -77,7 +77,7 @@ function Get-DownloadedFilename
         $tempFilename = Join-Path -Path "$env:TEMP" -ChildPath "$stripPathFilename"
         $url = "$gitUri/raw/$baseId/$gitFilename"
         while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-        curl "$url" --output "$tempFilename" -L -k # -s #-L follows the redirect to get the LFS file.
+        curl "$url" --output "$tempFilename" -L -k -s #-L follows the redirect to get the LFS file. -s makes curl silent as the output looks strange for users
         return @($tempFilename);
     }
 }
@@ -91,33 +91,26 @@ function Get-ModelRootIds
     process
     {
         #Comment needed for 32 bit jet driver - 64 bit ACE is not all computers.
-        $script = Start-Job -ScriptBlock {       
+        #$script = Start-Job -ScriptBlock {       
             #x64 db connection
-            #$conn = New-Object System.Data.OleDb.OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0; Data Source='$absoluteModel'") 
+            $conn = New-Object System.Data.OleDb.OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0; Data Source='$absoluteModel'") 
 
             #x86 db connection
-            $conn = New-Object System.Data.OleDb.OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0; Data Source='$absoluteModel'") 
+            #$conn = New-Object System.Data.OleDb.OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0; Data Source='$absoluteModel'") 
 
             $conn.Open()
 
             $cmd = $conn.CreateCommand()
             $cmd.CommandText ="select ea_guid from t_package where parent_id = 0"
             $reader = $cmd.ExecuteReader()   
-
             $results = @()
             while ($reader.Read())
             {
-                $row = @{}
-                for ($i = 0; $i -lt $reader.FieldCount; $i++)
-                {
-                    $row[$reader.GetName($i)] = $reader.GetValue($i)
-                }
-                $results += new-object psobject -property $row  
-                    
+                $results += $reader.GetValue(0)        
             }
             $conn.Close();
-        } -RunAs32
-        $script | Wait-Job | Receive-Job
+        #} -RunAs32
+        #$script | Wait-Job | Receive-Job
         return @($results);
         #Comment this in to run in x86 space with Jet Driver
     }
@@ -158,15 +151,29 @@ Echo "Branch: $branchFileName"
 
 
 #getrootids for the merge hint from the current model.
-$results = Get-ModelRootIds($absoluteFilename);
-$results
-
-
-
-# Open LemonTree with Files.        
-$LemonTreeCommando = "-merge --base '$baseFileName' --theirs '$branchFileName' --mine '$absoluteFilename' --out '$absoluteFilename'"
+$modelRootIds = Get-ModelRootIds($absoluteFilename);
+echo "**"
+$modelRootIds
+echo "***"
+$mergeDecisionOverrides =""
+$countRoots = 0
+#todo this doesn't work
+foreach($modelRootId in $modelRootIds) {
+    $countRoots
+    if ($countRoots) #true when bigger than 0
+    {
+        $mergeDecisionOverrides += ","
+    }
+    $mergeDecisionOverrides += "$modelRootId"
+    $mergeDecisionOverrides += ":B"
+    $countRoots += 1
+}
+$mergeDecisionOverrides
+echo "****"
+# Open LemonTree with Files. Commandline options https://help.lieberlieber.com/display/LT/VCS+Integration     
+$LemonTreeCommando = "-merge --base '$baseFileName' --theirs '$branchFileName' --mine '$absoluteFilename' --out '$absoluteFilename' --mergeDecisionOverrides='$mergeDecisionOverrides'"
 Echo "Starting LemonTree with $LemonTreeCommando"
-#&'C:\Program Files\LieberLieber\LemonTree\LemonTree.exe' -merge --base "$baseFileName" --theirs "$branchFileName" --mine "$absoluteFilename"
+&'C:\Program Files\LieberLieber\LemonTree\LemonTree.exe' -merge --base "$baseFileName" --theirs "$branchFileName" --mine "$absoluteFilename" --mergeDecisionOverrides="$mergeDecisionOverrides"
 
 
 Set-Location $startDirectory
