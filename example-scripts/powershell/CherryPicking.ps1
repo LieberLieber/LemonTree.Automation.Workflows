@@ -75,7 +75,7 @@ function Get-DownloadedFilename
         $gitUri = $gitUri.Replace(".git","");
         $stripPathFilename = $commitID + "_"+[System.IO.Path]::GetFileName($gitFilename)
         $tempFilename = Join-Path -Path "$env:TEMP" -ChildPath "$stripPathFilename"
-        $url = "$gitUri/raw/$baseId/$gitFilename"
+        $url = "$gitUri/raw/$commitID/$gitFilename"
         while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
         curl "$url" --output "$tempFilename" -L -k -s #-L follows the redirect to get the LFS file. -s makes curl silent as the output looks strange for users
         return @($tempFilename);
@@ -137,6 +137,7 @@ Set-Location $gitRootDir
 $currentBranch = git branch --show-current
 $baseId = git merge-base "origin/$compareToBranch" $currentBranch
 $branchId = git log -n 1 "origin/$compareToBranch" --pretty=format:"%H"
+
 echo "Currently activ Branch: $currentBranch"
 echo "Base commit id: $baseId"
 echo "$compareToBranch commit id: $branchId"
@@ -148,6 +149,7 @@ $branchFileName = Get-DownloadedFilename $gitFilename $branchId
 Echo "Finished downloading."
 Echo "Base:   $baseFileName"
 Echo "Branch: $branchFileName"
+#todo: thedownload of the branch file seems to be wrong.
 
 
 #getrootids for the merge hint from the current model.
