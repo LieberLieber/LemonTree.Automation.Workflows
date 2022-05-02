@@ -179,8 +179,8 @@ foreach($modelRootId in $modelRootIds) {
 # Open LemonTree with Files. Commandline options https://help.lieberlieber.com/display/LT/VCS+Integration     
 $LemonTreeCommando = "-merge --base '$baseFileName' --theirs '$branchFileName' --mine '$absoluteFilename' --out '$absoluteFilename' --mergeDecisionOverrides='$mergeDecisionOverrides'"
 Echo "Starting LemonTree with $LemonTreeCommando"
-&'C:\Program Files\LieberLieber\LemonTree\LemonTree.exe' --merge=visual --base "$baseFileName" --theirs "$branchFileName" --mine "$absoluteFilename" --mergeDecisionOverrides="$mergeDecisionOverrides"
-
+&'C:\Program Files\LieberLieber\LemonTree\LemonTree.exe' --merge=visual --base "$baseFileName" --theirs "$branchFileName" --mine "$absoluteFilename" --mergeDecisionOverrides="$mergeDecisionOverrides" --theirsAlias="$compareToBranch"
+ 
 Set-Location $startDirectory
 exit 0
 
