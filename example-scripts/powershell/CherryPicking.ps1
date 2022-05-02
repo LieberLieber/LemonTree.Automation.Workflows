@@ -74,7 +74,7 @@ function Get-DownloadedFilename
         $gitUri =  git config --get remote.origin.url
         $gitUri = $gitUri.Replace(".git","");
         $stripPathFilename = $commitID + "_"+[System.IO.Path]::GetFileName($gitFilename)
-        $tempFilename = Join-Path -Path "$env:TEMP" -ChildPath "$stripPathFilename"
+        $tempFilename = Join-Path -Path "$env:TEMP" -ChildPath "A_$stripPathFilename"
         $url = "$gitUri/raw/$commitID/$gitFilename"
         while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
         curl "$url" --output "$tempFilename" -L -k -s #-L follows the redirect to get the LFS file. -s makes curl silent as the output looks strange for users
@@ -175,7 +175,7 @@ echo "****"
 # Open LemonTree with Files. Commandline options https://help.lieberlieber.com/display/LT/VCS+Integration     
 $LemonTreeCommando = "-merge --base '$baseFileName' --theirs '$branchFileName' --mine '$absoluteFilename' --out '$absoluteFilename' --mergeDecisionOverrides='$mergeDecisionOverrides'"
 Echo "Starting LemonTree with $LemonTreeCommando"
-&'C:\Program Files\LieberLieber\LemonTree\LemonTree.exe' -merge --base "$baseFileName" --theirs "$branchFileName" --mine "$absoluteFilename" --mergeDecisionOverrides="$mergeDecisionOverrides"
+&'C:\Program Files\LieberLieber\LemonTree\LemonTree.exe' --merge=visual --base "$baseFileName" --theirs "$branchFileName" --mine "$absoluteFilename" --mergeDecisionOverrides="$mergeDecisionOverrides"
 
 
 Set-Location $startDirectory
