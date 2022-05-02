@@ -117,6 +117,9 @@ function Get-ModelRootIds
     }
 }
 
+#turn on strict mode
+Set-StrictMode -Version Latest
+
 #map to internal variables
 $filename = $Model
 $compareToBranch = $Branch
