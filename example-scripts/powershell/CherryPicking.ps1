@@ -7,8 +7,8 @@
 
 param
 (
-        [Parameter(Mandatory = $false)][string] $filename = "..\DemoModel.eapx",
-        [Parameter(Mandatory = $false)][string] $compareToBranch = "70-test-for-discussion"#,
+        [Parameter(Mandatory = $true)][string] $Model = "..\DemoModel.eapx",
+        [Parameter(Mandatory = $true)][string] $Branch = "70-test-for-discussion"#,
         #for future use - filters are not supported by lemontree commandline - just by Session Files
         #[Parameter(Mandatory = $false)][boolean] $conflicedFilter = 1 #if set to 1 it will add conflicted filters in the session
 )
@@ -116,6 +116,10 @@ function Get-ModelRootIds
         #Comment this in to run in x86 space with Jet Driver
     }
 }
+
+#map to internal variables
+$filename = $Model
+$compareToBranch = $Branch
 
 #main script
 Echo "Model CherryPicking with LieberLieber LemonTree"
