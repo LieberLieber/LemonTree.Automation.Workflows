@@ -8,8 +8,9 @@
 param
 (
         [Parameter(Mandatory = $false)][string] $filename = "..\DemoModel.eapx",
-        [Parameter(Mandatory = $false)][string] $compareToBranch = "70-test-for-discussion",
-        [Parameter(Mandatory = $false)][boolean] $conflicedFilter = 1 #if set to 1 it will add conflicted filters in the session
+        [Parameter(Mandatory = $false)][string] $compareToBranch = "70-test-for-discussion"#,
+        #for future use - filters are not supported by lemontree commandline - just by Session Files
+        #[Parameter(Mandatory = $false)][boolean] $conflicedFilter = 1 #if set to 1 it will add conflicted filters in the session
 )
 
 function Get-Fullname 
@@ -139,8 +140,8 @@ $baseId = git merge-base "origin/$compareToBranch" $currentBranch
 $branchId = git log -n 1 "origin/$compareToBranch" --pretty=format:"%H"
 
 echo "Currently activ Branch: $currentBranch"
-echo "Base commit id: $baseId"
-echo "$compareToBranch commit id: $branchId"
+echo "Commit id: $baseId for base"
+echo "Commit id: $branchId for $compareToBranch"
 
 #Get the files from the remotes by commitid via http and curl - no LFS or not LFS handling needed
 echo "Start Downloading ..."
@@ -154,14 +155,11 @@ Echo "Branch: $branchFileName"
 
 #getrootids for the merge hint from the current model.
 $modelRootIds = Get-ModelRootIds($absoluteFilename);
-echo "**"
-$modelRootIds
-echo "***"
+
+#build the parameter to call LemonTree with the merge hint
 $mergeDecisionOverrides =""
 $countRoots = 0
-#todo this doesn't work
 foreach($modelRootId in $modelRootIds) {
-    $countRoots
     if ($countRoots) #true when bigger than 0
     {
         $mergeDecisionOverrides += ","
@@ -170,13 +168,11 @@ foreach($modelRootId in $modelRootIds) {
     $mergeDecisionOverrides += ":B"
     $countRoots += 1
 }
-$mergeDecisionOverrides
-echo "****"
+
 # Open LemonTree with Files. Commandline options https://help.lieberlieber.com/display/LT/VCS+Integration     
 $LemonTreeCommando = "-merge --base '$baseFileName' --theirs '$branchFileName' --mine '$absoluteFilename' --out '$absoluteFilename' --mergeDecisionOverrides='$mergeDecisionOverrides'"
 Echo "Starting LemonTree with $LemonTreeCommando"
 &'C:\Program Files\LieberLieber\LemonTree\LemonTree.exe' --merge=visual --base "$baseFileName" --theirs "$branchFileName" --mine "$absoluteFilename" --mergeDecisionOverrides="$mergeDecisionOverrides"
-
 
 Set-Location $startDirectory
 exit 0
