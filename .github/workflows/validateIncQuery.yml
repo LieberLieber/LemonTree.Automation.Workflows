@@ -1,0 +1,126 @@
+# Copyright (c) LieberLieber Software GmbH
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+name: SysML valdiation by Incquery Labs
+
+on:
+ push:
+
+env:
+  ModelName: DemoModel
+  ModelExtension: eapx
+  
+
+jobs:
+  SysMLValidation:
+    defaults:
+      run:
+        shell: pwsh
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          fetch-depth: 0
+                      
+      - name: Download SysML Check Tool
+        run: |
+          #Powershell sees curly brackets as codeblocks so use quotations marks "{}" or just write your guids without them
+          #assume license is in appdata
+          while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+          curl "https://build.incquerylabs.com/nexus/repository/lieberlieber-collaboration-raw/ea-iqs-connector-poc/0.1.1/ea-iqs-connector-poc_0.1.1_20220505.zip" "-u${{secrets.IQSNEXUS}}" --output ea-iqs.zip -k
+          Expand-Archive ea-iqs.zip -DestinationPath .\ea-iqs\ -Force
+
+      - name: Run SysML Check Tool
+        id: sysmlCheck
+        run: |
+          echo "starting validation"
+          .\ea-iqs\Com.Incquerylabs.Incquery.Connector.Cli.exe -i "${{secrets.IQSVALIDATIONSERVER}}" --sso -u "${{secrets.IQSUSER}}" -p "${{secrets.IQSPWD}}" -o "output.md" -c "${{env.ModelName}}.${{env.ModelExtension}}"
+          type "output.md"
+
+          echo "finished validation with $LASTEXITCODE"
+
+          #  Exit codes of the CLI application:
+          #  * 0 = model is valid (no error, no warning, no runtime exception)
+          #  * 1 = CLI argument parsing error occurred
+          #  * 2 = other runtime exception occurred
+          #  * 3 = model has at least one warning
+          #  * 4 = model has at least one error
+
+          $Message = "output.md"
+
+          echo "::set-output name=ValidationExitCode::$($LASTEXITCODE)"
+      
+          #for now never stop 
+          exit 0
+
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
+      - name: Find Pull Request
+        uses: juliangruber/find-pull-request-action@v1
+        id: find-pull-request
+        with:
+          branch: ${{ steps.extract_branch.outputs.branch }}
+
+      - name: Read output.md
+        id: package
+        uses: juliangruber/read-file-action@v1
+        with:
+            path: .\output.md
+
+      - name: Create PR comment
+        uses: actions/github-script@v5
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              issue_number: ${{ steps.find-pull-request.outputs.number }},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `${{ steps.package.outputs.content }}`
+            })
+
+      - name: evaulate Exit Code
+        run: |
+          echo "set job failed on ..."
+          echo "Current Exit Code ${{ steps.sysmlCheck.outputs.ExitCode }}"
+
+          #  Exit codes of the CLI application:
+          #  * 0 = model is valid (no error, no warning, no runtime exception)
+          #  * 1 = CLI argument parsing error occurred
+          #  * 2 = other runtime exception occurred
+          #  * 3 = model has at least one warning
+          #  * 4 = model has at least one error
+
+          if (${{ steps.sysmlCheck.outputs.ExitCode }} -eq 3)
+          {
+            #fail on warning
+            Echo "model has at least one warning"
+            #fail on warning
+            #exit 3
+            #ignore warning
+            exit 0
+          }
+          elseif (${{ steps.sysmlCheck.outputs.ExitCode }} -eq 3)
+          {
+              #fail on Error
+              echo "model has at least one error"
+              exit 4
+          }
+          elseif (${{ steps.sysmlCheck.outputs.ExitCode }} -eq 0)
+          {
+            #brilliant model
+            Echo "model is valid"
+            exit 0
+          }
+          else
+          {
+            exit 1
+          }
+
+    
