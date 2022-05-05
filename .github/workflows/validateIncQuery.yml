@@ -88,7 +88,7 @@ jobs:
       - name: evaulate Exit Code
         run: |
           echo "set job failed on ..."
-          echo "Current Exit Code ${{ steps.sysmlCheck.outputs.ExitCode }}"
+          echo "Current Exit Code ${{ steps.sysmlCheck.outputs.ValidationExitCode }}"
 
           #  Exit codes of the CLI application:
           #  * 0 = model is valid (no error, no warning, no runtime exception)
@@ -97,7 +97,7 @@ jobs:
           #  * 3 = model has at least one warning
           #  * 4 = model has at least one error
 
-          if (${{ steps.sysmlCheck.outputs.ExitCode }} -eq 3)
+          if (${{ steps.sysmlCheck.outputs.ValidationExitCode }} -eq 3)
           {
             #fail on warning
             Echo "model has at least one warning"
@@ -106,13 +106,13 @@ jobs:
             #ignore warning
             exit 0
           }
-          elseif (${{ steps.sysmlCheck.outputs.ExitCode }} -eq 3)
+          elseif (${{ steps.sysmlCheck.outputs.ValidationExitCode }} -eq 4)
           {
               #fail on Error
               echo "model has at least one error"
               exit 4
           }
-          elseif (${{ steps.sysmlCheck.outputs.ExitCode }} -eq 0)
+          elseif (${{ steps.sysmlCheck.outputs.ValidationExitCode }} -eq 0)
           {
             #brilliant model
             Echo "model is valid"
