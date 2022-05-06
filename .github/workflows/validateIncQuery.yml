@@ -69,12 +69,14 @@ jobs:
           branch: ${{ steps.extract_branch.outputs.branch }}
 
       - name: Read output.md
+        if: ${{ steps.find-pull-request.outputs.number > 0}} #only makes sense if we have a PR for the branch
         id: package
         uses: juliangruber/read-file-action@v1
         with:
             path: .\output.md
 
       - name: Create PR comment
+        if: ${{ steps.find-pull-request.outputs.number > 0}} #only makes sense if we have a PR for the branch
         uses: actions/github-script@v5
         with:
           script: |
