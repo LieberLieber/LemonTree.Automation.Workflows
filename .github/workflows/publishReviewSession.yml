@@ -158,7 +158,7 @@ jobs:
         run: |
           $Message = "${{ steps.mergeCheck.outputs.message }}"
           $mergecheckresult = ${{ steps.mergeCheck.outputs.result}}
-          if ($mergecheckresult  eq 0)
+          if ($mergecheckresult  -eq 0)
           {
             $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --theirs ${{env.ModelName}}_base.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }}
             echo $output
