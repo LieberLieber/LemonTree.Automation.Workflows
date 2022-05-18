@@ -178,7 +178,7 @@ jobs:
                 {
                     Echo $Line
                     $diffResult += $line
-                    $diffResult += #'r`n'
+                    $diffResult += 'r`n'
                 }
                 
             }
