@@ -154,18 +154,66 @@ jobs:
           .\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_head.${{env.ModelExtension}}
           
       - name: Create review session file
-        if: steps.mergeCheck.outputs.result == 0
+        id: checkSession
         run: |
-          &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" diff --theirs ${{env.ModelName}}_base.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }}
+          $Message = ${{ steps.mergeCheck.outputs.message }}
+          if (steps.mergeCheck.outputs.result == 0)
+          {
+            $output = &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" diff --theirs ${{env.ModelName}}_base.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }}
+            echo $output
+            $diffResult = ""
+            ForEach ($line in $($output -split "`r`n"))
+            {
+                if ($line.EndsWith("potentially different elements."))
+                {
+                    #ignore
+                }
+                elseif ($line.EndsWith("Found 0 different elements."))
+                {
+                  Echo "No differences we don't need to publish the session file."
+                  $Nessage = "Model is identical! "
+                  $sfsfilename ="";
+                }
+                elseif ($line.EndsWith(" different elements."))
+                {
+                    Echo $Line
+                    $diffResult += $line
+                    $diffResult += "`r`n"
+                }
+                elseif ($line.StartsWith("Found conflicts:"))
+                {
+                    if ($line.StartsWith("Found conflicts: 0"))
+                    {
+                        #ignore if there is 0 conflicts
+                       
+                    }
+                    else
+                    {
+                        Echo $Line
+                        $diffResult += $line
+                        $diffResult += "`r`n"
+                    }
+
+                }
+
+            }
+          }
+          echo "::set-output name=DiffResult::$diffResult"
+          echo "::set-output name=SfsFilName::$sfsfilename"
+          echo "::set-output name=message::$Message"
+          exit 0
 
       - name: Upload
         if: steps.baseDownload.outputs.result == 'downloaded'
         run: |
-          $sessionFileName = "${{ steps.session_file.outputs.result }}"
-          $targetUrl = "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
-          echo "Uploading $sessionFileName to Nexus: $targetUrl"
-          while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-          curl "-u${{secrets.NEXUSAUTHENTICATION}}" -T $sessionFileName $targetUrl
+          $sessionFileName = ${{ steps.checkSession.outputs.sfsfilename }}
+          if ([string]::IsNullOrEmpty($sessionFileName))
+          {
+            $targetUrl = "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
+            echo "Uploading $sessionFileName to Nexus: $targetUrl"
+            while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+            curl "-u${{secrets.NEXUSAUTHENTICATION}}" -T $sessionFileName $targetUrl
+          }
 
       - name: Archive Session Files
         if: steps.baseDownload.outputs.result == 'downloaded'
@@ -184,5 +232,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `${{ steps.mergeCheck.outputs.message }}`
+              body: `${{ steps.checkSession.outputs.message }}`
             })
