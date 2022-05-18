@@ -180,7 +180,7 @@ jobs:
       - name: Upload
         if: steps.baseDownload.outputs.result == 'downloaded'
         run: |
-          $sessionFileName = ${{ steps.checkSession.outputs.sfsfilename }}
+          $sessionFileName = "${{ steps.checkSession.outputs.sfsfilename }}"
           if ([string]::IsNullOrEmpty($sessionFileName))
           {
             echo "Nothing to upload"
