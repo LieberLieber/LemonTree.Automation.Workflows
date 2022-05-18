@@ -173,7 +173,7 @@ jobs:
                 {
                   echo 'No differences we don't need to publish the session file.'
                   $Nessage = 'Model is identical!''
-                  $sfsfilename ="";
+                  $sfsfilename =""; 
                 }
                 elseif ($line.EndsWith(' different elements.'))
                 {
