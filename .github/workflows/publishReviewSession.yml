@@ -162,29 +162,17 @@ jobs:
           {
             $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --theirs ${{env.ModelName}}_base.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }}
             echo $output
-            $diffResult = ""
             ForEach ($line in $($output -split "`r`n"))
             {
-                if ($line.EndsWith('potentially different elements.'))
+                if ($line.EndsWith('Found 0 different elements.'))
                 {
-                    #ignore
-                }
-                elseif ($line.EndsWith('Found 0 different elements.'))
-                {
-                  echo 'No differences we don't need to publish the session file.'
-                  $Message = 'Model is identical!''
+                  echo "No differences we don't need to publish the session file."
+                  $Message = "Model is identical!"
                   $sfsfilename =""; 
-                }
-                elseif ($line.EndsWith(' different elements.'))
-                {
-                    Echo $Line
-                    $diffResult += $line
-                    $diffResult += 'r`n'
-                }
-                
+                }                
             }
           }
-          echo "::set-output name=DiffResult::$diffResult"
+          echo "$Message"
           echo "::set-output name=SfsFilName::$sfsfilename"
           echo "::set-output name=message::$Message"
           exit 0
