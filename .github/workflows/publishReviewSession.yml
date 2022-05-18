@@ -172,7 +172,7 @@ jobs:
                 elseif ($line.EndsWith('Found 0 different elements.'))
                 {
                   echo 'No differences we don't need to publish the session file.'
-                  $Nessage = 'Model is identical!''
+                  $Message = 'Model is identical!''
                   $sfsfilename =""; 
                 }
                 elseif ($line.EndsWith(' different elements.'))
