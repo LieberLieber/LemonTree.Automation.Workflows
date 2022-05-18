@@ -164,38 +164,23 @@ jobs:
             $diffResult = ""
             ForEach ($line in $($output -split "`r`n"))
             {
-                if ($line.EndsWith("potentially different elements."))
+                if ($line.EndsWith('potentially different elements.'))
                 {
                     #ignore
                 }
-                elseif ($line.EndsWith("Found 0 different elements."))
+                elseif ($line.EndsWith('Found 0 different elements.'))
                 {
                   Echo "No differences we don't need to publish the session file."
                   $Nessage = "Model is identical! "
                   $sfsfilename ="";
                 }
-                elseif ($line.EndsWith(" different elements."))
+                elseif ($line.EndsWith(' different elements.'))
                 {
                     Echo $Line
                     $diffResult += $line
                     $diffResult += "`r`n"
                 }
-                elseif ($line.StartsWith("Found conflicts:"))
-                {
-                    if ($line.StartsWith("Found conflicts: 0"))
-                    {
-                        #ignore if there is 0 conflicts
-                       
-                    }
-                    else
-                    {
-                        Echo $Line
-                        $diffResult += $line
-                        $diffResult += "`r`n"
-                    }
-
-                }
-
+                
             }
           }
           echo "::set-output name=DiffResult::$diffResult"
