@@ -173,14 +173,14 @@ jobs:
             }
           }
           echo "$Message"
-          echo "::set-output name=SfsFilName::$sfsfilename"
+          echo "::set-output name=SfsFileName::$sfsfilename"
           echo "::set-output name=message::$Message"
           exit 0
 
       - name: Upload
         if: steps.baseDownload.outputs.result == 'downloaded'
         run: |
-          $sessionFileName = "${{ steps.checkSession.outputs.sfsfilename }}"
+          $sessionFileName = "${{ steps.checkSession.outputs.SfsFileName }}"
           if ([string]::IsNullOrEmpty($sessionFileName))
           {
             echo "Nothing to upload"
