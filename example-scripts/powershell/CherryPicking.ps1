@@ -99,10 +99,10 @@ function Get-ModelRootIds
         #Comment needed for 32 bit jet driver - 64 bit ACE is not all computers.
         #$script = Start-Job -ScriptBlock {       
             #x64 db connection
-            #$conn = New-Object System.Data.OleDb.OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0; Data Source='$absoluteModel'") 
+            $conn = New-Object System.Data.OleDb.OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0; Data Source='$absoluteModel'") 
 
             #x86 db connection
-            $conn = New-Object System.Data.OleDb.OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0; Data Source='$absoluteModel'") 
+            #$conn = New-Object System.Data.OleDb.OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0; Data Source='$absoluteModel'") 
 
             $conn.Open()
 
@@ -166,8 +166,8 @@ Echo "Branch: $branchFileName"
 
 
 #getrootids for the merge hint from the current model.
-$modelRootIds = $null
-if($ModelRootIds -eq $null){
+$modelRootArray = $null
+if($ModelRootIds -eq ""){
     $modelRootArray = Get-ModelRootIds($absoluteFilename);
 }
 else {
