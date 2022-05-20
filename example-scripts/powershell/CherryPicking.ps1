@@ -63,8 +63,8 @@ function Get-GitMappedFilePaths
     }
 }
 
-#Get the files from the remotes by commitid via http and curl - no LFS or not LFS handling needed
-function Get-DownloadedFilename  
+#Create a unique temporary filename
+function Get-TempFilename  
 {
     param
     (
@@ -75,15 +75,28 @@ function Get-DownloadedFilename
     {
         $stripPathFilename = $commitID + "_"+[System.IO.Path]::GetFileName($gitFilename)
         $tempFilename = Join-Path -Path "$env:TEMP" -ChildPath "$stripPathFilename"
+        return $tempFilename
+    }
+}
 
+#Get the files from the remotes by commitid via http and curl - no LFS or not LFS handling needed
+function Download-VersionedFile  
+{
+    param
+    (
+        [Parameter(Mandatory = $true)][string] $gitFilename,
+        [Parameter(Mandatory = $true)][string] $commitID,
+        [Parameter(Mandatory = $true)][string] $targetFileName
+    )
+    process
+    {
         #git fetch origin $commitID
         $pointer = git cat-file blob ("$commitID"+":"+"$gitFilename")
         $sha = ($pointer[1] -split(":"))[1]
         $shaPart1 = $sha.Substring(0,2)
         $shaPart2 = $sha.Substring(2,2)
         git cat-file --filters ("$commitID"+":"+"$gitFilename") | Out-Null
-        copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "$tempFilename"
-        return $tempFilename
+        copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "$targetFileName"
     }
 }
 
@@ -235,12 +248,15 @@ echo "Commit id: $baseId for base"
 echo "Commit id: $branchId for $compareToBranch"
 
 #Get the files from the remotes by commitid via http and curl - no LFS or not LFS handling needed
-echo "Start Downloading ..."
-$baseFileName = Get-DownloadedFilename $gitFilename $baseId
-$branchFileName = Get-DownloadedFilename $gitFilename $branchId
+$baseFileName = Get-TempFilename $gitFilename $baseId
+echo "Start downloading base file $baseFileName ..."
+Download-VersionedFile $gitFilename $baseId $baseFileName
+
+$branchFileName = Get-TempFilename $gitFilename $baseId
+echo "Start downloading branch file $branchFileName ..."
+Download-VersionedFile $gitFilename $branchId $branchFileName
+
 Echo "Finished downloading."
-Echo "Base:   $baseFileName"
-Echo "Branch: $branchFileName"
 #todo: thedownload of the branch file seems to be wrong.
 
 
