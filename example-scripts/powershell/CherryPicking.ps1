@@ -76,15 +76,14 @@ function Get-DownloadedFilename
         $stripPathFilename = $commitID + "_"+[System.IO.Path]::GetFileName($gitFilename)
         $tempFilename = Join-Path -Path "$env:TEMP" -ChildPath "$stripPathFilename"
 
-        echo "Commit ID: $commitID"
         #git fetch origin $commitID
         $pointer = git cat-file blob ("$commitID"+":"+"$gitFilename")
         $sha = ($pointer[1] -split(":"))[1]
         $shaPart1 = $sha.Substring(0,2)
         $shaPart2 = $sha.Substring(2,2)
-        echo "Model SHA: $sha"
         git cat-file --filters ("$commitID"+":"+"$gitFilename") | Out-Null
         copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "$tempFilename"
+        return $tempFilename
     }
 }
 
