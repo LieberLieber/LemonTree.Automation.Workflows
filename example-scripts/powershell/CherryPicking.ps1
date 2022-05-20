@@ -8,7 +8,8 @@
 param
 (
         [Parameter(Mandatory = $true)][string] $Model = "..\DemoModel.eapx",
-        [Parameter(Mandatory = $true)][string] $Branch = "70-test-for-discussion"#,
+        [Parameter(Mandatory = $true)][string] $Branch = "70-test-for-discussion",
+        [Parameter(Mandatory = $false)][string] $ModelRootIds = $null#,
         #for future use - filters are not supported by lemontree commandline - just by Session Files
         #[Parameter(Mandatory = $false)][boolean] $conflicedFilter = 1 #if set to 1 it will add conflicted filters in the session
 )
@@ -94,10 +95,10 @@ function Get-ModelRootIds
         #Comment needed for 32 bit jet driver - 64 bit ACE is not all computers.
         #$script = Start-Job -ScriptBlock {       
             #x64 db connection
-            $conn = New-Object System.Data.OleDb.OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0; Data Source='$absoluteModel'") 
+            #$conn = New-Object System.Data.OleDb.OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0; Data Source='$absoluteModel'") 
 
             #x86 db connection
-            #$conn = New-Object System.Data.OleDb.OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0; Data Source='$absoluteModel'") 
+            $conn = New-Object System.Data.OleDb.OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0; Data Source='$absoluteModel'") 
 
             $conn.Open()
 
@@ -161,19 +162,23 @@ Echo "Branch: $branchFileName"
 
 
 #getrootids for the merge hint from the current model.
-$modelRootIds = Get-ModelRootIds($absoluteFilename);
+$modelRootIds = $null
+if($ModelRootIds -eq $null){
+    $modelRootArray = Get-ModelRootIds($absoluteFilename);
+}
+else {
+    $modelRootArray = $ModelRootIds.Split(',')
+}
 
 #build the parameter to call LemonTree with the merge hint
-$mergeDecisionOverrides =""
-$countRoots = 0
-foreach($modelRootId in $modelRootIds) {
-    if ($countRoots) #true when bigger than 0
-    {
-        $mergeDecisionOverrides += ","
-    }
-    $mergeDecisionOverrides += "$modelRootId"
-    $mergeDecisionOverrides += ":B"
-    $countRoots += 1
+$mergeDecisionOverrides= $null
+$modelRootArray | ForEach-Object -Begin {
+    $mergeOverrides = @()
+} -Process {
+    #Append model B as source to each root
+    $mergeOverrides += ("$_"+":B")
+} -End {
+    $mergeDecisionOverrides = $mergeOverrides -join ','
 }
 
 # Open LemonTree with Files. Commandline options https://help.lieberlieber.com/display/LT/VCS+Integration     
