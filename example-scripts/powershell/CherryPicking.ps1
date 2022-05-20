@@ -8,8 +8,8 @@
 param
 (
         [Parameter(Mandatory = $true)][string] $Model = "..\DemoModel.eapx",
-        [Parameter(Mandatory = $true)][string] $Branch = "70-test-for-discussion",
-        [Parameter(Mandatory = $false)][string] $ModelRootIds = $null#,
+        [Parameter(Mandatory = $false)][string] $Branch = "",
+        [Parameter(Mandatory = $false)][string] $ModelRootIds = ""#,
         #for future use - filters are not supported by lemontree commandline - just by Session Files
         #[Parameter(Mandatory = $false)][boolean] $conflicedFilter = 1 #if set to 1 it will add conflicted filters in the session
 )
@@ -121,6 +121,75 @@ function Get-ModelRootIds
     }
 }
 
+function performGitCall
+{
+    param
+    (
+        [Parameter(Mandatory = $true)][string] $parameters,
+        [Parameter(Mandatory = $false)][string] $folder=""
+    )
+    process
+    {
+        #Log-Message $parameters
+        if($folder -ne "")
+        {
+            cd $folder
+        }
+        try{
+           $ret = git $parameters
+        }catch{
+           $ret = git $parameters
+        }
+        if (-not $?) {
+            throw "GIT Error " + $LASTEXITCODE
+        }
+        return $ret
+    }
+}
+
+function gitGetLocalBranches
+{
+    param
+    (
+        [Parameter(Mandatory = $true)][string] $folder
+    )
+    process
+    {	
+        performGitCall "branch" $folder | Where-Object -FilterScript { !( $_ -match "\(HEAD detached at" )} | foreach{$_ -Replace "\*", ""} | foreach{$_ -Replace "\s", ""}
+    }
+}
+
+function selectBranch{
+    param
+    (
+        [Parameter(Mandatory = $true)][string] $Folder
+    )
+    process
+    {	
+        $selectedBranch = ""
+        .{
+            $branches = gitGetLocalBranches($Folder)
+            Write-Host "Multiple branches were found."
+            Write-Host "Please choose a branch:"
+
+            1..$branches.Length | foreach-object { Write-Host "$($_): $($branches[$_-1])" }
+
+            [ValidateScript({$_ -ge 0 -and $_ -le $branches.Length})]
+            [int]$number = Read-Host "Press the number to select a branch or 0 to abort"
+
+            if($number -eq 0){
+                Write-Host "Aborted"
+            }
+            else {
+                #Write-Host "You chose: $number"
+                $selectedBranch = $branches[$number-1]
+                #Write-Host "Branch: $selectedBranch"
+            }
+        } | Out-Null
+        return $selectedBranch
+    }
+}
+
 #turn on strict mode
 Set-StrictMode -Version Latest
 
@@ -145,12 +214,23 @@ $startDirectory = Get-Location
 $gitRootDir= git rev-parse --show-toplevel
 Set-Location $gitRootDir
 
-# Get and output date from 3 branches/commmits involved.
+#Show active branch
+Write-Host ""
 $currentBranch = git branch --show-current
-$baseId = git merge-base "origin/$compareToBranch" $currentBranch
-$branchId = git log -n 1 "origin/$compareToBranch" --pretty=format:"%H"
-
 echo "Currently activ Branch: $currentBranch"
+
+# Ask user for branch if not specified
+if($compareToBranch -eq "")
+{
+    $compareToBranch = selectBranch -Folder $gitRootDir
+}
+Write-Output ""
+echo "Cherry picking from branch: $compareToBranch"
+
+# Get and output date from 3 branches/commmits involved.
+$baseId = git merge-base "$compareToBranch" $currentBranch
+$branchId = git log -n 1 "$compareToBranch" --pretty=format:"%H"
+
 echo "Commit id: $baseId for base"
 echo "Commit id: $branchId for $compareToBranch"
 
