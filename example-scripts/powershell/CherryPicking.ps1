@@ -73,14 +73,18 @@ function Get-DownloadedFilename
     )
     process
     {
-        $gitUri =  git config --get remote.origin.url
-        $gitUri = $gitUri.Replace(".git","");
         $stripPathFilename = $commitID + "_"+[System.IO.Path]::GetFileName($gitFilename)
         $tempFilename = Join-Path -Path "$env:TEMP" -ChildPath "$stripPathFilename"
-        $url = "$gitUri/raw/$commitID/$gitFilename"
-        while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-        curl "$url" --output "$tempFilename" -L -k -s #-L follows the redirect to get the LFS file. -s makes curl silent as the output looks strange for users
-        return @($tempFilename);
+
+        echo "Commit ID: $commitID"
+        #git fetch origin $commitID
+        $pointer = git cat-file blob ("$commitID"+":"+"$gitFilename")
+        $sha = ($pointer[1] -split(":"))[1]
+        $shaPart1 = $sha.Substring(0,2)
+        $shaPart2 = $sha.Substring(2,2)
+        echo "Model SHA: $sha"
+        git cat-file --filters ("$commitID"+":"+"$gitFilename") | Out-Null
+        copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "$tempFilename"
     }
 }
 
