@@ -1,5 +1,8 @@
-﻿$mpmsfile ="C:\LemonTreeTestData\publishExistingDemo\Customer A-46e3f67f-4e87-c98e-129a-049eb063405f.mpms"
-Echo ""
+﻿
+$mpmsfile ="Customer A-46e3f67f-4e87-c98e-129a-049eb063405f.mpms"
+$path = Get-Location
+$mpmsfile = [System.IO.Path]::Combine($path,$mpmsfile) 
+
 $componentFileName =""
 foreach($line in [System.IO.File]::ReadLines($mpmsfile))
 {
@@ -14,12 +17,15 @@ foreach($line in [System.IO.File]::ReadLines($mpmsfile))
           $componentFileName +=","  
         }
         $count++
+        $name = $dependency.name
+        $target = $dependency.target
 
-        $filename =""
-        $filename +=$dependency.name
-        $filename +="-"
-        $filename +=$dependency.target
-        $filename +=".mpms"
+        $filename ="$name-$target.mpms"
+        #$filename +="{$dependency.name}"
+        #$filename +=$dependency.name
+        #$filename +="-"
+        #$filename +=$dependency.target
+        #$filename +=".mpms"
         
         $componentFileName +=$filename
         
