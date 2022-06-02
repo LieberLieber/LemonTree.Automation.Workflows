@@ -12,7 +12,7 @@ env:
   ModelName: DemoModel
   ModelExtension: eapx
   ReviewSessionURL:  https://nexus.lieberlieber.com/repository/lemontree-session
-  LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
+  LemonTreePipelineToolsRemovePrerenderedDiagramsExecutable: https://nexus.lieberlieber.com/repository/lemontree-pipeline-tools/LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe 
 
 jobs:
   build:
@@ -20,7 +20,7 @@ jobs:
       run:
         shell: pwsh
     # The type of runner that the job will run on
-    runs-on: [self-hosted, lemontree]
+    runs-on: windows-latest
     timeout-minutes: 15
     steps:
       - name: Check for related Pull Requests
@@ -56,6 +56,15 @@ jobs:
         with:
           lfs: true
           fetch-depth: 0
+
+      # download Lemontree.Automation on a runner and setup the license
+      - name: GetLTA
+        if: ${{ steps.checkNumber.outputs.count > 0}}
+        uses: LieberLieber/setup-LemonTree.Automation@v0.6
+        id: GetLTA
+        with:
+          License: ${{secrets.LTALICENSE}} 
+      #ExeLocation &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}"
 
       - name: Iterate over Pull Requests
         if: ${{ steps.checkNumber.outputs.count > 0}}
@@ -124,7 +133,7 @@ jobs:
             $sourceFile = $modelFileName +"_"+$commitIds.sourceId
             $targetUrl = "${{env.ReviewSessionURL}}/$sessionFileName"
             
-            &"${{env.LemonTreeAutomationExecutable}}" `
+            &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}"`
               merge `
               --base $baseFile `
               --theirs $targetFile `
@@ -135,8 +144,14 @@ jobs:
             
             if($LASTEXITCODE -eq 0)
             {
+              echo "Remove DIAGRAMIMAGEMAP"
+              while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+              curl "${{env.LemonTreePipelineToolsRemovePrerenderedDiagramsExecutable}}" --output LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe
+              .\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --model $baseFile
+              .\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --model $sourceFile
+              
               echo "No merge conflicts, creating diff file"
-              &"${{env.LemonTreeAutomationExecutable}}" `
+              &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" `
                 diff `
                 --theirs $baseFile `
                 --mine $sourceFile `

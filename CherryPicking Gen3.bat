@@ -1,0 +1,1 @@
+powershell .\example-scripts\powershell\CherryPicking.ps1 -Model DemoModel.eapx

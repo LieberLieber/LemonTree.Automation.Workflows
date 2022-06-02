@@ -18,17 +18,25 @@ jobs:
     defaults:
       run:
         shell: pwsh
-    runs-on: [self-hosted, lemontree]
+    runs-on: windows-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v2
         with:
           lfs: true
           fetch-depth: 0
+
+      # download Lemontree.Automation on a runner and setup the license
+      - name: GetLTA
+        uses: LieberLieber/setup-LemonTree.Automation@v0.6
+        id: GetLTA
+        with:
+          License: ${{secrets.LTALICENSE}} 
+      #ExeLocation &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}"
                       
       - name: ConsistencyCheck
         run: |
-          &"${{env.LemonTreeAutomationExecutable}}" ConsistencyCheck --Model ${{env.ModelName}}.${{env.ModelExtension}}
+          &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" ConsistencyCheck --Model ${{env.ModelName}}.${{env.ModelExtension}}
  
      
     

@@ -18,14 +18,14 @@ env:
   ModelName: DemoModel
   ModelExtension: eapx
   ReviewSessionURL: https://nexus.lieberlieber.com/repository/lemontree-session
-  LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
+  LemonTreePipelineToolsRemovePrerenderedDiagramsExecutable: https://nexus.lieberlieber.com/repository/lemontree-pipeline-tools/LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe 
 
 jobs:
   PublishReviewSession:
     defaults:
       run:
         shell: pwsh
-    runs-on: [self-hosted, lemontree]
+    runs-on: windows-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v2
@@ -105,12 +105,20 @@ jobs:
           echo "Model SHA: $sha"
           git cat-file --filters ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}" | Out-Null
           copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.${{env.ModelExtension}}"
-
+      
+      # download Lemontree.Automation on a runner and setup the license
+      - name: GetLTA
+        uses: LieberLieber/setup-LemonTree.Automation@v0.6
+        id: GetLTA
+        with:
+          License: ${{secrets.LTALICENSE}} 
+      #ExeLocation &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}"
+      
       - name: Check for merge conflicts
         if: steps.baseDownload.outputs.result == 'downloaded'
         id: mergeCheck
         run: |
-          &"${{env.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --dryrun --sfs ${{ steps.session_file.outputs.result }} --abortOnConflict true
+          &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --dryrun --sfs ${{ steps.session_file.outputs.result }} --abortOnConflict true
           echo "::set-output name=result::$LASTEXITCODE"
           echo "Return code: $LASTEXITCODE"
           if($LASTEXITCODE -eq 0){
@@ -133,21 +141,57 @@ jobs:
           }
           else{
             echo "Unknown error"
-          }
+          }    
 
-      - name: Create review session file
+      - name: Remove DIAGRAMIMAGEMAPS for Diff
         if: steps.mergeCheck.outputs.result == 0
         run: |
-          &"${{env.LemonTreeAutomationExecutable}}" diff --theirs ${{env.ModelName}}_base.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }}
+          while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+          curl "${{env.LemonTreePipelineToolsRemovePrerenderedDiagramsExecutable}}" --output LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe
+          echo ".\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_base.${{env.ModelExtension}}"
+          .\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_base.${{env.ModelExtension}}
+          echo ".\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_head.${{env.ModelExtension}}"
+          .\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_head.${{env.ModelExtension}}
+          
+      - name: Create review session file
+        id: checkSession
+        run: |
+          $Message = "${{ steps.mergeCheck.outputs.message }}"
+          $mergecheckresult = ${{ steps.mergeCheck.outputs.result}}
+          if ($mergecheckresult  -eq 0)
+          {
+            $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --theirs ${{env.ModelName}}_base.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }}
+            echo $output
+            ForEach ($line in $($output -split "`r`n"))
+            {
+                if ($line.EndsWith('Found 0 different elements.'))
+                {
+                  echo "No differences we don't need to publish the session file."
+                  $Message = ":heavy_check_mark: **Model is identical!**"
+                  $sfsfilename =""; 
+                }                
+            }
+          }
+          echo "$Message"
+          echo "::set-output name=SfsFileName::$sfsfilename"
+          echo "::set-output name=message::$Message"
+          exit 0
 
       - name: Upload
         if: steps.baseDownload.outputs.result == 'downloaded'
         run: |
-          $sessionFileName = "${{ steps.session_file.outputs.result }}"
-          $targetUrl = "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
-          echo "Uploading $sessionFileName to Nexus: $targetUrl"
-          while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-          curl "-u${{secrets.NEXUSAUTHENTICATION}}" -T $sessionFileName $targetUrl
+          $sessionFileName = "${{ steps.checkSession.outputs.SfsFileName }}"
+          if ([string]::IsNullOrEmpty($sessionFileName))
+          {
+            echo "Nothing to upload"
+          }
+          else
+          {
+            $targetUrl = "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
+            echo "Uploading $sessionFileName to Nexus: $targetUrl"
+            while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+            curl "-u${{secrets.NEXUSAUTHENTICATION}}" -T $sessionFileName $targetUrl
+          }
 
       - name: Archive Session Files
         if: steps.baseDownload.outputs.result == 'downloaded'
@@ -166,5 +210,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `${{ steps.mergeCheck.outputs.message }}`
+              body: `${{ steps.checkSession.outputs.message }}`
             })

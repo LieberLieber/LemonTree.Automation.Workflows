@@ -348,4 +348,11 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
 *.ldb
+/example-scripts/powershell/LTA.zip
+/example-scripts/LTA
+/example-scripts/powershell/DemoModel_Branch.eapx
+/example-scripts/powershell/session_A_B.ltses
+/example-scripts/powershell/session_A_B.ltses - Copy.xml
+/example-scripts/powershell/session_A_B.ltses.xml
