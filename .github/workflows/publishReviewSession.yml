@@ -157,6 +157,7 @@ jobs:
         id: checkSession
         run: |
           $Message = "${{ steps.mergeCheck.outputs.message }}"
+          $sfsfilename ="${{ steps.session_file.outputs.result }}"
           $mergecheckresult = ${{ steps.mergeCheck.outputs.result}}
           if ($mergecheckresult  -eq 0)
           {
