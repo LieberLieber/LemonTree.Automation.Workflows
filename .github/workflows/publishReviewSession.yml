@@ -143,15 +143,15 @@ jobs:
             echo "Unknown error"
           }    
 
-      - name: Remove DIAGRAMIMAGEMAPS for Diff
-        if: steps.mergeCheck.outputs.result == 0
-        run: |
-          while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-          curl "${{env.LemonTreePipelineToolsRemovePrerenderedDiagramsExecutable}}" --output LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe
-          echo ".\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_base.${{env.ModelExtension}}"
-          .\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_base.${{env.ModelExtension}}
-          echo ".\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_head.${{env.ModelExtension}}"
-          .\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_head.${{env.ModelExtension}}
+      # - name: Remove DIAGRAMIMAGEMAPS for Diff
+      #   if: steps.mergeCheck.outputs.result == 0
+      #   run: |
+      #     while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+      #     curl "${{env.LemonTreePipelineToolsRemovePrerenderedDiagramsExecutable}}" --output LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe
+      #     echo ".\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_base.${{env.ModelExtension}}"
+      #     .\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_base.${{env.ModelExtension}}
+      #     echo ".\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_head.${{env.ModelExtension}}"
+      #     .\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_head.${{env.ModelExtension}}
           
       - name: Create review session file
         id: checkSession
