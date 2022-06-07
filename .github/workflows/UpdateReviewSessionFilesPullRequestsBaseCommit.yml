@@ -144,27 +144,7 @@ jobs:
             
             if($LASTEXITCODE -eq 0)
             {
-              echo "Remove DIAGRAMIMAGEMAP"
-              while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-              curl "${{env.LemonTreePipelineToolsRemovePrerenderedDiagramsExecutable}}" --output LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe
-              .\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --model $baseFile
-              .\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --model $sourceFile
-              
-              echo "No merge conflicts, creating diff file"
-              &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" `
-                diff `
-                --theirs $baseFile `
-                --mine $sourceFile `
-                --sfs $sessionFileName
-              
-              echo "Uploading $sessionFileName to Nexus: $targetUrl"
-              while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-              curl "-u${{secrets.NEXUSAUTHENTICATION}}" -T $sessionFileName $targetUrl
-              
-              $prMessage =@{}
-              $prMessage.number=$pr.number
-              $prMessage.message="New commit on target branch\n[Review Session file]($targetUrl)\n:heavy_check_mark: **No merge conflicts in model**\n\nInstall [LemonTree 3.3+](https://www.lieberlieber.com/lemontree/en/) to open the Review Session file."
-              $messageList.Add($prMessage)
+              echo "No merge conflicts, update only on target branch. No new review session file required."
             }
             elseif($LASTEXITCODE -eq 2)
             {
