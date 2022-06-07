@@ -18,7 +18,7 @@ env:
 
 jobs:
   Check_Rights:
-    if: ${{ github.event.issue.pull_request && github.event.comment.body == '/merge/'}}
+    if: ${{ github.event.issue.pull_request && startsWith(github.event.comment.body, '/merge/')}}
     runs-on: windows-latest
     outputs:
       userAuthentication: ${{ steps.SelectAuthResult.outputs.result }}
