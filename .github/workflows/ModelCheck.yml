@@ -1,0 +1,122 @@
+# Copyright (c) LieberLieber Software GmbH
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+name: LemonTree Model Readiness Check
+
+on:
+ push:
+
+env:
+  ModelName: model.qeax
+
+jobs:
+  ModelReadinessCheck:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          fetch-depth: 0
+
+      - name: Download LemonTree Check Tool
+        run: |
+          #Powershell sees curly brackets as codeblocks so use quotations marks "{}" or just write your guids without them
+          while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+          curl "https://nexus.lieberlieber.com/repository/lemontree-pipeline-tools/LemonTree.Pipeline.Tools.ModelCheck.exe" --output .\LemonTree.Pipeline.Tools.ModelCheck.exe -k
+                      
+      - name: Run LemonTree Check Tool
+        id: modelcheck
+        run: |
+          echo "starting validation"
+          .\LemonTree.Pipeline.Tools.ModelCheck.exe  --model "${{env.ModelName}}" --out ".\output.md" --FailOnErrors 
+          type "output.md"
+
+          echo "finished validation with $LASTEXITCODE"
+
+          #  Exit codes of LemonTree.Pipeline.Tools.ModelCheck.exe:
+          #  * -2 = other runtime exception occurred
+          #  * -1 = CLI argument parsing error occurred
+          #  *  0 = model is valid (no error, no warning, no runtime exception)
+          #  *  1 = model has at least one warning (only if --FailOnWarnings or --FailOnErrors)
+          #  *  2 = model has at least one error  (only if --FailOnErrors)
+
+          $Message = "output.md"
+
+          echo "::set-output name=modelcheckExitCode::$($LASTEXITCODE)"
+      
+          #for now never stop 
+          exit 0
+
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
+      - name: Find Pull Request
+        uses: juliangruber/find-pull-request-action@v1
+        id: find-pull-request
+        with:
+           branch: ${{ steps.extract_branch.outputs.branch }}
+
+      - name: Read output.md
+        if: ${{ steps.find-pull-request.outputs.number > 0}} #only makes sense if we have a PR for the branch
+        id: package
+        uses: juliangruber/read-file-action@v1
+        with:
+            path: .\output.md
+
+      - name: Create PR comment
+        if: ${{ steps.find-pull-request.outputs.number > 0}} #only makes sense if we have a PR for the branch
+        uses: actions/github-script@v5
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              issue_number: ${{ steps.find-pull-request.outputs.number }},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `${{ steps.package.outputs.content }}`
+            })
+
+      - name: evaulate Exit Code
+        run: |
+          echo "set job failed on ..."
+          echo "Current Exit Code ${{ steps.modelcheck.outputs.modelcheckExitCode }}"
+
+          #  Exit codes of LemonTree.Pipeline.Tools.ModelCheck.exe:
+          #  * -2 = other runtime exception occurred
+          #  * -1 = CLI argument parsing error occurred
+          #  *  0 = model is valid (no error, no warning, no runtime exception)
+          #  *  1 = model has at least one warning (only if --FailOnWarnings or --FailOnErrors)
+          #  *  2 = model has at least one error  (only if --FailOnErrors)
+
+          if (${{ steps.modelcheck.outputs.modelcheckExitCode }} -eq 1)
+          {
+            #fail on warning
+            Echo "model has at least one warning"
+            #fail on warning
+            #exit 3
+            #ignore warning
+            exit 0
+          }
+          elseif (${{ steps.modelcheck.outputs.modelcheckExitCode }} -eq 2)
+          {
+              #fail on Error
+              echo "model has at least one error"
+              exit 2
+          }
+          elseif (${{ steps.modelcheck.outputs.modelcheckExitCode }} -eq 0)
+          {
+            #brilliant model
+            Echo "modelcheck is passed"
+            exit 0
+          }
+          else
+          {
+            exit steps.modelcheck.outputs.modelcheckExitCode
+          }
+ 
+     
+    
