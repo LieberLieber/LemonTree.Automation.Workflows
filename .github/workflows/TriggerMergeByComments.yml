@@ -180,7 +180,7 @@ jobs:
 
       # download Lemontree.Automation on a runner and setup the license
       - name: GetLTA
-        if: ${{ steps.checkNumber.outputs.count > 0}}
+        #if: ${{ steps.checkNumber.outputs.count > 0}}
         uses: LieberLieber/setup-LemonTree.Automation@v0.6
         id: GetLTA
         with:
