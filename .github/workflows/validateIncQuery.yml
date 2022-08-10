@@ -31,7 +31,8 @@ jobs:
           #Powershell sees curly brackets as codeblocks so use quotations marks "{}" or just write your guids without them
           #assume license is in appdata
           while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-          curl "https://build.incquerylabs.com/nexus/repository/lieberlieber-collaboration-raw/ea-iqs-connector-poc/0.1.1/ea-iqs-connector-poc_0.1.1_20220505.zip" "-u${{secrets.IQSNEXUS}}" --output ea-iqs.zip -k
+          #curl "https://build.incquerylabs.com/nexus/repository/lieberlieber-collaboration-raw/ea-iqs-connector-poc/0.1.1/ea-iqs-connector-poc_0.1.1_20220505.zip" "-u${{secrets.IQSNEXUS}}" --output ea-iqs.zip -k
+          curl "https://build.incquerylabs.com/nexus/repository/lieberlieber-collaboration-raw/ea-iqs-connector-poc-v2/0.1.0/ea-connector-poc-v2-client-pack_0.1.0_20220714.zip" "-u${{secrets.IQSNEXUS}}" --output ea-iqs.zip -k
           Expand-Archive ea-iqs.zip -DestinationPath .\ea-iqs\ -Force
 
       - name: Run SysML Check Tool
