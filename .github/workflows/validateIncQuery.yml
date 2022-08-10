@@ -39,7 +39,7 @@ jobs:
         id: sysmlCheck
         run: |
           echo "starting validation"
-          .\ea-iqs\Com.Incquerylabs.Incquery.Connector.Cli.exe -i "${{secrets.IQSVALIDATIONSERVER}}" --sso -u "${{secrets.IQSUSER}}" -p "${{secrets.IQSPWD}}" -o "output.md" -c "${{env.ModelName}}.${{env.ModelExtension}}"
+          .\ea-iqs\assemblies\IncQueryServer.EA.Connector.DemoWorkflow.exe -i "${{secrets.IQSVALIDATIONSERVER}}" --sso -u "${{secrets.IQSUSER}}" -p "${{secrets.IQSPWD}}" -o "output.md" -m "${{env.ModelName}}.${{env.ModelExtension}}"
           type "output.md"
 
           echo "finished validation with $LASTEXITCODE"
