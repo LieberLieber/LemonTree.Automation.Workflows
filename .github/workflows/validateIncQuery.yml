@@ -32,8 +32,8 @@ jobs:
           #assume license is in appdata
           while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
           
-          curl "https://build.incquerylabs.com/nexus/repository/lieberlieber-collaboration-raw/ea-iqs-connector-poc/0.1.1/ea-iqs-connector-poc_0.1.1_20220505.zip" "-u${{secrets.IQSNEXUS}}" --output ea-iqs.zip -k
-          #curl "https://build.incquerylabs.com/nexus/repository/lieberlieber-collaboration-raw/ea-iqs-connector-poc-v2/0.1.0/ea-connector-poc-v2-client-pack_0.1.0_20220714.zip" "-u${{secrets.IQSNEXUS}}" --output ea-iqs.zip -k
+          #curl "https://build.incquerylabs.com/nexus/repository/lieberlieber-collaboration-raw/ea-iqs-connector-poc/0.1.1/ea-iqs-connector-poc_0.1.1_20220505.zip" "-u${{secrets.IQSNEXUS}}" --output ea-iqs.zip -k
+          curl "https://build.incquerylabs.com/nexus/repository/lieberlieber-collaboration-raw/ea-iqs-connector-poc-v2/0.1.1/ea-connector-poc-v2-client-pack-0.1.1.zip" "-u${{secrets.IQSNEXUS}}" --output ea-iqs.zip -k
           
           Expand-Archive ea-iqs.zip -DestinationPath .\ea-iqs\ -Force
 
@@ -42,8 +42,8 @@ jobs:
         run: |
           echo "starting validation"
           
-          .\ea-iqs\Com.Incquerylabs.Incquery.Connector.Cli.exe -i "${{secrets.IQSVALIDATIONSERVER}}" --sso -u "${{secrets.IQSUSER}}" -p "${{secrets.IQSPWD}}" -o "output.md" -c "${{env.ModelName}}.${{env.ModelExtension}}"
-          #.\ea-iqs\assemblies\IncQueryServer.EA.Connector.DemoWorkflow.exe -i "${{secrets.IQSVALIDATIONSERVER}}" --sso -u "${{secrets.IQSUSER}}" -p "${{secrets.IQSPWD}}" -o "output.md" -m "${{env.ModelName}}.${{env.ModelExtension}}"
+          #.\ea-iqs\Com.Incquerylabs.Incquery.Connector.Cli.exe -i "${{secrets.IQSVALIDATIONSERVER}}" --sso -u "${{secrets.IQSUSER}}" -p "${{secrets.IQSPWD}}" -o "output.md" -c "${{env.ModelName}}.${{env.ModelExtension}}"
+          .\ea-iqs\assemblies\IncQueryServer.EA.Connector.DemoWorkflow.exe -i "${{secrets.IQSVALIDATIONSERVER}}" --sso -u "${{secrets.IQSUSER}}" -p "${{secrets.IQSPWD}}" -o "output.md" -m "${{env.ModelName}}.${{env.ModelExtension}}"
           
           type "output.md"
 
