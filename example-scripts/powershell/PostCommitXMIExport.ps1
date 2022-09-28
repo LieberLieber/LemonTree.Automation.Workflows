@@ -9,3 +9,4 @@ $theProject.ExportPackageXMI("{FA69A423-37E5-4c35-B982-0849B8820AB3}",22,0,-1,0,
 $ea.CloseFile()
 $ea.Exit()
 
+
