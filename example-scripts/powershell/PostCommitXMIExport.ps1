@@ -8,5 +8,3 @@ $theProject = $ea.GetProjectInterface();
 $theProject.ExportPackageXMI("{FA69A423-37E5-4c35-B982-0849B8820AB3}",22,0,-1,0,0,"C:\github\LemonTree.Automation.Workflows\export.xmi");
 $ea.CloseFile()
 $ea.Exit()
-
-
