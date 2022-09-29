@@ -3,8 +3,15 @@ Echo "Create EA"
 $ea = New-Object -ComObject "EA.Repository" -Strict
 Echo "Created EA"
 $ea.OpenFile("C:\github\LemonTree.Automation.Workflows\DemoModel.eapx")
- v
+
+foreach($model in $ea.models) 
+{ 
+    echo $model.PackageGUID
+}
+
+
+
 $theProject = $ea.GetProjectInterface();
-$theProject.ExportPackageXMI("{FA69A423-37E5-4c35-B982-0849B8820AB3}",22,0,-1,0,0,"C:\github\LemonTree.Automation.Workflows\export.xmi");
+$theProject.ExportPackageXMI("{02BAEABD-6A12-4489-BCA3-8D33C05B81DB}",22,0,-1,0,0,"C:\github\LemonTree.Automation.Workflows\export.xmi");
 $ea.CloseFile()
 $ea.Exit()
