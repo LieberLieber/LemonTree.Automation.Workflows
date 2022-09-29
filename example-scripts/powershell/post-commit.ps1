@@ -1,7 +1,4 @@
-
-
 Write-Output "post-commit publish of XMI to Nexus"
-$curl = "C:\Program Files\Git\mingw64\bin\curl.exe"
 $mypath = $MyInvocation.MyCommand.Path
 Write-Output "Create EA"
 $ea = New-Object -ComObject "EA.Repository" -Strict
@@ -25,11 +22,10 @@ Write-Output "Disposed EA"
 $file =  Join-Path -Path $repoPath  -ChildPath "..\nexus.inf"
 $file = [System.IO.Path]::GetFullPath($file)
 $SecureCredential = Get-Content "$file" | ConvertTo-SecureString
-$login = (New-Object PSCredential "username",$SecureCredential).GetNetworkCredential().Passwor
+$login = (New-Object PSCredential "username",$SecureCredential).GetNetworkCredential().Password
 $targetUrl = "https://nexus.lieberlieber.com/repository/xmi/"
 Write-Output "Uploading $xmiFile to Nexus: $targetUrl"
 while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-&$curl "-u$login" -T "$xmiFile" "$targetUrl"
-Write-Output "Upload to Nexus" 
-
-
+Write-Output $login
+&curl.exe "-u$login" -T "$xmiFile" "$targetUrl"
+Write-Output "Upload to Nexus"
