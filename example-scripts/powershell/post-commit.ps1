@@ -3,10 +3,14 @@
 #to embedded this script in your hook file simply add the next line to the post-commit file.
 #c:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -ExecutionPolicy RemoteSigned -File 'example-scripts\powershell\post-commit.ps1'
 
+#Parameters
+#need to be setup for your repo
+$eaModel = "DemoModel.eapx"
+
 #prepare environment
 Write-Output "post-commit publish of XMI to Nexus"
 $repoPath = git rev-parse --show-toplevel
-$modelfile = Join-Path -Path $repoPath  -ChildPath "DemoModel.eapx"
+$modelfile = Join-Path -Path $repoPath  -ChildPath $eaModel
 $gitcommitId = git rev-parse HEAD
 
 #prepare upload to Artifact Provider
@@ -46,9 +50,9 @@ foreach($model in $ea.models)
     }
 }
 Write-Output "Finished XMI Export"
+
+#cleanup
 $ea.CloseFile()
 $ea.Exit()
 Write-Output "Disposed EA"
-
-
-
+Write-Output "Finished"
