@@ -14,7 +14,6 @@ foreach ($url in $json.items.assets.downloadUrl)
     Write-Host $file
     Write-Host $url
     $content = ((Invoke-WebRequest -Uri $url -Method Get) -replace "﻿")
-    Echo $content
     [IO.File]::WriteAllLines($file, $content)
   }
 }
