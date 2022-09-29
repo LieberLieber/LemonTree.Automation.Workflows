@@ -32,3 +32,4 @@ while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding 
 &$curl "-u$login" -T "$xmiFile" "$targetUrl"
 Write-Output "Upload to Nexus" 
 
+
