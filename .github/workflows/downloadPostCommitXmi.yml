@@ -1,0 +1,58 @@
+# Copyright (c) LieberLieber Software GmbH
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+name: Download XMI files for Commit ID
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+      - review_requested
+
+env:
+  xmiURL: https://nexus.lieberlieber.com/repository/lemontree-session
+  
+
+jobs:
+  PublishReviewSession:
+    defaults:
+      run:
+        shell: pwsh
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          fetch-depth: 0
+                    
+      - name: Download XMI Files
+        id: downloadXmi
+        run: |
+          $gitcommitId = git rev-parse HEAD
+          $json = Invoke-RestMethod -Uri https://nexus.lieberlieber.com/service/rest/v1/components?repository=xmi -Method Get
+          foreach ($url in $json.items.assets.downloadUrl) 
+          {
+            $url = $url.Insert(4,"s")
+            $file = $url.Substring($url.lastIndexOf('/') + 1)
+            if($file.StartsWith($gitcommitId))
+            {
+              Write-Host $file
+              $content = ((Invoke-RestMethod -Uri $url -Method Get) -replace "ï»¿")
+              [IO.File]::WriteAllLines($file, $content)
+            }
+          }
+          exit 0
+
+      - name: Archive Session Files
+        uses: actions/upload-artifact@v3
+        with:
+          name: Post Commit XMi
+          path: ".\\*.xmi" #${{ steps.downloadXmi.outputs.result }}
+          retention-days: 5
+
