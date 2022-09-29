@@ -19,7 +19,7 @@ env:
   
 
 jobs:
-  PublishReviewSession:
+  DownloadPostCommitXmi:
     defaults:
       run:
         shell: pwsh
@@ -35,6 +35,7 @@ jobs:
         id: downloadXmi
         run: |
           $gitcommitId = git rev-parse HEAD
+          Echo "git CommitId: $gitcommitId"
           $json = Invoke-RestMethod -Uri https://nexus.lieberlieber.com/service/rest/v1/components?repository=xmi -Method Get
           foreach ($url in $json.items.assets.downloadUrl) 
           {
@@ -42,7 +43,7 @@ jobs:
             $file = $url.Substring($url.lastIndexOf('/') + 1)
             if($file.StartsWith($gitcommitId))
             {
-              Write-Host $file
+              Echo $file
               $content = ((Invoke-RestMethod -Uri $url -Method Get) -replace "ï»¿")
               [IO.File]::WriteAllLines($file, $content)
             }
