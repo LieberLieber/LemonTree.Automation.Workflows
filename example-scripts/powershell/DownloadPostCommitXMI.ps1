@@ -1,3 +1,5 @@
+#this script downloads xmi files from the artifact storage to be used by pipeline tools.
+
 $gitcommitId = git rev-parse HEAD
 $json = Invoke-RestMethod -Uri https://nexus.lieberlieber.com/service/rest/v1/components?repository=xmi -Method Get
 foreach ($url in $json.items.assets.downloadUrl) {
