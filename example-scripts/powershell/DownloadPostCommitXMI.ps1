@@ -1,5 +1,5 @@
 #this script downloads xmi files from the artifact storage to be used by pipeline tools.
-#typically it will run on an build agent
+#typically it will run on an build agent like GitHub Actions
 
 $gitcommitId = git rev-parse HEAD
 $json = Invoke-RestMethod -Uri https://nexus.lieberlieber.com/service/rest/v1/components?repository=xmi -Method Get
