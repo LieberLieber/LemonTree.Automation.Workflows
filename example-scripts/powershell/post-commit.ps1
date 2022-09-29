@@ -28,6 +28,7 @@ $login = (New-Object PSCredential "username",$SecureCredential).GetNetworkCreden
 
 $targetUrl = "https://nexus.lieberlieber.com/repository/xmi/"
 echo "Uploading $xmiFile to Nexus: $targetUrl"
+echo "login $login"
 while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
 curl "-u $login" -T "$xmiFile" "$targetUrl"
 Finsihed-Output "Upload to Nexxus" 
