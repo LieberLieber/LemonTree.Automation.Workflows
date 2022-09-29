@@ -41,11 +41,11 @@ foreach($model in $ea.models)
         $result = $theProject.ExportPackageXMI("$packageGuid",22,0,-1,0,0,$xmiFile);
          
         Write-Output "Uploading $xmiFile to Nexus: $targetUrl"
+        #it only works like this for me with curl.exe
         &curl.exe "-u$login" -T "$xmiFile" "$targetUrl"
     }
 }
-
-Write-Output "Finsihed XMI Export"
+Write-Output "Finished XMI Export"
 $ea.CloseFile()
 $ea.Exit()
 Write-Output "Disposed EA"
