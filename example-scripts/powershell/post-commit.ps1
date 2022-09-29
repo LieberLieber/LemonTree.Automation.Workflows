@@ -1,4 +1,5 @@
 Echo "Create EA"
+$curl = "C:\Program Files\Git\mingw64\bin\curl.exe"
 $mypath = $MyInvocation.MyCommand.Path
 Write-Output "Path of the script : $mypath"
 $ea = New-Object -ComObject "EA.Repository" -Strict
@@ -27,8 +28,8 @@ $SecureCredential = Get-Content "$file" | ConvertTo-SecureString
 $login = (New-Object PSCredential "username",$SecureCredential).GetNetworkCredential().Password
 
 $targetUrl = "https://nexus.lieberlieber.com/repository/xmi/"
-echo "Uploading $xmiFile to Nexus: $targetUrl"
-echo "login $login"
+Write-Output "Uploading $xmiFile to Nexus: $targetUrl"
+
 while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-curl "-u $login" -T $xmiFile $targetUrl
-Finsihed-Output "Upload to Nexxus" 
+&$curl '-u$login' -T '$xmiFile' '$targetUrl'
+Write-Output "Upload to Nexxus" 
