@@ -4,7 +4,9 @@ Write-Output "Path of the script : $mypath"
 $ea = New-Object -ComObject "EA.Repository" -Strict
 $repoPath = git rev-parse --show-toplevel
 $modelfile = Join-Path -Path $repoPath  -ChildPath "DemoModel.eapx"
-$xmiFile = Join-Path -Path $repoPath  -ChildPath "export.xmi"
+$gitcommitId = git rev-parse HEAD
+$xmiFileName = "$gitcommitId.xmi"
+$xmiFile = Join-Path -Path $repoPath  -ChildPath "$xmiFileName"
 Write-Output "Model File : $modelfile"
 Write-Output "XMI File : $xmiFile"
 
@@ -18,3 +20,14 @@ Write-Output "Finsihed XMI Export"
 $ea.CloseFile()
 $ea.Exit()
 Write-Output "Disposed EA"
+Write-Output "Upload to Nexxus"
+$file =  Join-Path -Path $repoPath  -ChildPath "..\nexus.inf"
+$file = [System.IO.Path]::GetFullPath($file)
+$SecureCredential = Get-Content "$file" | ConvertTo-SecureString
+$login = (New-Object PSCredential "username",$SecureCredential).GetNetworkCredential().Password
+
+$targetUrl = "https://nexus.lieberlieber.com/repository/xmi"
+echo "Uploading $xmiFileName to Nexus: $targetUrl"
+while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+curl "-u$login" -T $xmiFile $targetUrl
+Finsihed-Output "Upload to Nexxus"
