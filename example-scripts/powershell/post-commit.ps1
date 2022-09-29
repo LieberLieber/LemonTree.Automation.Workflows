@@ -1,3 +1,7 @@
+#powershell script to run from the post-commit file in ./git/hooks
+#It will publish an XMI file to in our case Nexus to be used by pipelinetools that handle EA XMI
+#to embedded this script in your hook file simply add the next line to the post-commit file.
+#c:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -ExecutionPolicy RemoteSigned -File 'example-scripts\powershell\post-commit.ps1'
 Write-Output "post-commit publish of XMI to Nexus"
 $mypath = $MyInvocation.MyCommand.Path
 Write-Output "Create EA"
