@@ -26,8 +26,8 @@ $file = [System.IO.Path]::GetFullPath($file)
 $SecureCredential = Get-Content "$file" | ConvertTo-SecureString
 $login = (New-Object PSCredential "username",$SecureCredential).GetNetworkCredential().Password
 
-$targetUrl = "https://nexus.lieberlieber.com/repository/xmi"
-echo "Uploading $xmiFileName to Nexus: $targetUrl"
+$targetUrl = "https://nexus.lieberlieber.com/repository/xmi/"
+echo "Uploading $xmiFile to Nexus: $targetUrl"
 while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-curl "-u$login" -T $xmiFile $targetUrl
+curl "-u $login" -T "$xmiFile" "$targetUrl"
 Finsihed-Output "Upload to Nexxus"
