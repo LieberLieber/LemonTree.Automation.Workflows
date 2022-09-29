@@ -31,5 +31,5 @@ $targetUrl = "https://nexus.lieberlieber.com/repository/xmi/"
 Write-Output "Uploading $xmiFile to Nexus: $targetUrl"
 
 while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-&$curl '-u$login' -T '$xmiFile' '$targetUrl'
+&$curl "-u$login" -T "$xmiFile" "$targetUrl"
 Write-Output "Upload to Nexxus" 
