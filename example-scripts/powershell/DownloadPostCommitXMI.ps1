@@ -12,7 +12,9 @@ foreach ($url in $json.items.assets.downloadUrl)
   if($file.StartsWith($gitcommitId))
   {
     Write-Host $file
-    $content = ((Invoke-RestMethod -Uri $url -Method Get) -replace "﻿")
+    Write-Host $url
+    $content = ((Invoke-WebRequest -Uri $url -Method Get) -replace "﻿")
+    Echo $content
     [IO.File]::WriteAllLines($file, $content)
   }
 }
