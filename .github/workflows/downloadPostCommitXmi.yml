@@ -15,7 +15,7 @@ on:
       - review_requested
 
 env:
-  xmiURL: https://nexus.lieberlieber.com/service/rest/v1/components?repository=xmi
+  xmiURL: https://nexus.lieberlieber.com/service/rest/v1/search?repository=xmi
   
 
 jobs:
@@ -36,7 +36,9 @@ jobs:
         run: |
           $gitcommitId = git rev-parse origin/$env:GITHUB_HEAD_REF
           Echo "git CommitId: $gitcommitId"
-          $json = Invoke-RestMethod -Uri ${{env.xmiURL}} -Method Get
+          $url = "${{env.xmiURL}}&name=$gitcommitId*"
+          Echo $url
+          $json = Invoke-RestMethod -Uri $url -Method Get
           foreach ($url in $json.items.assets.downloadUrl) 
           {
             $url = $url.Insert(4,"s")
