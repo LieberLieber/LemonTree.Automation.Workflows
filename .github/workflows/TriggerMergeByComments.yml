@@ -78,7 +78,7 @@ jobs:
     
     steps:
       - name: Post start message in PR
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           script: |
             await github.rest.issues.createComment({
@@ -90,7 +90,7 @@ jobs:
             
       - name: Retrieve Rull Request details
         id: pr_details
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           result-encoding: string
           script: |
@@ -112,7 +112,7 @@ jobs:
             core.setOutput('head', triggeredPR.head.ref)
             core.setOutput('base', triggeredPR.base.ref)
             
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           lfs: true
           fetch-depth: 0
@@ -245,7 +245,7 @@ jobs:
            
       - name: Create Finish Message in PR
         if: always()
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           script: |
             await github.rest.issues.createComment({

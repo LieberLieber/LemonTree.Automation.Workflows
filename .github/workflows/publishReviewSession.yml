@@ -28,7 +28,7 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           lfs: true
           fetch-depth: 0
@@ -51,7 +51,7 @@ jobs:
 
       - name: Create sessionfile name
         id: session_file
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           result-encoding: string
           script: |
@@ -83,7 +83,7 @@ jobs:
           
       - name: Post new model comment to PR
         if: steps.baseDownload.outputs.result == 'notFound'
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           script: |
             await github.rest.issues.createComment({
@@ -204,7 +204,7 @@ jobs:
 
       - name: Create PR comment
         if: steps.baseDownload.outputs.result == 'downloaded'
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           script: |
             await github.rest.issues.createComment({

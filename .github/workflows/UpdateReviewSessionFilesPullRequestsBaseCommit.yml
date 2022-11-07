@@ -25,7 +25,7 @@ jobs:
     steps:
       - name: Check for related Pull Requests
         id: linked_prs
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           result-encoding: string
           script: |
@@ -51,7 +51,7 @@ jobs:
           $prList = $env:jsVar | ConvertFrom-Json
           echo "::set-output name=count::$($prList.length)"
           
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         if: ${{ steps.checkNumber.outputs.count > 0}}
         with:
           lfs: true
@@ -176,7 +176,7 @@ jobs:
           
       - name: CreateComments
         if: ${{ steps.checkNumber.outputs.count > 0}}
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           script: |
             const prList = JSON.parse(`${{steps.WorkOnPr.outputs.result}}`)
