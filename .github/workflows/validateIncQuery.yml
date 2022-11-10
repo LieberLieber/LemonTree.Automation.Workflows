@@ -21,7 +21,7 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           lfs: true
           fetch-depth: 0
@@ -58,7 +58,7 @@ jobs:
 
           $Message = "output.md"
 
-          echo "::set-output name=ValidationExitCode::$($LASTEXITCODE)"
+          echo "ValidationExitCode=$($LASTEXITCODE)" >> $env:GITHUB_OUTPUT
       
           #for now never stop 
           exit 0
@@ -83,7 +83,7 @@ jobs:
 
       - name: Create PR comment
         if: ${{ steps.find-pull-request.outputs.number > 0}} #only makes sense if we have a PR for the branch
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           script: |
             await github.rest.issues.createComment({
