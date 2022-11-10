@@ -24,7 +24,7 @@ jobs:
           github.event.comment.author_association == 'COLLABORATOR')
         run: |
           echo "org member or invited collaborator: ${{github.event.comment.author_association}}"
-          echo "::set-output name=result::True"
+          echo "result=True" >> $env:GITHUB_OUTPUT
              
       - id: userAuthByPositiveList
         env:
@@ -34,7 +34,7 @@ jobs:
             echo "${{env.authUsers}}"
             $result = ${{env.authUsers}} -contains "${{github.event.comment.user.login}}"
             echo "User is in authentication list: $result"
-            echo "::set-output name=result::$result"  
+            echo "result=$result"  >> $env:GITHUB_OUTPUT
         
   Do_Something:
     if: needs.Check_Rights.outputs.userAuthentication == 'True'

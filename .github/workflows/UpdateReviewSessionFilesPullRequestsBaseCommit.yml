@@ -49,7 +49,7 @@ jobs:
           jsVar: ${{steps.linked_prs.outputs.result}}
         run: |
           $prList = $env:jsVar | ConvertFrom-Json
-          echo "::set-output name=count::$($prList.length)"
+          echo "count=$($prList.length)" >> $env:GITHUB_OUTPUT
           
       - uses: actions/checkout@v3
         if: ${{ steps.checkNumber.outputs.count > 0}}
@@ -172,7 +172,7 @@ jobs:
           }
           $jsonResult = ConvertTo-Json -InputObject $messageList -Compress
           echo $jsonResult
-          echo "::set-output name=result::$jsonResult"
+          echo "result=$jsonResult" >> $env:GITHUB_OUTPUT
           
       - name: CreateComments
         if: ${{ steps.checkNumber.outputs.count > 0}}
