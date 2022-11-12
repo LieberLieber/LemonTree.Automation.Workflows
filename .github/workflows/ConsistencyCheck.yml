@@ -21,14 +21,14 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           lfs: true
           fetch-depth: 0
 
       # download Lemontree.Automation on a runner and setup the license
       - name: GetLTA
-        uses: LieberLieber/setup-LemonTree.Automation@v0.6
+        uses: LieberLieber/setup-LemonTree.Automation@v1
         id: GetLTA
         with:
           License: ${{secrets.LTALICENSE}} 

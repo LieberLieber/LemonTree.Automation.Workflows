@@ -1,4 +1,4 @@
-# Copyright (c) Robert Bosch GmbH
+# Copyright (c) RLIeberLieber Software GmbH
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -23,14 +23,14 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           lfs: true
           fetch-depth: 0
                       
       # download Lemontree.Automation on a runner and setup the license
       - name: GetLTA
-        uses: LieberLieber/setup-LemonTree.Automation@v0.6
+        uses: LieberLieber/setup-LemonTree.Automation@v1
         id: GetLTA
         with:
           License: ${{secrets.LTALICENSE}} 

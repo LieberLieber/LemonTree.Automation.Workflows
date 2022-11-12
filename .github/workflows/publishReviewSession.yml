@@ -28,7 +28,7 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           lfs: true
           fetch-depth: 0
@@ -51,7 +51,7 @@ jobs:
 
       - name: Create sessionfile name
         id: session_file
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           result-encoding: string
           script: |
@@ -75,15 +75,15 @@ jobs:
             echo "Model SHA: $sha"
             git cat-file --filters ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}} | Out-Null
             copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_base.${{env.ModelExtension}}"
-            echo "::set-output name=result::downloaded"
+            echo "result=downloaded" >> $env:GITHUB_OUTPUT
           }
           else{
-            echo "::set-output name=result::notFound"
+            echo "result=notFound" >> $env:GITHUB_OUTPUT
           }
           
       - name: Post new model comment to PR
         if: steps.baseDownload.outputs.result == 'notFound'
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           script: |
             await github.rest.issues.createComment({
@@ -108,7 +108,7 @@ jobs:
       
       # download Lemontree.Automation on a runner and setup the license
       - name: GetLTA
-        uses: LieberLieber/setup-LemonTree.Automation@v0.6
+        uses: LieberLieber/setup-LemonTree.Automation@v1
         id: GetLTA
         with:
           License: ${{secrets.LTALICENSE}} 
@@ -123,8 +123,7 @@ jobs:
           echo "Return code: $LASTEXITCODE"
           if($LASTEXITCODE -eq 0){
             echo "No merge conflicts, setting message"
-            echo "::set-output name=message::[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:heavy_check_mark: **No merge conflicts in model**\n\nInstall [LemonTree 3.3+](https://www.lieberlieber.com/lemontree/en/) to open the Review Session file."
-            echo "[Stackoverflow The Key](https://stackoverflow.blog/2021/03/31/the-key-copy-paste/){:target="_blank" rel="noopener"}"
+            echo "message=[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:heavy_check_mark: **No merge conflicts in model**\n\nInstall [LemonTree 3.3+](https://www.lieberlieber.com/lemontree/en/) to open the Review Session file." >> $env:GITHUB_OUTPUT
           }
           elseif($LASTEXITCODE -eq 2){
             echo "Internal Error when diffing. Please report such errors to support@lieberlieber.com"
@@ -132,8 +131,7 @@ jobs:
           }
           elseif($LASTEXITCODE -eq 3){
             echo "Merge conflicts, setting message"
-            echo "::set-output name=message::[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:x: **Please resolve merge conflicts in model first**\n\nInstall [LemonTree 3.3+](https://www.lieberlieber.com/lemontree/en/) to open the Review Session file."
-            echo "[Stackoverflow The Key](https://stackoverflow.blog/2021/03/31/the-key-copy-paste/){:target="_blank" rel="noopener"}"
+            echo "message=[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:x: **Please resolve merge conflicts in model first**\n\nInstall [LemonTree 3.3+](https://www.lieberlieber.com/lemontree/en/) to open the Review Session file." >> $env:GITHUB_OUTPUT
             exit 0
           }
           elseif($LASTEXITCODE -eq 6){
@@ -174,8 +172,8 @@ jobs:
             }
           }
           echo "$Message"
-          echo "::set-output name=SfsFileName::$sfsfilename"
-          echo "::set-output name=message::$Message"
+          echo "SfsFileName=$sfsfilename" >> $env:GITHUB_OUTPUT
+          echo "message=$Message" >> $env:GITHUB_OUTPUT
           exit 0
 
       - name: Upload
@@ -204,7 +202,7 @@ jobs:
 
       - name: Create PR comment
         if: steps.baseDownload.outputs.result == 'downloaded'
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           script: |
             await github.rest.issues.createComment({
