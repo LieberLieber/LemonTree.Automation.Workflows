@@ -107,8 +107,7 @@ jobs:
           copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.${{env.ModelExtension}}"
       
       # download Lemontree.Automation on a runner and setup the license
-      - name: GetLTA
-        uses: LieberLieber/setup-LemonTree.Automation@v1
+      - uses: LieberLieber/setup-LemonTree.Automation@v1
         id: GetLTA
         with:
           License: ${{secrets.LTALICENSE}} 
