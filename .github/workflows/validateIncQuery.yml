@@ -33,7 +33,7 @@ jobs:
           while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
           
           #curl "https://build.incquerylabs.com/nexus/repository/lieberlieber-collaboration-raw/ea-iqs-connector-poc/0.1.1/ea-iqs-connector-poc_0.1.1_20220505.zip" "-u${{secrets.IQSNEXUS}}" --output ea-iqs.zip -k
-          curl "https://build.incquerylabs.com/nexus/repository/lieberlieber-collaboration-raw/ea-iqs-connector-poc-v2/0.1.1/ea-connector-poc-v2-client-pack-0.1.1.zip" "-u${{secrets.IQSNEXUS}}" --output ea-iqs.zip -k
+          curl "https://build.incquerylabs.com/nexus/repository/lieberlieber-collaboration-raw/ea-iqs-connector-poc-v2/release-v0.2.3-net6.0/IncQueryServer.EA.Connector.Client.Demo.zip" "-u${{secrets.IQSNEXUS}}" --output ea-iqs.zip -k
           
           Expand-Archive ea-iqs.zip -DestinationPath .\ea-iqs\ -Force
 
