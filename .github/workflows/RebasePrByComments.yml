@@ -190,7 +190,7 @@ jobs:
          git remote set-url origin https://x-access-token:${{secrets.PAT}}@github.com/${{ github.repository }}
          git status --porcelain --untracked-files=no --ignored=no
          echo "creating commit"
-         git commit -m "Rebased PR ${{steps.pr_details.outputs.number}}" to current ${{steps.pr_details.outputs.base}}
+         git commit -m "Rebased PR ${{steps.pr_details.outputs.number}} to current ${{steps.pr_details.outputs.base}}"
          echo "pushing new commit"
          git push
            
