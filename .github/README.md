@@ -62,5 +62,5 @@ Additionally the "LemonTree Component" files are also published on a Nexus artif
 On a Desktop you can pull the published LemonTree Components to a LemonTreeComponents Repository folder using example-scripts/powershell/DownloadComponents.ps1
 
 ## ConsistencyCheck
-On push the model consistency check is run, for now the results are just in the action output
+On push the model consistency check is run, for now the results are just in the action output.
  
