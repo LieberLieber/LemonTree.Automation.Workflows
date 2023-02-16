@@ -1,6 +1,6 @@
 [![Model Check](https://github.com/LieberLieber/LemonTree.Automation.Workflows/actions/workflows/ModelCheck.yml/badge.svg)](https://github.com/LieberLieber/LemonTree.Automation.Workflows/actions/workflows/ModelCheck.yml)
 
-[![Model Check](https://github.com/LieberLieber/LemonTree.Automation.Workflows/actions/workflows/ConsistencyCheck.yml/badge.svg)](https://github.com/LieberLieber/LemonTree.Automation.Workflows/actions/workflows/ConsistencyCheck.yml)
+[![Consistency Check](https://github.com/LieberLieber/LemonTree.Automation.Workflows/actions/workflows/ConsistencyCheck.yml/badge.svg)](https://github.com/LieberLieber/LemonTree.Automation.Workflows/actions/workflows/ConsistencyCheck.yml)
 
 
 GitHub Actions and other Example Scripts to be used with LemonTree.Automation and Sparx Systems Enterprise Architect Models
