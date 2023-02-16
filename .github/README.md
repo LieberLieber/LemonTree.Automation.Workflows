@@ -1,3 +1,4 @@
+[![Model Check](https://github.com/LieberLieber/LemonTreeAutomation.Workflows/actions/workflows/ModelCheck.yml/badge.svg)](https://github.com/LieberLieber/LemonTree.Automation.Workflows/actions/workflows/ModelCheck.yml)
 GitHub Actions and other Example Scripts to be used with LemonTree.Automation and Sparx Systems Enterprise Architect Models
 ==================================
 Disclaimer: we use this Repo to develop and test the scripts.
