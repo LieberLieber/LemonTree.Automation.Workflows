@@ -15,6 +15,7 @@ param
 #tool environment - adapt as needed
 $LTAToolPath = "C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe"
 $LTSToolPath = "C:\Program Files\LieberLieber\LemonTree\LemonTree.exe"
+$ModelRootToolPath = "C:\GitHub\LemonTree.Pipeline.Tools\bin\LemonTree.Pipeline.Tools.GetModelRoots.exe"
 $EABaseModel = "C:\Program Files (x86)\Sparx Systems\EA\EABase.qea"
 
 #define names of tempmodels
@@ -22,6 +23,42 @@ $BaseModel = "base.qeax"
 $MineModel = "mine.qeax"
 $TheirsModel = "theirs.qeax"
 $ResultModel = "result.qeax"
+
+function Get-Fullname 
+{
+    param
+    (
+        [Parameter(Mandatory = $true)][string]$filename
+    )
+    process
+    {
+        if (Test-Path $filename) 
+        {
+            (Get-Item $fileName).FullName
+        } 
+    }
+}
+
+function Get-ModelRootIds  
+{
+    param
+    (
+        [Parameter(Mandatory = $true)][string] $model
+    )
+    process
+    {
+        #SqLite from powershell gave me unreliable results so I put the SqLite logic into a small Pipeline Tool.
+        $results = &$ModelRootToolPath --Model $model --Ignore "{5BEEF931-53C8-4FE3-A607-71FACADE381B}"
+        # if ($ExitCode -ne 0)
+        # {
+        #     Exit $ExitCode
+        # }
+
+        #Write-Output "Results $results"
+        return @($results);
+        #Comment this in to run in x86 space with Jet Driver
+    }
+}
 
 function New-TemporaryModel 
 {
@@ -35,6 +72,9 @@ function New-TemporaryModel
         Write-Output "Create Model for $componentFile"
         Copy-Item $EABaseModel $TempModel
         &$LTAToolPath Import --Model $TempModel --Components $componentFile | out-null
+        
+        Write-Output "Created $TempModel"
+        
     }
 }
 
@@ -64,6 +104,8 @@ function Remove-TemporaryModels
     }
 }
 
+
+
 Remove-TemporaryModels
 
 #create template models
@@ -72,9 +114,15 @@ New-TemporaryModel $BaseModel  $base
 New-TemporaryModel $MineModel $mine
 New-TemporaryModel $TheirsModel $theirs
 
+#create merge override for MPMS Package - default to theirs.
+
+#get the main modelroot
+$rootId = Get-ModelRootIds $BaseModel
+Write-Output "Found RootId  $rootId[1]" #--package=$rootId 
 #use lemontree to merge the models.
 Write-Output "Starting LemonTree"
-$command = "--merge=auto --out=$ResultModel --base=$BaseModel --mine=$MineModel --theirs=$TheirsModel --singleSessionOnly"
+$command = "--merge=visual --out=$ResultModel --base=$BaseModel --mine=$MineModel --theirs=$TheirsModel --singleSessionOnly --mergeDecisionOverrides=`"{5BEEF931-53C8-4FE3-A607-71FACADE381B}:A`""
+Write-Output $command
 $myprocss = Start-Process $LTSToolPath -PassThru -ArgumentList $command
 $myprocss.WaitForExit()
 $ExitCode = $myprocss.ExitCode
