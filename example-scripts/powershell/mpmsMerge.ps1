@@ -5,18 +5,23 @@
 # --out=${mergedFile} --base=${baseFile} --mine=${rightFile} --theirs=${leftFile}
 param
 (
-    #afer testomg all the parameters should be Mandatory.
-    [Parameter(Mandatory = $false)][string] $out = "C:\LemonTreeTestData\MPMS Merge\merge\SysML-22b116db-59ea-a4fa-c52a-cc163a9f56bc.mpms",
-    [Parameter(Mandatory = $false)][string] $base ="C:\LemonTreeTestData\MPMS Merge\base\SysML-22b116db-59ea-a4fa-c52a-cc163a9f56bc.mpms",
-    [Parameter(Mandatory = $false)][string] $mine ="C:\LemonTreeTestData\MPMS Merge\mine\SysML-22b116db-59ea-a4fa-c52a-cc163a9f56bc.mpms",
-    [Parameter(Mandatory = $false)][string] $theirs ="C:\LemonTreeTestData\MPMS Merge\theirs\SysML-22b116db-59ea-a4fa-c52a-cc163a9f56bc.mpms"
+    #Sample Commandline:
+    #.\mpmsMerge.ps1 -base "C:\LemonTreeTestData\MPMS Merge\base\SysML-22b116db-59ea-a4fa-c52a-cc163a9f56bc.mpms" -theirs "C:\LemonTreeTestData\MPMS Merge\theirs\SysML-22b116db-59ea-a4fa-c52a-cc163a9f56bc.mpms" -mine "C:\LemonTreeTestData\MPMS Merge\mine\SysML-22b116db-59ea-a4fa-c52a-cc163a9f56bc.mpms" -out "C:\LemonTreeTestData\MPMS Merge\merge\SysML-22b116db-59ea-a4fa-c52a-cc163a9f56bc.mpms"
+    [Parameter(Mandatory = $true)][string] $out,
+    [Parameter(Mandatory = $true)][string] $base,
+    [Parameter(Mandatory = $true)][string] $mine,
+    [Parameter(Mandatory = $true)][string] $theirs
 )
 
 Write-Output "base: {$base}"
 Write-Output "theirs: {$theirs}"
 Write-Output "mine: {$mine}"
-
 Write-Output "out: {$out}"
+
+#set workingdirectory to the directory of $base
+$workingDirectory = Split-Path -Path $base
+Write-Output "Working Directory: $workingDirectory"
+Set-Location -Path $workingDirectory
 
 #tool environment - adapt as needed
 $LTAToolPath = "C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe"
