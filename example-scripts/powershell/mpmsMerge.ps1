@@ -12,6 +12,12 @@ param
     [Parameter(Mandatory = $false)][string] $theirs ="C:\LemonTreeTestData\MPMS Merge\theirs\SysML-22b116db-59ea-a4fa-c52a-cc163a9f56bc.mpms"
 )
 
+Write-Output "base: {$base}"
+Write-Output "theirs: {$theirs}"
+Write-Output "mine: {$mine}"
+
+Write-Output "out: {$out}"
+
 #tool environment - adapt as needed
 $LTAToolPath = "C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe"
 $LTSToolPath = "C:\Program Files\LieberLieber\LemonTree\LemonTree.exe"
@@ -121,7 +127,7 @@ $rootId = Get-ModelRootIds $BaseModel
 Write-Output "Found RootId  $rootId[1]" #--package=$rootId 
 #use lemontree to merge the models.
 Write-Output "Starting LemonTree"
-$command = "--merge=visual --out=$ResultModel --base=$BaseModel --mine=$MineModel --theirs=$TheirsModel --singleSessionOnly --mergeDecisionOverrides=`"{5BEEF931-53C8-4FE3-A607-71FACADE381B}:A`""
+$command = "--merge=visual --out=$ResultModel --base=$BaseModel --mine=$MineModel --theirs=$TheirsModel --singleSessionOnly --package=$rootId"# --mergeDecisionOverrides=`"{5BEEF931-53C8-4FE3-A607-71FACADE381B}:A`""
 Write-Output $command
 $myprocss = Start-Process $LTSToolPath -PassThru -ArgumentList $command
 $myprocss.WaitForExit()
