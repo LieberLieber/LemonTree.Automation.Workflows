@@ -13,20 +13,32 @@ param
     [Parameter(Mandatory = $true)][string] $theirs
 )
 
+$timestamp = Get-Date 
+Write-Output "mpmsMerge1.ps1 started at $timestamp"
+
+$scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
+
 Write-Output "base: {$base}"
 Write-Output "theirs: {$theirs}"
 Write-Output "mine: {$mine}"
 Write-Output "out: {$out}"
 
+if (-not(Test-Path -Path $base -PathType Leaf)) 
+{
+    Write-Output "File not found $base"
+    Exit -1
+}
+
 #set workingdirectory to the directory of $base
 $workingDirectory = Split-Path -Path $base
 Write-Output "Working Directory: $workingDirectory"
+Write-Output "Script Directory: $scriptPath"
 Set-Location -Path $workingDirectory
 
 #tool environment - adapt as needed
 $LTAToolPath = "C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe"
 $LTSToolPath = "C:\Program Files\LieberLieber\LemonTree\LemonTree.exe"
-$ModelRootToolPath = "C:\GitHub\LemonTree.Pipeline.Tools\bin\LemonTree.Pipeline.Tools.GetModelRoots.exe"
+$ModelRootToolPath = $scriptPath + "\LemonTree.Pipeline.Tools.GetModelRoots.exe"
 $EABaseModel = "C:\Program Files (x86)\Sparx Systems\EA\EABase.qea"
 
 #define names of tempmodels
@@ -80,6 +92,12 @@ function New-TemporaryModel
     )
     process
     {
+        if (-not(Test-Path -Path $componentFile -PathType Leaf)) 
+        {
+            Write-Output "File not found $componentFile"
+            Exit -1
+        }
+
         Write-Output "Create Model for $componentFile"
         Copy-Item $EABaseModel $TempModel
         &$LTAToolPath Import --Model $TempModel --Components $componentFile | out-null
