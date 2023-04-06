@@ -149,10 +149,6 @@ $MineModel = "mine.qeax"
 $TheirsModel = "theirs.qeax"
 $ResultModel = "result.qeax"
 
-
-
-
-
 Remove-TemporaryModels
 
 #create template models
@@ -187,7 +183,9 @@ If ($ExitCode -ne 0)
 #guid extract from Filename? Should probably use the envelope '{22b116db-59ea-a4fa-c52a-cc163a9f56bc}
 #with this trick we don't need to figure out the guid ;)
 Write-Output "Extracting component from merged model!"
+$out = ".\$out" #sourcetree workaround
 $PackageDirectory = Split-Path -Path $out
-&$LTAToolPath Publish --Model $ResultModel --All --PackageDirectory $PackageDirectory | out-null
-
+Write-Output  "Package Dir: $PackageDirectory extracted from $out with $ResultModel"
+&$LTAToolPath Publish --Model $ResultModel --All --PackageDirectory $PackageDirectory 
+#This shoule be the $outfile not the $PackageDirectory
 Remove-TemporaryModels
