@@ -1,4 +1,5 @@
 # the purpose of this script is to replace LemonTree.Starter.exe for .mpms files.
+# This is not perfect - but shows one way this could be done
 # LemonTreeStarter will be enganged once three EA Models have been created useing LTA
 
 # same parameters as LemonTree Starter
