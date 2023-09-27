@@ -1,0 +1,100 @@
+# Copyright (c) IncQuery Labs cPlc.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+name: IncQuery AUTOSAR-UML Bridge
+description: Action to download run the IncQuery AUTOSAR-UML Bridge
+
+inputs:
+  arxml_folder_path:
+    description: "Path to the ARXML file. Can be a directory containing multiple model files."
+    required: true
+  ea_model_file_path:
+    description: "Path to the Enterprise Architect model file, probably .eapx or .qeax."
+    required: true
+  incquery_username:
+    description: "Username to https://artifacts.incquery.io/. Not required if the validator is already installed on the runner."
+    required: false
+  incquery_password:
+    description: "Password to https://artifacts.incquery.io/. Not required if the validator is already installed on the runner."
+    required: false
+  license:
+    description: "The contents of the supplied license file."
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Is the IncQuery AUTOSAR-UML Bridge installed?
+      id: is-iqs-aub-installed
+      shell: pwsh
+      run: |
+        if (Test-Path -Path 'C:/Program Files/IncQuery Labs/IncQuery AUTOSAR-UML Bridge/CLI/iql-aub-cli.exe' -PathType Leaf )
+        {
+          echo "IncQuery AUTOSAR-UML Bridge is already installed."
+          echo "need_to_install=false" >> $env:GITHUB_OUTPUT
+        }
+        else
+        {
+          echo "IncQuery AUTOSAR-UML Bridge will be installed."
+          echo "need_to_install=true" >> $env:GITHUB_OUTPUT
+          echo "download_url=https://build.incquerylabs.com/nexus/repository/incquery-suite-internal-raw/lieberlieber-collaboration/aruml-internal/release-v2023.2.0-build/IncQuery%20AUTOSAR-UML%20Bridge%202023.2.0-build%20Setup.exe" >> $env:GITHUB_OUTPUT
+          echo "installer_path=${{ runner.temp }}\IncQuery AUTOSAR-UML Bridge Setup.exe" >> $env:GITHUB_OUTPUT
+        }
+    
+    - name: Restore the IncQuery AUTOSAR-UML Bridge installer from cache
+      id: restore-installer-from-cache
+      uses: actions/cache/restore@v3
+      if: ${{ steps.is-iqs-aub-installed.outputs.need_to_install == 'true' }}
+      with:
+        path: ${{ steps.is-iqs-aub-installed.outputs.installer_path }}
+        key:  ${{ steps.is-iqs-aub-installed.outputs.download_url }}
+    
+    - name: Download the IncQuery AUTOSAR-UML Bridge installer
+      shell: pwsh
+      if: ${{ ( steps.restore-installer-from-cache.outputs.cache-hit != 'true' ) && ( steps.is-iqs-aub-installed.outputs.need_to_install == 'true' ) }}
+      run: |
+        $user = "${{ inputs.incquery_username }}"
+        $pass= "${{ inputs.incquery_password }}"
+        if ( $user.Length -eq 0 ) { exit 1 }
+        if ( $pass.Length -eq 0 ) { exit 1 }
+        $secpasswd = ConvertTo-SecureString $pass -AsPlainText -Force
+        $credential = New-Object System.Management.Automation.PSCredential($user, $secpasswd)
+        Invoke-WebRequest ${{ steps.is-iqs-aub-installed.outputs.download_url }} -Credential $credential -OutFile '${{ steps.is-iqs-aub-installed.outputs.installer_path }}'
+    
+    - name: Cache the IncQuery AUTOSAR-UML Bridge installer
+      id: cache-installer-save
+      if: ${{ ( steps.restore-installer-from-cache.outputs.cache-hit != 'true' ) && ( steps.is-iqs-aub-installed.outputs.need_to_install == 'true' ) }}
+      uses: actions/cache/save@v3
+      with:
+        path: ${{ steps.is-iqs-aub-installed.outputs.installer_path }}
+        key:  ${{ steps.is-iqs-aub-installed.outputs.download_url }}
+    
+    - name: Install the IncQuery AUTOSAR-UML Bridge
+      shell: pwsh
+      if: ${{ steps.is-iqs-aub-installed.outputs.need_to_install == 'true' }}
+      run: |
+        $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+        $isAdmin = $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+        if($isAdmin -ne $true)
+        {
+            $msg = "IncQuery AUTOSAR-UML Bridge is not installed on the runner, and since the current user is not an administrator the action can't install it."  
+            echo $msg
+            echo $msg | Out-File -FilePath $env:GITHUB_STEP_SUMMARY
+            exit 1
+        }
+        $installResult = Start-Process -FilePath '${{ steps.is-iqs-aub-installed.outputs.installer_path }}' -ArgumentList @("/install", "/quiet") -Wait -PassThru
+        exit $installResult.ExitCode
+    
+    - name: Create the license file
+      shell: pwsh
+      run: |
+        echo '${{ inputs.license }}' | Out-File -FilePath '${{ runner.temp }}/IncQueryAUB.lic'
+        echo 'licenseFilePath: IncQueryAUB.lic' | Out-File -FilePath '${{ runner.temp }}/IncQueryAUBLic.yaml'
+    
+    - name: Run the IncQuery AUTOSAR-UML Bridge
+      shell: pwsh
+      run: |
+        $env:ARUML_HOME = 'C:\Program Files\IncQuery Labs\IncQuery AUTOSAR-UML Bridge\Transformation\'
+        & 'C:\Program Files\IncQuery Labs\IncQuery AUTOSAR-UML Bridge\CLI\iql-aub-cli.exe' -i '${{ inputs.arxml_folder_path }}' -e '${{ inputs.ea_model_file_path }}' -l '${{ runner.temp }}/IncQueryAUBLic.yaml' 

@@ -1,0 +1,56 @@
+# Copyright (c) IncQuery Labs cPlc.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The following secrets need to be defined: INCQUERY_USERNAME, INCQUERY_PASSWORD, INCQUERY_AUTOSAR_UML_INTEGRATION_LICENSE
+
+on:
+  push
+jobs:
+  AutosarUml:
+    defaults:
+      run:
+        shell: pwsh
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout Git repository
+        uses: actions/checkout@v3
+      
+      - name: Backup current model
+        id: backupModel
+        run: |
+          $qeaxLocation = '${{ runner.temp }}/counting-logic-old.qeax'
+          $currentQeaxLocation = '.\counting-logic.qeax'
+          Copy-Item -Path $currentQeaxLocation -Destination $qeaxLocation
+          echo "backupQeax=$qeaxLocation" >> $env:GITHUB_OUTPUT
+          echo "currentQeax=$currentQeaxLocation" >> $env:GITHUB_OUTPUT
+      
+      - name: Run IncQuery AUTOSAR-UML Bridge
+        uses: ./
+        with:
+          arxml_folder_path: example-arxml
+          ea_model_file_path: "${{steps.backupModel.outputs.currentQeax}}"
+          incquery_username: "${{ secrets.INCQUERY_USERNAME }}"
+          incquery_password: "${{ secrets.INCQUERY_PASSWORD }}"
+          license: "${{ secrets.INCQUERY_AUTOSAR_UML_INTEGRATION_LICENSE }}"
+      #Install LieberLieber LemonTree.Automation on the Action-Runner and prepare the license
+      #the secrets.LTALICENSE contains the text from the License File provided
+      - name: GetLTA
+        uses: LieberLieber/setup-LemonTree.Automation@v1
+        id: GetLTA
+        with:
+          License: ${{secrets.LTALICENSE}}    
+      #Diff Check between the modified files     
+      - name: DiffCheck
+        id: diffOutput
+        run: | 
+          &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base '${{steps.backupModel.outputs.backupQeax}}' --theirs '${{steps.backupModel.outputs.backupQeax}}' --mine '${{steps.backupModel.outputs.currentQeax}}' --sfs log.ltsfs
+      #Archive Session Files
+      - name: Archive Session Files
+        uses: actions/upload-artifact@v3
+        with:
+          name: Diff Session File
+          path: log.ltsfs
+          retention-days: 5
