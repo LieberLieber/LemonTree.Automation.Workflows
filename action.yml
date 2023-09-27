@@ -39,7 +39,7 @@ runs:
         {
           echo "IncQuery AUTOSAR-UML Bridge will be installed."
           echo "need_to_install=true" >> $env:GITHUB_OUTPUT
-          echo "download_url=https://build.incquerylabs.com/nexus/repository/incquery-suite-internal-raw/lieberlieber-collaboration/aruml-internal/release-v2023.2.0-build/IncQuery%20AUTOSAR-UML%20Bridge%202023.2.0-build%20Setup.exe" >> $env:GITHUB_OUTPUT
+          echo "download_url=https://build.incquerylabs.com/nexus/#browse/browse:sparxsystems-binaries:aruml-releases%2F2023.2.0-build%2FIncQuery%20AUTOSAR-UML%20Bridge%202023.2.0-build%20Setup.exe" >> $env:GITHUB_OUTPUT
           echo "installer_path=${{ runner.temp }}\IncQuery AUTOSAR-UML Bridge Setup.exe" >> $env:GITHUB_OUTPUT
         }
     
