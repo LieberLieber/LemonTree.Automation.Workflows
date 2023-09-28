@@ -18,20 +18,24 @@ jobs:
       - name: Checkout Git repository
         uses: actions/checkout@v3
       
-      - name: Backup current model
-        id: backupModel
+      - name: Backup EA Project File
+        id: backupEAProjectFile
         run: |
-          $qeaxLocation = '${{ runner.temp }}/counting-logic-old.qeax'
-          $currentQeaxLocation = '.\counting-logic.qeax'
-          Copy-Item -Path $currentQeaxLocation -Destination $qeaxLocation
-          echo "backupQeax=$qeaxLocation" >> $env:GITHUB_OUTPUT
-          echo "currentQeax=$currentQeaxLocation" >> $env:GITHUB_OUTPUT
+          $eaFileName = "counting-logic"
+          $eaFileExtension = "qeax"
+          $originalEaProjectFile = '${{ runner.temp }}/' + $eaFileName + '-old.' + $eaFileExtension
+          $reimportedEaProjectFile = '.\' + $eaFileName + '.' + $eaFileExtension
+          Copy-Item -Path $reimportedEaProjectFile -Destination $originalEaProjectFile
+          echo "originalEAProjectFile=$originalEaProjectFile" >> $env:GITHUB_OUTPUT
+          echo "reimportedEAProjectFile=$reimportedEaProjectFile" >> $env:GITHUB_OUTPUT
+          echo "fileName=$eaFileName" >> $env:GITHUB_OUTPUT
+          echo "fileExtension=$eaFileExtension" >> $env:GITHUB_OUTPUT
       
       - name: Run IncQuery AUTOSAR-UML Bridge
         uses: ./
         with:
           arxml_folder_path: example-arxml
-          ea_model_file_path: "${{steps.backupModel.outputs.currentQeax}}"
+          ea_model_file_path: "${{steps.backupEAProjectFile.outputs.reimportedEAProjectFile}}"
           incquery_username: "${{ secrets.INCQUERY_USERNAME }}"
           incquery_password: "${{ secrets.INCQUERY_PASSWORD }}"
           license: "${{ secrets.INCQUERY_AUTOSAR_UML_INTEGRATION_LICENSE }}"
@@ -43,14 +47,14 @@ jobs:
         with:
           License: ${{secrets.LTALICENSE}}    
       #Diff Check between the modified files     
-      - name: DiffCheck
+      - name: Calculate differences between the original and reimported EA projects
         id: diffOutput
         run: | 
-          &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base '${{steps.backupModel.outputs.backupQeax}}' --theirs '${{steps.backupModel.outputs.backupQeax}}' --mine '${{steps.backupModel.outputs.currentQeax}}' --sfs log.ltsfs
+          &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base '${{steps.backupEAProjectFile.outputs.originalEAProjectFile}}' --theirs '${{steps.backupEAProjectFile.outputs.originalEAProjectFile}}' --mine '${{steps.backupEAProjectFile.outputs.reimportedEAProjectFile}}' --sfs "${{steps.backupEAProjectFile.outputs.fileName}}-${{steps.backupEAProjectFile.outputs.fileExtension}}-diff.ltsfs"
       #Archive Session Files
       - name: Archive Session Files
         uses: actions/upload-artifact@v3
         with:
           name: Diff Session File
-          path: log.ltsfs
+          path: ${{ runner.temp }}/${{steps.backupEAProjectFile.outputs.fileName}}-${{steps.backupEAProjectFile.outputs.fileExtension}}-diff.ltsfs
           retention-days: 5
