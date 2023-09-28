@@ -50,11 +50,13 @@ jobs:
       - name: Calculate differences between the original and reimported EA projects
         id: diffOutput
         run: | 
-          &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base '${{steps.backupEAProjectFile.outputs.originalEAProjectFile}}' --theirs '${{steps.backupEAProjectFile.outputs.originalEAProjectFile}}' --mine '${{steps.backupEAProjectFile.outputs.reimportedEAProjectFile}}' --sfs "${{steps.backupEAProjectFile.outputs.fileName}}-${{steps.backupEAProjectFile.outputs.fileExtension}}-diff.ltsfs"
+          $diffFile = "${{ runner.temp }}/${{steps.backupEAProjectFile.outputs.fileName}}-${{steps.backupEAProjectFile.outputs.fileExtension}}-diff.ltsfs"
+          &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base '${{steps.backupEAProjectFile.outputs.originalEAProjectFile}}' --theirs '${{steps.backupEAProjectFile.outputs.originalEAProjectFile}}' --mine '${{steps.backupEAProjectFile.outputs.reimportedEAProjectFile}}' --sfs $diffFile
+          echo "diffSessionFile=$diffFile" >> $env:GITHUB_OUTPUT
       #Archive Session Files
       - name: Archive Session Files
         uses: actions/upload-artifact@v3
         with:
           name: Diff Session File
-          path: ${{ runner.temp }}/${{steps.backupEAProjectFile.outputs.fileName}}-${{steps.backupEAProjectFile.outputs.fileExtension}}-diff.ltsfs
+          path: '${{steps.diffOutput.outputs.diffSessionFile}}'
           retention-days: 5
