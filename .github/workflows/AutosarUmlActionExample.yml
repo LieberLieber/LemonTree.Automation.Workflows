@@ -6,7 +6,9 @@
 # The following secrets need to be defined: INCQUERY_USERNAME, INCQUERY_PASSWORD, INCQUERY_AUTOSAR_UML_INTEGRATION_LICENSE
 
 on:
-  push
+  push:
+    paths:
+      - 'example-arxml'
 jobs:
   AutosarUml:
     defaults:

@@ -69,3 +69,10 @@ On a Desktop you can pull the published LemonTree Components to a LemonTreeCompo
 ## ConsistencyCheck
 On push the model consistency check is run, for now the results are just in the action output.
  
+## AutosarUmlActionExample
+This workflow runs only when the AUTOSAR model in `example-arxml` changes. Firstly, it runs the
+ [Incquery AUTOSAR-UML Bridge,](https://incquery.io/autosar-uml-bridge) using its provided
+ [action.](https://github.com/IncQueryLabs/incquery-suite-bridge-autosar-uml-action)
+ It then generates a document listing the changes, openable in LemonTree, using
+ LemonTree.Automation's `diff` functionality. Lastly, it pushes the updated EA model back to the
+ originating branch, automatically keeping the two manifestations of the model in synch.
