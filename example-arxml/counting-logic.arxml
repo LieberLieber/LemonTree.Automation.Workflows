@@ -5,7 +5,7 @@
       <SHORT-NAME>CountingLogic</SHORT-NAME>
       <AR-PACKAGES>
         <AR-PACKAGE>
-          <SHORT-NAME>Components</SHORT-NAME>
+          <SHORT-NAME>Components (Small Change)</SHORT-NAME>
           <ELEMENTS>
             <COMPOSITION-SW-COMPONENT-TYPE UUID="d90f55ee-ef2d-3464-9a19-f354e196ddc8">
               <SHORT-NAME>Application</SHORT-NAME>
