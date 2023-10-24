@@ -115,7 +115,7 @@ jobs:
         uses: IncQueryLabs/incquery-suite-bridge-autosar-uml-action@v1
         with:
           arxml_folder_path: example-arxml
-          ea_model_file_path: '${{steps.backupEAProjectFile.outputs.reimportedEAProjectFile}}'
+          ea_model_file_path: 'counting-logic.qeax'
           incquery_username: '${{ secrets.INCQUERY_USERNAME }}'
           incquery_password: '${{ secrets.INCQUERY_PASSWORD }}'
           license: '${{ secrets.INCQUERY_AUTOSAR_UML_INTEGRATION_LICENSE }}'
@@ -123,8 +123,7 @@ jobs:
         run: >
           git config --local user.name "Automatic Model Update"
           git config --local user.email "username@users.noreply.github.com"
-          git add
-          '${{steps.backupEAProjectFile.outputs.reimportedEAProjectFile}}'
+          git add counting-logic.qeax
           git commit -m "Automatic Model Update"
           git push
       - name: Check for merge conflicts
