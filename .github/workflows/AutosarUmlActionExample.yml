@@ -8,7 +8,7 @@
 on:
   push:
     paths:
-      - 'example-arxml'
+      - 'example-arxml/**/*.arxml'
 jobs:
   AutosarUml:
     defaults:
@@ -34,7 +34,7 @@ jobs:
           echo "fileExtension=$eaFileExtension" >> $env:GITHUB_OUTPUT
       
       - name: Run IncQuery AUTOSAR-UML Bridge
-        uses: ./
+        uses: IncQueryLabs/incquery-suite-bridge-autosar-uml-action@v1
         with:
           arxml_folder_path: example-arxml
           ea_model_file_path: "${{steps.backupEAProjectFile.outputs.reimportedEAProjectFile}}"
