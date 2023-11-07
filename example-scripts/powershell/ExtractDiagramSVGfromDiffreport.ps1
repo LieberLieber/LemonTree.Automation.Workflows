@@ -3,7 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#This script will export the mine diagrams from a LemonTree xml diffreport into a SVG files
+#This script will export the "mine" diagrams from a LemonTree xml diffreport into SVG files
+#LemonTree.Automation needs to be called with --ReportIncludeDiagrams see: https://help.lieberlieber.com/LemonTree/LTA-Diff.html
 
 param (
     [string]$xmlFilePath = "DiffReport.xml"
