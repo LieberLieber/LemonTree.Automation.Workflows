@@ -11,19 +11,34 @@ param (
     [string]$xmlFilePath = "DiffReport.xml"
 )
 
-$xmlContent = Get-Content -Path $xmlFilePath | Out-String
-select-xml -Content $xmlContent -xpath "//diagramPictures/diagramPicture" | foreach {
-    $diagramGuid = $_.node.guid
-    if($diagramGuid ){
-        select-xml -Content $xmlContent -xpath "//diagramPictures/diagramPicture[@guid='$diagramGuid']/diagramPictureB" | foreach {
-            #check if cdata exists
-            if ($_.node.InnerText)
-            {
-                $qualifiedName = $_.node.qualifiedName
+
+[xml]$xmlContent = Get-Content -Path $xmlFilePath
+
+# Define the XML namespaces
+$ns = New-Object Xml.XmlNamespaceManager $xmlContent.NameTable
+$ns.AddNamespace("ns", "http://www.lieberlieber.com")
+
+# Select all diagramPicture elements using the defined namespace
+$diagramPictures = $xmlContent.SelectNodes('//ns:diagramPictures/ns:diagramPicture', $ns)
+
+# Output the count of found elements
+Write-Host "Found $($diagramPictures.Count) Diagrams."
+
+foreach ($diagramPicture in $diagramPictures) {
+    $diagramGuid = $diagramPicture.guid
+    if($diagramGuid){
+        $cdata_b = $diagramPicture.diagramPictureB.InnerText
+
+    # Check if the CDATA section is empty
+    if (![string]::IsNullOrEmpty($cdata_b)) {
+                $qualifiedName = $diagramPicture.diagramPictureB.qualifiedName
+                write-host $qualifiedName
                 $fileGuid = $diagramGuid.Replace('{','').Replace('}','')
                 $filename = "$fileGuid.svg"
                 write-output "$qualifiedName ==> $filename"
-                $_.node.InnerText | %{[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($_))}|Set-Content -Encoding UTF8 -Path $filename
+                $cdata_b | %{[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($_))}|Set-Content -Encoding UTF8 -Path $filename
             }
         }
-    }}
+    }
+
+
