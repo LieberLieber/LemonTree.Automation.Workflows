@@ -1,9 +1,9 @@
-﻿# Copyright (c) LieberLieber Softwar GmbH
+﻿# Copyright (c) LieberLieber Software GmbH
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#This script will export the mine diagrams from an xml diffreport into a SVG file
+#This script will export the mine diagrams from a LemonTree xml diffreport into a SVG files
 
 param (
     [string]$xmlFilePath = "DiffReport.xml"
