@@ -5,6 +5,7 @@
 
 #This script will export the "mine" diagrams from a LemonTree xml diffreport into SVG files
 #LemonTree.Automation needs to be called with --ReportIncludeDiagrams see: https://help.lieberlieber.com/LemonTree/LTA-Diff.html
+#LemonTree.Automation.exe diff --base base.eapx --mine mine.eapx --theirs theirs.eapx --DiffReportFilename "DiffReport.xml" --ReportIncludeDiagrams
 
 param (
     [string]$xmlFilePath = "DiffReport.xml"
