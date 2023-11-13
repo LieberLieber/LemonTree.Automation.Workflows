@@ -1,8 +1,0 @@
-{
-	"LLApplicationData": "%APPDATA%\\LieberLieber",
-	"LLApplicationDataLocal": "%LOCALAPPDATA%\\LieberLieber",
-	"LLApplicationDataCommon": "%ProgramData%\\LieberLieber",
-	"MdgTechnologiesPath": "%ProgramFiles%\\Sparx Systems\\EA\\MDGTechnologies",
-	"HighlightAbstractElements": true,
-	"SaveDiagramFrames": true
-}
