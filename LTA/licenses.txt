@@ -1,0 +1,3 @@
+Used components and their licenses
+
+See https://help.lieberlieber.com/LemonTree/Licenses.html
