@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" id="mainSvg" width="564" height="611" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" id="mainSvg" width="531" height="611" xmlns="http://www.w3.org/2000/svg">
   <style type="text/css"><![CDATA[
 		#viewport {
 			margin:0;
@@ -318,392 +318,418 @@
   </defs>
   <g id="viewport" transform="translate(-82.5,-73.5)">
     <g style="" id="{A5A3A38A-0417-4ff9-9744-4758AA10785C}" transform="translate(305, 84)" class="element uml-Class" data-diagram-object-guid="{05af4d03-4684-b9d6-5261-0590177f2f57}">
-      <rect x="0" y="0" width="90" height="70" style="stroke-width:1px;" class="main-shape" />
-      <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
-        <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">ArchiMate_BusinessObject</span>
-          </p>
-          <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
-            <b>Model Staging</b>
-          </p>
-          <p class="childdiagram"></p>
-        </div>
-      </foreignObject>
+      <svg overflow="visible" width="90" height="70" class="shape-script">
+        <g id="{A5A3A38A-0417-4ff9-9744-4758AA10785C}__main" class="main-shape" transform="translate(0, 0)">
+          <rect x="0" y="0" width="90" height="70" style="stroke:#000000; stroke-width:1; fill:#FFFFC0; " />
+          <g id="{A5A3A38A-0417-4ff9-9744-4758AA10785C}__thetop" transform="translate(0, 0)">
+            <line x1="0" y1="20.02" x2="90" y2="20.02" style="stroke:#000000; stroke-width:1; fill:none" />
+          </g>
+          <g id="{A5A3A38A-0417-4ff9-9744-4758AA10785C}__padding" transform="translate(86, 26)" />
+          <g id="{A5A3A38A-0417-4ff9-9744-4758AA10785C}__padding" transform="translate(0, 26)" />
+          <g id="{A5A3A38A-0417-4ff9-9744-4758AA10785C}__thename" transform="translate(4, 26)">
+            <text style="font-size:8.75px; font-family:Arial; fill:#000000; stroke-width:0" text-anchor="middle" font-weight="bold" x="41" y="10">Model Staging</text>
+          </g>
+        </g>
+        <g id="{A5A3A38A-0417-4ff9-9744-4758AA10785C}__composite" transform="translate(71, 51)" />
+      </svg>
     </g>
     <g style="" id="{2C3D6213-17C0-4288-A79E-A36B91AA6294}" transform="translate(131, 502)" class="element uml-Component" data-diagram-object-guid="{60d7c2e0-beea-8b27-f79f-49b8088f592f}">
-      <rect x="0" y="0" width="90" height="70" style="stroke-width:1px;" class="main-shape" />
-      <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
-        <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">ArchiMate_ApplicationComponent</span>
-          </p>
-          <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
-            <b>LemonTree</b>
-          </p>
-          <p class="childdiagram"></p>
-        </div>
-      </foreignObject>
+      <svg overflow="visible" width="90" height="70" class="shape-script">
+        <g id="{2C3D6213-17C0-4288-A79E-A36B91AA6294}__main" class="main-shape" transform="translate(0, 0)">
+          <rect x="0" y="0" width="90" height="70" style="stroke:#000000; stroke-width:1; fill:#C0FFFF; " />
+          <g id="{2C3D6213-17C0-4288-A79E-A36B91AA6294}__padding" transform="translate(0, 0)" />
+          <g id="{2C3D6213-17C0-4288-A79E-A36B91AA6294}__padding" transform="translate(86, 20)" />
+          <g id="{2C3D6213-17C0-4288-A79E-A36B91AA6294}__padding" transform="translate(0, 20)" />
+          <g id="{2C3D6213-17C0-4288-A79E-A36B91AA6294}__name" transform="translate(4, 20)">
+            <text style="font-size:8.75px; font-family:Arial; fill:#000000; stroke-width:0" text-anchor="middle" font-weight="bold" x="41" y="10">LemonTree</text>
+          </g>
+        </g>
+        <g id="{2C3D6213-17C0-4288-A79E-A36B91AA6294}__component" transform="translate(71, 3)">
+          <line x1="1.6" y1="1.6" x2="1.6" y2="0" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="1.6" y1="0" x2="14.4" y2="0" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="14.4" y1="0" x2="14.4" y2="16" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="14.4" y1="16" x2="1.6" y2="16" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="1.6" y1="16" x2="1.6" y2="11.2" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="1.6" y1="8" x2="1.6" y2="4.8" style="stroke:#000000; stroke-width:1; fill:none" />
+          <g style="stroke:#000000; stroke-width:1; fill:none">
+            <rect x="0" y="1.6" width="6.4" height="3.2" />
+            <rect x="0" y="8" width="6.4" height="3.2" />
+          </g>
+        </g>
+        <g id="{2C3D6213-17C0-4288-A79E-A36B91AA6294}__composite" transform="translate(71, 51)" />
+      </svg>
     </g>
     <g style="" id="{4B400F98-5233-4f04-860F-C2B9B5B2A406}" transform="translate(295, 388)" class="element uml-Activity" data-diagram-object-guid="{73b39e61-2c64-80dd-b5ab-d423d82c13ce}">
-      <rect x="0" y="0" width="110" height="57" rx="15" ry="15" class="main-shape" />
-      <foreignObject width="110" height="57" transform="translate(-0.5,-0.5)">
-        <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">ArchiMate_ApplicationService</span>
-          </p>
-          <p class="text-center" style="margin-top:2px;margin-bottom:5px;text-decoration:none;">
-            <b>PCS HTTP Connection</b>
-          </p>
-        </div>
-      </foreignObject>
+      <svg overflow="visible" width="110" height="57" class="shape-script">
+        <g id="{4B400F98-5233-4f04-860F-C2B9B5B2A406}__main" class="main-shape" transform="translate(0, 0)">
+          <g style="stroke:#000000; stroke-width:1; fill:#C0FFFF; ">
+            <path d=" M27.5,57 L82.5,57 L82.5,57 A27.5,28.5 0 1 0 82.5,0 L27.5,0 L27.5,0 A27.5,28.5 0 0 0 27.5,57 Z" />
+          </g>
+          <g id="{4B400F98-5233-4f04-860F-C2B9B5B2A406}__icon_padding" transform="translate(0, 0)" />
+          <g id="{4B400F98-5233-4f04-860F-C2B9B5B2A406}__name" transform="translate(0, 10)">
+            <text style="font-size:8.75px; font-family:Arial; fill:#000000; stroke-width:0" text-anchor="middle" font-weight="bold" x="55.00000000000001" y="10">PCS HTTP</text>
+            <text style="font-size:8.75px; font-family:Arial; fill:#000000; stroke-width:0" text-anchor="middle" font-weight="bold" x="55.00000000000001" y="24.9">Connection</text>
+          </g>
+        </g>
+        <g id="{4B400F98-5233-4f04-860F-C2B9B5B2A406}__service" transform="translate(91, 3)" />
+        <g id="{4B400F98-5233-4f04-860F-C2B9B5B2A406}__composite" transform="translate(91, 38)" />
+      </svg>
     </g>
     <g style="" id="{3EE3C1DE-CA72-46ac-96A8-04E4BC5E262C}" transform="translate(121, 388)" class="element uml-Activity" data-diagram-object-guid="{7ed1b463-4605-c37d-a12c-2a7eb8878926}">
-      <rect x="0" y="0" width="110" height="57" rx="15" ry="15" class="main-shape" />
-      <foreignObject width="110" height="57" transform="translate(-0.5,-0.5)">
-        <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">ArchiMate_ApplicationService</span>
-          </p>
-          <p class="text-center" style="margin-top:2px;margin-bottom:5px;text-decoration:none;">
-            <b>Git(Hub) conneciton</b>
-          </p>
-        </div>
-      </foreignObject>
+      <svg overflow="visible" width="110" height="57" class="shape-script">
+        <g id="{3EE3C1DE-CA72-46ac-96A8-04E4BC5E262C}__main" class="main-shape" transform="translate(0, 0)">
+          <g style="stroke:#000000; stroke-width:1; fill:#C0FFFF; ">
+            <path d=" M27.5,57 L82.5,57 L82.5,57 A27.5,28.5 0 1 0 82.5,0 L27.5,0 L27.5,0 A27.5,28.5 0 0 0 27.5,57 Z" />
+          </g>
+          <g id="{3EE3C1DE-CA72-46ac-96A8-04E4BC5E262C}__icon_padding" transform="translate(0, 0)" />
+          <g id="{3EE3C1DE-CA72-46ac-96A8-04E4BC5E262C}__name" transform="translate(0, 10)">
+            <text style="font-size:8.75px; font-family:Arial; fill:#000000; stroke-width:0" text-anchor="middle" font-weight="bold" x="55.00000000000001" y="10">Git(Hub) conneciton</text>
+          </g>
+        </g>
+        <g id="{3EE3C1DE-CA72-46ac-96A8-04E4BC5E262C}__service" transform="translate(91, 3)" />
+        <g id="{3EE3C1DE-CA72-46ac-96A8-04E4BC5E262C}__composite" transform="translate(91, 38)" />
+      </svg>
     </g>
     <g style="" id="{46B37478-DF3A-479a-AB75-E7F89790E7A7}" transform="translate(93, 199)" class="element uml-Activity" data-diagram-object-guid="{889c960d-5964-3a44-ea13-f1b99aac7312}">
-      <rect x="0" y="0" width="511" height="151" style="stroke-width:1px;" class="main-shape" />
-      <foreignObject width="511" height="151" transform="translate(-0.5,-0.5)">
-        <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">ArchiMate_BusinessProcess</span>
-          </p>
-          <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
-            <b>1.0 Business Process</b>
-          </p>
-          <p class="childdiagram"></p>
-        </div>
-      </foreignObject>
+      <svg overflow="visible" width="511" height="151" class="shape-script">
+        <g id="{46B37478-DF3A-479a-AB75-E7F89790E7A7}__main" class="main-shape" transform="translate(0, 0)">
+          <g style="stroke:#000000; stroke-width:1; fill:#FFFFC0; ">
+            <rect x="0" y="0" width="511" height="151" rx="6.6666665" ry="6.6666665" />
+          </g>
+          <g id="{46B37478-DF3A-479a-AB75-E7F89790E7A7}__rect_padding" transform="translate(0, 0)" />
+          <g id="{46B37478-DF3A-479a-AB75-E7F89790E7A7}__rect_padding" transform="translate(507, 20)" />
+          <g id="{46B37478-DF3A-479a-AB75-E7F89790E7A7}__rect_padding" transform="translate(0, 20)" />
+          <g id="{46B37478-DF3A-479a-AB75-E7F89790E7A7}__name" transform="translate(4, 20)">
+            <text style="font-size:8.75px; font-family:Arial; fill:#000000; stroke-width:0" text-anchor="middle" font-weight="bold" x="251.49999999999997" y="10">1.0 Business Process</text>
+          </g>
+        </g>
+        <g id="{46B37478-DF3A-479a-AB75-E7F89790E7A7}__process" transform="translate(492, 3)">
+          <line x1="0" y1="4" x2="8.8" y2="4" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="8.8" y1="4" x2="8.8" y2="0" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="8.8" y1="0" x2="12.8" y2="8" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="12.8" y1="8" x2="8.8" y2="16" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="8.8" y1="16" x2="8.8" y2="12" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="8.8" y1="12" x2="0" y2="12" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="0" y1="12" x2="0" y2="4" style="stroke:#000000; stroke-width:1; fill:none" />
+        </g>
+        <g id="{46B37478-DF3A-479a-AB75-E7F89790E7A7}__composite" transform="translate(492, 132)" />
+      </svg>
     </g>
     <g style="" id="{9E2EE5E6-64E6-46db-9730-F88D8C9A78D7}" transform="translate(291, 603)" class="element uml-Component" data-diagram-object-guid="{98669b11-4cd5-e55b-1452-7a26f5385d72}">
-      <rect x="0" y="0" width="90" height="70" style="stroke-width:1px;" class="main-shape" />
-      <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
-        <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">ArchiMate_ApplicationComponent</span>
-          </p>
-          <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
-            <b>Enterprise Architect</b>
-          </p>
-          <p class="childdiagram"></p>
-        </div>
-      </foreignObject>
+      <svg overflow="visible" width="90" height="70" class="shape-script">
+        <g id="{9E2EE5E6-64E6-46db-9730-F88D8C9A78D7}__main" class="main-shape" transform="translate(0, 0)">
+          <rect x="0" y="0" width="90" height="70" style="stroke:#000000; stroke-width:1; fill:#C0FFFF; " />
+          <g id="{9E2EE5E6-64E6-46db-9730-F88D8C9A78D7}__padding" transform="translate(0, 0)" />
+          <g id="{9E2EE5E6-64E6-46db-9730-F88D8C9A78D7}__padding" transform="translate(86, 20)" />
+          <g id="{9E2EE5E6-64E6-46db-9730-F88D8C9A78D7}__padding" transform="translate(0, 20)" />
+          <g id="{9E2EE5E6-64E6-46db-9730-F88D8C9A78D7}__name" transform="translate(4, 20)">
+            <text style="font-size:8.75px; font-family:Arial; fill:#000000; stroke-width:0" text-anchor="middle" font-weight="bold" x="41" y="10">Enterprise</text>
+            <text style="font-size:8.75px; font-family:Arial; fill:#000000; stroke-width:0" text-anchor="middle" font-weight="bold" x="41" y="24.9">Architect</text>
+          </g>
+        </g>
+        <g id="{9E2EE5E6-64E6-46db-9730-F88D8C9A78D7}__component" transform="translate(71, 3)">
+          <line x1="1.6" y1="1.6" x2="1.6" y2="0" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="1.6" y1="0" x2="14.4" y2="0" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="14.4" y1="0" x2="14.4" y2="16" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="14.4" y1="16" x2="1.6" y2="16" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="1.6" y1="16" x2="1.6" y2="11.2" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="1.6" y1="8" x2="1.6" y2="4.8" style="stroke:#000000; stroke-width:1; fill:none" />
+          <g style="stroke:#000000; stroke-width:1; fill:none">
+            <rect x="0" y="1.6" width="6.4" height="3.2" />
+            <rect x="0" y="8" width="6.4" height="3.2" />
+          </g>
+        </g>
+        <g id="{9E2EE5E6-64E6-46db-9730-F88D8C9A78D7}__composite" transform="translate(71, 51)" />
+      </svg>
     </g>
     <g style="" id="{7768D95B-E091-4508-8826-3A181689358F}" transform="translate(131, 84)" class="element uml-Class" data-diagram-object-guid="{b7634973-43f8-0e6f-08c7-03193f9a451f}">
-      <rect x="0" y="0" width="90" height="70" style="stroke-width:1px;" class="main-shape" />
-      <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
-        <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">ArchiMate_BusinessObject</span>
-          </p>
-          <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
-            <b>Model Trunk</b>
-          </p>
-          <p class="childdiagram"></p>
-        </div>
-      </foreignObject>
+      <svg overflow="visible" width="90" height="70" class="shape-script">
+        <g id="{7768D95B-E091-4508-8826-3A181689358F}__main" class="main-shape" transform="translate(0, 0)">
+          <rect x="0" y="0" width="90" height="70" style="stroke:#000000; stroke-width:1; fill:#FFFFC0; " />
+          <g id="{7768D95B-E091-4508-8826-3A181689358F}__thetop" transform="translate(0, 0)">
+            <line x1="0" y1="20.02" x2="90" y2="20.02" style="stroke:#000000; stroke-width:1; fill:none" />
+          </g>
+          <g id="{7768D95B-E091-4508-8826-3A181689358F}__padding" transform="translate(86, 26)" />
+          <g id="{7768D95B-E091-4508-8826-3A181689358F}__padding" transform="translate(0, 26)" />
+          <g id="{7768D95B-E091-4508-8826-3A181689358F}__thename" transform="translate(4, 26)">
+            <text style="font-size:8.75px; font-family:Arial; fill:#000000; stroke-width:0" text-anchor="middle" font-weight="bold" x="41" y="10">Model Trunk</text>
+          </g>
+        </g>
+        <g id="{7768D95B-E091-4508-8826-3A181689358F}__composite" transform="translate(71, 51)" />
+      </svg>
     </g>
     <g style="" id="{377B6777-42C2-495e-B5CB-FE84DFA8246C}" transform="translate(470, 388)" class="element uml-Activity" data-diagram-object-guid="{b8a01ca8-4859-00a0-14d7-97759f52eeb9}">
-      <rect x="0" y="0" width="110" height="57" rx="15" ry="15" class="main-shape" />
-      <foreignObject width="110" height="57" transform="translate(-0.5,-0.5)">
-        <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">ArchiMate_ApplicationService</span>
-          </p>
-          <p class="text-center" style="margin-top:2px;margin-bottom:5px;text-decoration:none;">
-            <b>Application Service C</b>
-          </p>
-        </div>
-      </foreignObject>
+      <svg overflow="visible" width="110" height="57" class="shape-script">
+        <g id="{377B6777-42C2-495e-B5CB-FE84DFA8246C}__main" class="main-shape" transform="translate(0, 0)">
+          <g style="stroke:#000000; stroke-width:1; fill:#C0FFFF; ">
+            <path d=" M27.5,57 L82.5,57 L82.5,57 A27.5,28.5 0 1 0 82.5,0 L27.5,0 L27.5,0 A27.5,28.5 0 0 0 27.5,57 Z" />
+          </g>
+          <g id="{377B6777-42C2-495e-B5CB-FE84DFA8246C}__icon_padding" transform="translate(0, 0)" />
+          <g id="{377B6777-42C2-495e-B5CB-FE84DFA8246C}__name" transform="translate(0, 10)">
+            <text style="font-size:8.75px; font-family:Arial; fill:#000000; stroke-width:0" text-anchor="middle" font-weight="bold" x="55.00000000000001" y="10">Application Service</text>
+            <text style="font-size:8.75px; font-family:Arial; fill:#000000; stroke-width:0" text-anchor="middle" font-weight="bold" x="55.00000000000001" y="24.9">C</text>
+          </g>
+        </g>
+        <g id="{377B6777-42C2-495e-B5CB-FE84DFA8246C}__service" transform="translate(91, 3)" />
+        <g id="{377B6777-42C2-495e-B5CB-FE84DFA8246C}__composite" transform="translate(91, 38)" />
+      </svg>
     </g>
     <g style="" id="{1C6F8B0E-DB28-4d2b-86E8-9F0FB81F8A8E}" transform="translate(480, 84)" class="element uml-Class" data-diagram-object-guid="{da6dc529-034c-e853-a30a-e4cd79e7fbd1}">
-      <rect x="0" y="0" width="90" height="70" style="stroke-width:1px;" class="main-shape" />
-      <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
-        <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">ArchiMate_BusinessObject</span>
-          </p>
-          <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
-            <b>Model Production</b>
-          </p>
-          <p class="childdiagram"></p>
-        </div>
-      </foreignObject>
+      <svg overflow="visible" width="90" height="70" class="shape-script">
+        <g id="{1C6F8B0E-DB28-4d2b-86E8-9F0FB81F8A8E}__main" class="main-shape" transform="translate(0, 0)">
+          <rect x="0" y="0" width="90" height="70" style="stroke:#000000; stroke-width:1; fill:#FFFFC0; " />
+          <g id="{1C6F8B0E-DB28-4d2b-86E8-9F0FB81F8A8E}__thetop" transform="translate(0, 0)">
+            <line x1="0" y1="20.02" x2="90" y2="20.02" style="stroke:#000000; stroke-width:1; fill:none" />
+          </g>
+          <g id="{1C6F8B0E-DB28-4d2b-86E8-9F0FB81F8A8E}__padding" transform="translate(86, 26)" />
+          <g id="{1C6F8B0E-DB28-4d2b-86E8-9F0FB81F8A8E}__padding" transform="translate(0, 26)" />
+          <g id="{1C6F8B0E-DB28-4d2b-86E8-9F0FB81F8A8E}__thename" transform="translate(4, 26)">
+            <text style="font-size:8.75px; font-family:Arial; fill:#000000; stroke-width:0" text-anchor="middle" font-weight="bold" x="41" y="10">Model</text>
+            <text style="font-size:8.75px; font-family:Arial; fill:#000000; stroke-width:0" text-anchor="middle" font-weight="bold" x="41" y="24.9">Production</text>
+          </g>
+        </g>
+        <g id="{1C6F8B0E-DB28-4d2b-86E8-9F0FB81F8A8E}__composite" transform="translate(71, 51)" />
+      </svg>
     </g>
     <g style="" id="{84E5C464-293E-4a89-879A-D83017973CC2}" transform="translate(480, 500)" class="element uml-Component" data-diagram-object-guid="{ed80619b-ffc1-5f41-43a8-b32482b86f67}">
-      <rect x="0" y="0" width="90" height="70" style="stroke-width:1px;" class="main-shape" />
-      <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
-        <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">ArchiMate_ApplicationComponent</span>
-          </p>
-          <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
-            <b>Application Component B</b>
-          </p>
-          <p class="childdiagram"></p>
-        </div>
-      </foreignObject>
+      <svg overflow="visible" width="90" height="70" class="shape-script">
+        <g id="{84E5C464-293E-4a89-879A-D83017973CC2}__main" class="main-shape" transform="translate(0, 0)">
+          <rect x="0" y="0" width="90" height="70" style="stroke:#000000; stroke-width:1; fill:#C0FFFF; " />
+          <g id="{84E5C464-293E-4a89-879A-D83017973CC2}__padding" transform="translate(0, 0)" />
+          <g id="{84E5C464-293E-4a89-879A-D83017973CC2}__padding" transform="translate(86, 20)" />
+          <g id="{84E5C464-293E-4a89-879A-D83017973CC2}__padding" transform="translate(0, 20)" />
+          <g id="{84E5C464-293E-4a89-879A-D83017973CC2}__name" transform="translate(4, 20)">
+            <text style="font-size:8.75px; font-family:Arial; fill:#000000; stroke-width:0" text-anchor="middle" font-weight="bold" x="41" y="10">Application</text>
+            <text style="font-size:8.75px; font-family:Arial; fill:#000000; stroke-width:0" text-anchor="middle" font-weight="bold" x="41" y="24.9">Component B</text>
+          </g>
+        </g>
+        <g id="{84E5C464-293E-4a89-879A-D83017973CC2}__component" transform="translate(71, 3)">
+          <line x1="1.6" y1="1.6" x2="1.6" y2="0" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="1.6" y1="0" x2="14.4" y2="0" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="14.4" y1="0" x2="14.4" y2="16" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="14.4" y1="16" x2="1.6" y2="16" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="1.6" y1="16" x2="1.6" y2="11.2" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="1.6" y1="8" x2="1.6" y2="4.8" style="stroke:#000000; stroke-width:1; fill:none" />
+          <g style="stroke:#000000; stroke-width:1; fill:none">
+            <rect x="0" y="1.6" width="6.4" height="3.2" />
+            <rect x="0" y="8" width="6.4" height="3.2" />
+          </g>
+        </g>
+        <g id="{84E5C464-293E-4a89-879A-D83017973CC2}__composite" transform="translate(71, 51)" />
+      </svg>
     </g>
     <g style="" id="{C41DF502-1673-4ecf-A059-34056B7BDC87}" transform="translate(473, 250)" class="element uml-Activity" data-diagram-object-guid="{306ab2ae-1864-20b4-912d-8ef23934fa1a}">
-      <rect x="0" y="0" width="104" height="70" style="stroke-width:1px;" class="main-shape" />
-      <foreignObject width="104" height="70" transform="translate(-0.5,-0.5)">
-        <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">ArchiMate_BusinessProcess</span>
-          </p>
-          <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
-            <b>1.3 Business Process</b>
-          </p>
-          <p class="childdiagram"></p>
-        </div>
-      </foreignObject>
+      <svg overflow="visible" width="104" height="70" class="shape-script">
+        <g id="{C41DF502-1673-4ecf-A059-34056B7BDC87}__main" class="main-shape" transform="translate(0, 0)">
+          <g style="stroke:#000000; stroke-width:1; fill:#FFFFC0; ">
+            <rect x="0" y="0" width="104" height="70" rx="6.6666665" ry="6.6666665" />
+          </g>
+          <g id="{C41DF502-1673-4ecf-A059-34056B7BDC87}__rect_padding" transform="translate(0, 0)" />
+          <g id="{C41DF502-1673-4ecf-A059-34056B7BDC87}__rect_padding" transform="translate(100, 20)" />
+          <g id="{C41DF502-1673-4ecf-A059-34056B7BDC87}__rect_padding" transform="translate(0, 20)" />
+          <g id="{C41DF502-1673-4ecf-A059-34056B7BDC87}__name" transform="translate(4, 20)">
+            <text style="font-size:8.75px; font-family:Arial; fill:#000000; stroke-width:0" text-anchor="middle" font-weight="bold" x="48.00000000000001" y="10">1.3 Business</text>
+            <text style="font-size:8.75px; font-family:Arial; fill:#000000; stroke-width:0" text-anchor="middle" font-weight="bold" x="48.00000000000001" y="24.9">Process</text>
+          </g>
+        </g>
+        <g id="{C41DF502-1673-4ecf-A059-34056B7BDC87}__process" transform="translate(85, 3)">
+          <line x1="0" y1="4" x2="8.8" y2="4" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="8.8" y1="4" x2="8.8" y2="0" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="8.8" y1="0" x2="12.8" y2="8" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="12.8" y1="8" x2="8.8" y2="16" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="8.8" y1="16" x2="8.8" y2="12" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="8.8" y1="12" x2="0" y2="12" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="0" y1="12" x2="0" y2="4" style="stroke:#000000; stroke-width:1; fill:none" />
+        </g>
+        <g id="{C41DF502-1673-4ecf-A059-34056B7BDC87}__composite" transform="translate(85, 51)" />
+      </svg>
     </g>
     <g style="" id="{7334E86C-B657-4394-8953-B7E2CB3450E7}" transform="translate(124, 250)" class="element uml-Activity" data-diagram-object-guid="{4cb4f383-50fd-c6f1-10bf-6d2e2d2df43a}">
-      <rect x="0" y="0" width="104" height="70" style="stroke-width:1px;" class="main-shape" />
-      <foreignObject width="104" height="70" transform="translate(-0.5,-0.5)">
-        <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">ArchiMate_BusinessProcess</span>
-          </p>
-          <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
-            <b>1.1 Business Process</b>
-          </p>
-          <p class="childdiagram"></p>
-        </div>
-      </foreignObject>
+      <svg overflow="visible" width="104" height="70" class="shape-script">
+        <g id="{7334E86C-B657-4394-8953-B7E2CB3450E7}__main" class="main-shape" transform="translate(0, 0)">
+          <g style="stroke:#000000; stroke-width:1; fill:#FFFFC0; ">
+            <rect x="0" y="0" width="104" height="70" rx="6.6666665" ry="6.6666665" />
+          </g>
+          <g id="{7334E86C-B657-4394-8953-B7E2CB3450E7}__rect_padding" transform="translate(0, 0)" />
+          <g id="{7334E86C-B657-4394-8953-B7E2CB3450E7}__rect_padding" transform="translate(100, 20)" />
+          <g id="{7334E86C-B657-4394-8953-B7E2CB3450E7}__rect_padding" transform="translate(0, 20)" />
+          <g id="{7334E86C-B657-4394-8953-B7E2CB3450E7}__name" transform="translate(4, 20)">
+            <text style="font-size:8.75px; font-family:Arial; fill:#000000; stroke-width:0" text-anchor="middle" font-weight="bold" x="48.00000000000001" y="10">1.1 Business</text>
+            <text style="font-size:8.75px; font-family:Arial; fill:#000000; stroke-width:0" text-anchor="middle" font-weight="bold" x="48.00000000000001" y="24.9">Process</text>
+          </g>
+        </g>
+        <g id="{7334E86C-B657-4394-8953-B7E2CB3450E7}__process" transform="translate(85, 3)">
+          <line x1="0" y1="4" x2="8.8" y2="4" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="8.8" y1="4" x2="8.8" y2="0" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="8.8" y1="0" x2="12.8" y2="8" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="12.8" y1="8" x2="8.8" y2="16" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="8.8" y1="16" x2="8.8" y2="12" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="8.8" y1="12" x2="0" y2="12" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="0" y1="12" x2="0" y2="4" style="stroke:#000000; stroke-width:1; fill:none" />
+        </g>
+        <g id="{7334E86C-B657-4394-8953-B7E2CB3450E7}__composite" transform="translate(85, 51)" />
+      </svg>
     </g>
     <g style="" id="{8946E5C0-17D6-4714-B517-8B60363F5EAD}" transform="translate(298, 250)" class="element uml-Activity" data-diagram-object-guid="{6cfbb9d5-9f97-de81-b853-24a2944c345a}">
-      <rect x="0" y="0" width="104" height="70" style="stroke-width:1px;" class="main-shape" />
-      <foreignObject width="104" height="70" transform="translate(-0.5,-0.5)">
-        <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">ArchiMate_BusinessProcess</span>
-          </p>
-          <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
-            <b>1.2 Business Process</b>
-          </p>
-          <p class="childdiagram"></p>
-        </div>
-      </foreignObject>
+      <svg overflow="visible" width="104" height="70" class="shape-script">
+        <g id="{8946E5C0-17D6-4714-B517-8B60363F5EAD}__main" class="main-shape" transform="translate(0, 0)">
+          <g style="stroke:#000000; stroke-width:1; fill:#FFFFC0; ">
+            <rect x="0" y="0" width="104" height="70" rx="6.6666665" ry="6.6666665" />
+          </g>
+          <g id="{8946E5C0-17D6-4714-B517-8B60363F5EAD}__rect_padding" transform="translate(0, 0)" />
+          <g id="{8946E5C0-17D6-4714-B517-8B60363F5EAD}__rect_padding" transform="translate(100, 20)" />
+          <g id="{8946E5C0-17D6-4714-B517-8B60363F5EAD}__rect_padding" transform="translate(0, 20)" />
+          <g id="{8946E5C0-17D6-4714-B517-8B60363F5EAD}__name" transform="translate(4, 20)">
+            <text style="font-size:8.75px; font-family:Arial; fill:#000000; stroke-width:0" text-anchor="middle" font-weight="bold" x="48.00000000000001" y="10">1.2 Business</text>
+            <text style="font-size:8.75px; font-family:Arial; fill:#000000; stroke-width:0" text-anchor="middle" font-weight="bold" x="48.00000000000001" y="24.9">Process</text>
+          </g>
+        </g>
+        <g id="{8946E5C0-17D6-4714-B517-8B60363F5EAD}__process" transform="translate(85, 3)">
+          <line x1="0" y1="4" x2="8.8" y2="4" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="8.8" y1="4" x2="8.8" y2="0" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="8.8" y1="0" x2="12.8" y2="8" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="12.8" y1="8" x2="8.8" y2="16" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="8.8" y1="16" x2="8.8" y2="12" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="8.8" y1="12" x2="0" y2="12" style="stroke:#000000; stroke-width:1; fill:none" />
+          <line x1="0" y1="12" x2="0" y2="4" style="stroke:#000000; stroke-width:1; fill:none" />
+        </g>
+        <g id="{8946E5C0-17D6-4714-B517-8B60363F5EAD}__composite" transform="translate(85, 51)" />
+      </svg>
     </g>
     <g id="{CAD3BC17-F22D-4d23-BDE6-84A69C87EDDB}" class="element uml-Dependency" data-diagram-object-guid="{196e523f-222f-8eda-96c9-37efaa62e747}">
       <g class="main-shape">
-        <polyline class="connector-dash" style="stroke:#000000;" points="525,500 525,445" />
-        <use style="stroke:#000000;" xlink:href="#_EAArrow" transform="translate(520,445) rotate(0,5,0)" />
-      </g>
-      <g class="part-connector-label">
-        <g transform="translate(525,485)" style="text-anchor:middle; dominant-baseline:ideographic">
-          <g>
-            <text dy="0em">
-              <tspan class="stereotype part-connector-stereotype">«ArchiMate_Realization»</tspan>
-            </text>
+        <g id="{CAD3BC17-F22D-4d23-BDE6-84A69C87EDDB}__main" transform="translate(525,500) rotate(270,0,0)">
+          <line x1="0" y1="0" x2="55" y2="0" style="stroke:#000000; stroke-width:1; stroke-dasharray:7 4;fill:none" />
+        </g>
+        <g id="{CAD3BC17-F22D-4d23-BDE6-84A69C87EDDB}__target" transform="translate(525,445) rotate(90,0,0)">
+          <g style="stroke:#000000; stroke-width:1; fill:#FCF2E3; ">
+            <path d=" M0,0 L16,6 L16,-6 L0,0 Z" />
           </g>
         </g>
       </g>
     </g>
     <g id="{0E3E54C0-CCAC-48bf-8F5A-46BE7770061D}" class="element uml-Dependency" data-diagram-object-guid="{1cadd17a-a154-12cc-5e0b-9bdfbe3f3802}">
       <g class="main-shape">
-        <polyline class="connector-dash" style="stroke:#000000;" points="525,250 525,154" />
-        <use style="stroke:#000000;" xlink:href="#_EAArrow" transform="translate(520,154) rotate(0,5,0)" />
-      </g>
-      <g class="part-connector-label">
-        <g transform="translate(525,215)" style="text-anchor:middle; dominant-baseline:ideographic">
-          <g>
-            <text dy="0em">
-              <tspan class="stereotype part-connector-stereotype">«ArchiMate_Access»</tspan>
-            </text>
-          </g>
+        <g id="{0E3E54C0-CCAC-48bf-8F5A-46BE7770061D}__main" transform="translate(525,250) rotate(270,0,0)">
+          <line x1="0" y1="0" x2="96" y2="0" style="stroke:#000000; stroke-width:1; stroke-dasharray:2;fill:none" />
         </g>
+        <use style="stroke:#000000;stroke-dasharray:2;" xlink:href="#_EAArrow" transform="translate(520,154) rotate(0,5,0)" />
       </g>
     </g>
     <g id="{F4459AE4-837D-4c8c-9ADA-E0EA4FAB3890}" class="element uml-Association" data-diagram-object-guid="{26e83f50-ed00-3758-7815-a006709f909b}">
       <g class="main-shape">
-        <polyline class="connector" style="stroke:#000000;" points="525,388 525,320" />
-        <use style="stroke:#000000;" xlink:href="#_EAArrow" transform="translate(520,320) rotate(0,5,0)" />
-      </g>
-      <g class="part-connector-label">
-        <g transform="translate(525,367)" style="text-anchor:middle; dominant-baseline:ideographic">
-          <g>
-            <text dy="0em">
-              <tspan class="stereotype part-connector-stereotype">«ArchiMate_Serving»</tspan>
-            </text>
-          </g>
+        <g id="{F4459AE4-837D-4c8c-9ADA-E0EA4FAB3890}__main" transform="translate(525,388) rotate(270,0,0)">
+          <line x1="0" y1="0" x2="68" y2="0" style="stroke:#000000; stroke-width:1; fill:none" />
         </g>
+        <use style="stroke:#000000;" xlink:href="#_EAArrow" transform="translate(520,320) rotate(0,5,0)" />
       </g>
     </g>
     <g id="{4BA87685-02AF-42ad-85FF-A04CAFFA4160}" class="element uml-Dependency" data-diagram-object-guid="{2f5be588-af74-3ef5-8f01-d9d9229a0e6c}">
       <g class="main-shape">
-        <polyline class="connector-dash" style="stroke:#000000;" points="359,250 359,154" />
-        <use style="stroke:#000000;" xlink:href="#_EAArrow" transform="translate(354,154) rotate(0,5,0)" />
-      </g>
-      <g class="part-connector-label">
-        <g transform="translate(359,215)" style="text-anchor:middle; dominant-baseline:ideographic">
-          <g>
-            <text dy="0em">
-              <tspan class="stereotype part-connector-stereotype">«ArchiMate_Access»</tspan>
-            </text>
-          </g>
+        <g id="{4BA87685-02AF-42ad-85FF-A04CAFFA4160}__main" transform="translate(359,250) rotate(270,0,0)">
+          <line x1="0" y1="0" x2="96" y2="0" style="stroke:#000000; stroke-width:1; stroke-dasharray:2;fill:none" />
         </g>
+        <use style="stroke:#000000;stroke-dasharray:2;" xlink:href="#_EAArrow" transform="translate(354,154) rotate(0,5,0)" />
       </g>
     </g>
     <g id="{BC00B637-8955-474f-B3B8-6485A939F270}" class="element uml-Association" data-diagram-object-guid="{3915ff6d-7640-f074-f87f-cbfbe3e18c04}">
       <g class="main-shape">
-        <polyline class="connector" style="stroke:#000000;" points="188,388 188,365 324,365 324,320" />
-        <use style="stroke:#000000;" xlink:href="#_EAArrow" transform="translate(319,320) rotate(0,5,0)" />
-      </g>
-      <g class="part-connector-label">
-        <g transform="translate(275,375)" style="text-anchor:middle; dominant-baseline:ideographic">
-          <g>
-            <text dy="0em">
-              <tspan class="stereotype part-connector-stereotype">«ArchiMate_Serving»</tspan>
-            </text>
-          </g>
+        <g id="{BC00B637-8955-474f-B3B8-6485A939F270}__main" transform="translate(188,365) rotate(360,0,0)">
+          <line x1="0" y1="0" x2="136" y2="0" style="stroke:#000000; stroke-width:1; fill:none" />
         </g>
+        <path class="connector" style="stroke:#000000;" d="M188,388 L188,365 M324,365 L324,320" />
+        <use style="stroke:#000000;" xlink:href="#_EAArrow" transform="translate(319,320) rotate(0,5,0)" />
       </g>
     </g>
     <g id="{7E38CD29-76A9-4e07-BE0F-FE857BB9953C}" class="element uml-Dependency" data-diagram-object-guid="{3d9cd2da-f824-fe86-8f52-523e766dbb2e}">
       <g class="main-shape">
-        <polyline class="connector-dash" style="stroke:#000000;" points="176,250 176,154" />
-        <use style="stroke:#000000;" xlink:href="#_EAArrow" transform="translate(171,154) rotate(0,5,0)" />
-      </g>
-      <g class="part-connector-label">
-        <g transform="translate(176,215)" style="text-anchor:middle; dominant-baseline:ideographic">
-          <g>
-            <text dy="0em">
-              <tspan class="stereotype part-connector-stereotype">«ArchiMate_Access»</tspan>
-            </text>
-          </g>
+        <g id="{7E38CD29-76A9-4e07-BE0F-FE857BB9953C}__main" transform="translate(176,250) rotate(270,0,0)">
+          <line x1="0" y1="0" x2="96" y2="0" style="stroke:#000000; stroke-width:1; stroke-dasharray:2;fill:none" />
         </g>
+        <use style="stroke:#000000;stroke-dasharray:2;" xlink:href="#_EAArrow" transform="translate(171,154) rotate(0,5,0)" />
       </g>
     </g>
     <g id="{DCCD92A0-764F-4006-AE22-CCBE4DBA4B62}" class="element uml-Dependency" data-diagram-object-guid="{7076e1c2-dee4-8f84-ec13-c5ab409f9fc6}">
       <g class="main-shape">
-        <polyline class="connector-dash" style="stroke:#000000;" points="480,535 349,535 349,445" />
-        <use style="stroke:#000000;" xlink:href="#_EAArrow" transform="translate(344,445) rotate(0,5,0)" />
-      </g>
-      <g class="part-connector-label">
-        <g transform="translate(375,520)" style="text-anchor:middle; dominant-baseline:ideographic">
-          <g>
-            <text dy="0em">
-              <tspan class="stereotype part-connector-stereotype">«ArchiMate_Realization»</tspan>
-            </text>
+        <g id="{DCCD92A0-764F-4006-AE22-CCBE4DBA4B62}__main" transform="translate(480,535) rotate(180,0,0)">
+          <line x1="0" y1="0" x2="131" y2="0" style="stroke:#000000; stroke-width:1; stroke-dasharray:7 4;fill:none" />
+        </g>
+        <path class="connector-dash" style="stroke:#000000;stroke-dasharray:7 4;" d="M480,535 M349,535 L349,445" />
+        <g id="{DCCD92A0-764F-4006-AE22-CCBE4DBA4B62}__target" transform="translate(349,445) rotate(90,0,0)">
+          <g style="stroke:#000000; stroke-width:1; fill:#FCF2E3; ">
+            <path d=" M0,0 L16,6 L16,-6 L0,0 Z" />
           </g>
         </g>
       </g>
     </g>
     <g id="{D4CA29EE-2AB4-4052-B267-AE4AD26BF04A}" class="element uml-Dependency" data-diagram-object-guid="{8cc5f89f-cf8d-40c6-f8b6-3041749c8471}">
       <g class="main-shape">
-        <polyline class="connector-dash" style="stroke:#000000;" points="338,603 348,445" />
-        <use style="stroke:#000000;" xlink:href="#_EAArrow" transform="translate(343,445) rotate(3.621,5,0)" />
-      </g>
-      <g class="part-connector-label">
-        <g transform="translate(343,537)" style="text-anchor:middle; dominant-baseline:ideographic">
-          <g>
-            <text dy="0em">
-              <tspan class="stereotype part-connector-stereotype">«ArchiMate_Realization»</tspan>
-            </text>
+        <g id="{D4CA29EE-2AB4-4052-B267-AE4AD26BF04A}__main" transform="translate(338,603) rotate(273.621,0,0)">
+          <line x1="0" y1="0" x2="158.316" y2="0" style="stroke:#000000; stroke-width:1; stroke-dasharray:7 4;fill:none" />
+        </g>
+        <g id="{D4CA29EE-2AB4-4052-B267-AE4AD26BF04A}__target" transform="translate(348,445) rotate(93.621,0,0)">
+          <g style="stroke:#000000; stroke-width:1; fill:#FCF2E3; ">
+            <path d=" M0,0 L16,6 L16,-6 L0,0 Z" />
           </g>
         </g>
       </g>
     </g>
     <g id="{034B1C4A-15A2-4099-8537-7FF6386CB129}" class="element uml-ControlFlow" data-diagram-object-guid="{a3ef6b91-103c-e98c-0fbb-3b14a31d78c5}">
       <g class="main-shape">
-        <polyline class="connector" style="stroke:#000000;" points="228,285 298,285" />
-        <use style="stroke:#000000;" xlink:href="#_EAArrow" transform="translate(293,285) rotate(90,5,0)" />
-      </g>
-      <g class="part-controlflow-label">
-        <g transform="translate(263,298)" style="text-anchor:middle; dominant-baseline:ideographic">
-          <g>
-            <text dy="0em">
-              <tspan class="stereotype part-connector-stereotype">«ArchiMate_Triggering»</tspan>
-            </text>
+        <g id="{034B1C4A-15A2-4099-8537-7FF6386CB129}__main" transform="translate(228,285) rotate(360,0,0)">
+          <line x1="0" y1="0" x2="70" y2="0" style="stroke:#000000; stroke-width:1; fill:none" />
+        </g>
+        <g id="{034B1C4A-15A2-4099-8537-7FF6386CB129}__target" transform="translate(298,285) rotate(180,0,0)">
+          <g style="stroke:#000000; stroke-width:1; fill:#000000; ">
+            <path d=" M0,0 L10,4 L10,-4 L0,0 Z" />
           </g>
         </g>
       </g>
     </g>
     <g id="{B85BFA21-7A21-4ff6-83C9-CD79EC08FE87}" class="element uml-Association" data-diagram-object-guid="{c066d7e9-0223-7572-4b71-cbce197b9ad1}">
       <g class="main-shape">
-        <polyline class="connector" style="stroke:#000000;" points="155,388 155,320" />
-        <use style="stroke:#000000;" xlink:href="#_EAArrow" transform="translate(150,320) rotate(0,5,0)" />
-      </g>
-      <g class="part-connector-label">
-        <g transform="translate(155,367)" style="text-anchor:middle; dominant-baseline:ideographic">
-          <g>
-            <text dy="0em">
-              <tspan class="stereotype part-connector-stereotype">«ArchiMate_Serving»</tspan>
-            </text>
-          </g>
+        <g id="{B85BFA21-7A21-4ff6-83C9-CD79EC08FE87}__main" transform="translate(155,388) rotate(270,0,0)">
+          <line x1="0" y1="0" x2="68" y2="0" style="stroke:#000000; stroke-width:1; fill:none" />
         </g>
+        <use style="stroke:#000000;" xlink:href="#_EAArrow" transform="translate(150,320) rotate(0,5,0)" />
       </g>
     </g>
     <g id="{C12E4EC1-BB1F-450a-92DE-B3D2E70ABC19}" class="element uml-ControlFlow" data-diagram-object-guid="{d4ac7b86-9c77-9863-2cae-2307aa9f9e4b}">
       <g class="main-shape">
-        <polyline class="connector" style="stroke:#000000;" points="402,285 473,285" />
-        <use style="stroke:#000000;" xlink:href="#_EAArrow" transform="translate(468,285) rotate(90,5,0)" />
-      </g>
-      <g class="part-controlflow-label">
-        <g transform="translate(437,298)" style="text-anchor:middle; dominant-baseline:ideographic">
-          <g>
-            <text dy="0em">
-              <tspan class="stereotype part-connector-stereotype">«ArchiMate_Triggering»</tspan>
-            </text>
+        <g id="{C12E4EC1-BB1F-450a-92DE-B3D2E70ABC19}__main" transform="translate(402,285) rotate(360,0,0)">
+          <line x1="0" y1="0" x2="71" y2="0" style="stroke:#000000; stroke-width:1; fill:none" />
+        </g>
+        <g id="{C12E4EC1-BB1F-450a-92DE-B3D2E70ABC19}__target" transform="translate(473,285) rotate(180,0,0)">
+          <g style="stroke:#000000; stroke-width:1; fill:#000000; ">
+            <path d=" M0,0 L10,4 L10,-4 L0,0 Z" />
           </g>
         </g>
       </g>
     </g>
     <g id="{7A877804-864C-441b-B5EC-D159BED2AAC9}" class="element uml-Dependency" data-diagram-object-guid="{dd3e427d-91e9-f9ad-32f0-7b526155f80c}">
       <g class="main-shape">
-        <polyline class="connector-dash" style="stroke:#000000;" points="176,502 176,445" />
-        <use style="stroke:#000000;" xlink:href="#_EAArrow" transform="translate(171,445) rotate(0,5,0)" />
-      </g>
-      <g class="part-connector-label">
-        <g transform="translate(176,486)" style="text-anchor:middle; dominant-baseline:ideographic">
-          <g>
-            <text dy="0em">
-              <tspan class="stereotype part-connector-stereotype">«ArchiMate_Realization»</tspan>
-            </text>
+        <g id="{7A877804-864C-441b-B5EC-D159BED2AAC9}__main" transform="translate(176,502) rotate(270,0,0)">
+          <line x1="0" y1="0" x2="57" y2="0" style="stroke:#000000; stroke-width:1; stroke-dasharray:7 4;fill:none" />
+        </g>
+        <g id="{7A877804-864C-441b-B5EC-D159BED2AAC9}__target" transform="translate(176,445) rotate(90,0,0)">
+          <g style="stroke:#000000; stroke-width:1; fill:#FCF2E3; ">
+            <path d=" M0,0 L16,6 L16,-6 L0,0 Z" />
           </g>
         </g>
       </g>
     </g>
     <g id="{B47838C9-7970-4c6d-9CFB-6DF22D6DB2AA}" class="element uml-Association" data-diagram-object-guid="{e10955cd-c486-4241-0345-5a07deec36ce}">
       <g class="main-shape">
-        <polyline class="connector" style="stroke:#000000;" points="350,388 350,320" />
-        <use style="stroke:#000000;" xlink:href="#_EAArrow" transform="translate(345,320) rotate(0,5,0)" />
-      </g>
-      <g class="part-connector-label">
-        <g transform="translate(350,367)" style="text-anchor:middle; dominant-baseline:ideographic">
-          <g>
-            <text dy="0em">
-              <tspan class="stereotype part-connector-stereotype">«ArchiMate_Serving»</tspan>
-            </text>
-          </g>
+        <g id="{B47838C9-7970-4c6d-9CFB-6DF22D6DB2AA}__main" transform="translate(350,388) rotate(270,0,0)">
+          <line x1="0" y1="0" x2="68" y2="0" style="stroke:#000000; stroke-width:1; fill:none" />
         </g>
+        <use style="stroke:#000000;" xlink:href="#_EAArrow" transform="translate(345,320) rotate(0,5,0)" />
       </g>
     </g>
     <g id="{D7404DA2-DBBF-4044-8FBD-8068E0C768E9}" class="element uml-Association" data-diagram-object-guid="{f7d0d2cf-bc4a-3c08-539f-1018e7d51936}">
       <g class="main-shape">
         <polyline class="connector" style="stroke:#000000;" points="291,609 221,565" />
         <use style="stroke:#000000;" xlink:href="#_EAArrow3" transform="translate(286,609) rotate(122.152,5,0)" />
-      </g>
-      <g class="part-connector-label">
-        <g transform="translate(256,600)" style="text-anchor:middle; dominant-baseline:ideographic">
-          <g>
-            <text dy="0em">
-              <tspan class="stereotype part-connector-stereotype">«ArchiMate_Aggregation»</tspan>
-            </text>
-          </g>
-        </g>
       </g>
     </g>
   </g>

@@ -6,7 +6,7 @@
 #This script will update the "mine" diagrams from a LemonTree xml diffreport into SVG files
 
 #Check if the Folder Exists 
-$folderPath = ".\svg"
+$folderPath = ".\svg2"
 if (Test-Path $folderPath) {
     Write-Output "Folder $folderPath exists"
 } else {
