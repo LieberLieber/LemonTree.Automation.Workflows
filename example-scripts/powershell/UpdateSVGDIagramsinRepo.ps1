@@ -6,7 +6,7 @@
 #This script will update the "mine" diagrams from a LemonTree xml diffreport into SVG files
 
 #Check if the Folder Exists 
-$folderPath = ".\svg2"
+$folderPath = ".\svg"
 if (Test-Path $folderPath) {
     Write-Output "Folder $folderPath exists"
 } else {
@@ -20,7 +20,7 @@ Write-Output "deleting files $filesSVG"
 #Remove-Item "$filesSVG"
 
 #create SVG Files 
-&'C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe' SVGExport --Model .\DemoModel.eapx --DiagramDirectory '.\svg2'
+&'C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe' SVGExport --Model .\DemoModel.eapx --DiagramDirectory '.\svg'
 
 #git commit
 git add -A
