@@ -17,7 +17,7 @@ if (Test-Path $folderPath) {
 #delete all SVG files from the Folder - so deletion of diagrams is also reflected in git. existing diagrams will be recreated anyway.
 $filesSVG =	$folderPath+"\*.svg"
 Write-Output "deleting files $filesSVG"
-#Remove-Item "$filesSVG"
+Remove-Item "$filesSVG"
 
 #create SVG Files 
 &'C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe' SVGExport --Model .\DemoModel.eapx --DiagramDirectory '.\svg'
