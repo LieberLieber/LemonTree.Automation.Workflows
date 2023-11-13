@@ -36,7 +36,7 @@ jobs:
       - name: PrepareForSVGExport
         run: |
             #Check if the Folder Exists 
-            $folderPath = ${{env.SVGFolder}}
+            $folderPath = "${{env.SVGFolder}}"
             if (Test-Path $folderPath) {
                 Write-Output "Folder $folderPath exists"
             } else {
