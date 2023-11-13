@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" id="mainSvg" width="498" height="387" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" id="mainSvg" width="463" height="312" xmlns="http://www.w3.org/2000/svg">
   <style type="text/css"><![CDATA[
 		#viewport {
 			margin:0;
@@ -318,7 +318,7 @@
   </defs>
   <g id="viewport" transform="translate(0.5,0.5)">
     <g style="" id="{A576D522-7426-4e53-AEFA-2B7C8D9D3FCC}" transform="translate(10, 10)" class="element uml-Package" data-diagram-object-guid="{d479398b-7a58-add2-0efb-7c81dcaca851}">
-      <rect x="0" y="0" width="478" height="365" style="fill:none" class="main-shape" />
+      <rect x="0" y="0" width="443" height="290" style="fill:none" class="main-shape" />
       <polygon points="0,0 152.69185,0 152.69185,5 139.69185,19 0,19" />
       <text x="3" y="12" style="font-weight: bold; fill:black; stroke:none">[package] Daniel Validation</text>
     </g>
@@ -336,21 +336,7 @@
         </div>
       </foreignObject>
     </g>
-    <g style="" id="{45F78CA4-65DF-4641-B200-9CF7C9CBB14C}" transform="translate(361, 228)" class="element uml-Class" data-diagram-object-guid="{25d75a2b-2e08-f00b-d4d9-789c8c8627b1}">
-      <rect x="0" y="0" width="90" height="70" style="" class="main-shape" />
-      <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
-        <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">block</span>
-          </p>
-          <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
-            <b>Block 5 Renamed</b>
-          </p>
-          <p class="childdiagram"></p>
-        </div>
-      </foreignObject>
-    </g>
-    <g style="" id="{34B7C253-AEF4-4618-ABD8-8378C6B6D8D2}" transform="translate(156, 228)" class="element uml-Comment" data-diagram-object-guid="{41129620-de68-c119-b0f7-ffedf8d13b3d}">
+    <g style="" id="{34B7C253-AEF4-4618-ABD8-8378C6B6D8D2}" transform="translate(191, 153)" class="element uml-Comment" data-diagram-object-guid="{41129620-de68-c119-b0f7-ffedf8d13b3d}">
       <polygon points="0,0 102,0 115,13 115,110 0,110" style="fill:#f7f3f7; " class="main-shape" />
       <polygon points="102,0 115,13 102,13" style="fill:#d4d0d4; " />
       <foreignObject width="115" height="110">
@@ -429,7 +415,7 @@
     </g>
     <g id="{F876920E-B638-421e-A7A4-AE31201507C0}" class="element uml-Dependency" data-diagram-object-guid="{e57fa7a0-6a70-6edd-6b47-a38303b39978}">
       <g class="main-shape">
-        <polyline class="part-notelink" style="stroke:#000000;" points="185,228 127,114" />
+        <polyline class="part-notelink" style="stroke:#000000;" points="191,161 131,112" />
       </g>
     </g>
   </g>
