@@ -49,7 +49,7 @@ jobs:
             $filesSVG =	$folderPath+"*.svg"
             Write-Output "deleting files $filesSVG"
             Remove-Item "$filesSVG"
-            Write-Output "filesSVG=$filesSVG >>$env:GITHUB_OUTPUT
+            Write-Output "filesSVG=$filesSVG >>$env:GITHUB_OUTPUT"
 
       - name: ExportLatestSVGDiagrams
         run: |
