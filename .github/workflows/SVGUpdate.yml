@@ -1,0 +1,69 @@
+# Copyright (c) LieberLieber Software GmbH
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+name: LemonTree.Automation SVG Update in Repo
+
+on:
+ push:
+
+env:
+  ModelName: DemoModel
+  ModelExtension: eapx
+  SVGFolder: .\svg\
+
+jobs:
+  ConsistencyCheck:
+    defaults:
+      run:
+        shell: pwsh
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          lfs: true
+          fetch-depth: 0
+
+      # download Lemontree.Automation on a runner and setup the license
+      - uses: LieberLieber/setup-LemonTree.Automation@v1
+        id: GetLTA
+        with:
+          License: ${{secrets.LTALICENSE}} 
+      #ExeLocation &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}"
+    
+      - name: PrepareForSVGExport
+        run: |
+            #Check if the Folder Exists 
+            $folderPath = ${{env.SVGFolder}}
+            if (Test-Path $folderPath) {
+                Write-Output "Folder $folderPath exists"
+            } else {
+                Write-Output "Folder $folderPath does not exist, we create it "
+                New-Item -ItemType Directory -Force -Path $folderPath
+            }
+
+            #delete all SVG files from the Folder - so deletion of diagrams is also reflected in git. existing diagrams will be recreated anyway.
+            $filesSVG =	$folderPath+"*.svg"
+            Write-Output "deleting files $filesSVG"
+            Remove-Item "$filesSVG"
+
+      - name: ExportLatestSVGDiagrams
+        run: |
+            &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" SVGExport --Model ${{env.ModelName}}.${{env.ModelExtension}} --DiagramDirectory ${{env.SVGFolder}}
+      
+      - name: createCommitandPush
+        run: |
+            Write-Output "set user config"
+            git config --global user.name 'LemonTree.Automation'
+            git config --global user.email 'support@lieberlieber.com' 
+            Write-Output "setting remote state"
+            git remote set-url origin https://x-access-token:${{secrets.PAT}}@github.com/${{github.repository}}
+            git add -A
+            git commit -m "LemonTree.Automation SVG Update"
+            git push
+            Write-Output "SVG Updated in Repository"
+
+     
+    
