@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" id="mainSvg" width="202" height="335" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" id="mainSvg" width="288" height="92" xmlns="http://www.w3.org/2000/svg">
   <style type="text/css"><![CDATA[
 		#viewport {
 			margin:0;
@@ -316,38 +316,26 @@
       <circle cx="0" cy="0" r="9" stroke="gray" fill="url(#gradNotePin)" />
     </g>
   </defs>
-  <g id="viewport" transform="translate(-107.5,-39.5)">
-    <g style="" id="{E461A1EB-D4C1-462f-9AFD-5BD5FFBF7944}" transform="translate(210, 293)" class="element uml-Class" data-diagram-object-guid="{ae7b4d2b-c562-4724-e2ab-5b425b3baa95}">
+  <g id="viewport" transform="translate(-139.5,-111.5)">
+    <g style="" id="{83757D73-ED74-4519-A932-F7FD81170519}" transform="translate(150, 122)" class="element uml-Class" data-diagram-object-guid="{99a9cd2d-b96f-eb73-e1b4-59fcd7fb3f53}">
       <rect x="0" y="0" width="90" height="70" style="" class="main-shape" />
       <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;"></p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
-            <b>Class3 Customer B</b>
+            <b>Platform Class A</b>
           </p>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
     </g>
-    <g style="" id="{2E19D47C-7D9D-48d5-B31E-0C53A953A45F}" transform="translate(118, 134)" class="element uml-Class" data-diagram-object-guid="{d13f8596-7050-ca22-6b74-d21a46758844}">
-      <rect x="0" y="0" width="142" height="110" style="" class="main-shape" />
-      <foreignObject width="142" height="110" transform="translate(-0.5,-0.5)">
-        <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;"></p>
-          <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
-            <b>Class2 Customer B</b>
-          </p>
-          <p class="childdiagram"></p>
-        </div>
-      </foreignObject>
-    </g>
-    <g style="" id="{2DE3C967-6BE3-47ff-89D0-38E8CA372AB5}" transform="translate(182, 50)" class="element uml-Class" data-diagram-object-guid="{ffa4877b-864d-f87c-6db2-2b963fe317c9}">
+    <g style="" id="{1807F4CB-FAB4-4871-9C28-804D0A2B1100}" transform="translate(328, 122)" class="element uml-Class" data-diagram-object-guid="{d9b4a616-0449-133f-b068-24f817ba863e}">
       <rect x="0" y="0" width="90" height="70" style="" class="main-shape" />
       <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;"></p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
-            <b>Class1 Customer B</b>
+            <b>Platform Class B</b>
           </p>
           <p class="childdiagram"></p>
         </div>

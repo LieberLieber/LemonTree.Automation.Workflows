@@ -27,4 +27,4 @@ git add -A
 git commit -m "LemonTree.Automation SVG Update"
 
 #git push
-#git push
+git push
