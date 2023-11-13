@@ -14,7 +14,7 @@ env:
   SVGFolder: .\svg\
 
 jobs:
-  ConsistencyCheck:
+  SVGUpdateInRepo:
     defaults:
       run:
         shell: pwsh
@@ -34,6 +34,7 @@ jobs:
       #ExeLocation &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}"
     
       - name: PrepareForSVGExport
+        id: prep
         run: |
             #Check if the Folder Exists 
             $folderPath = "${{env.SVGFolder}}"
@@ -48,6 +49,7 @@ jobs:
             $filesSVG =	$folderPath+"*.svg"
             Write-Output "deleting files $filesSVG"
             Remove-Item "$filesSVG"
+            Write-Output "filesSVG=$filesSVG >>$env:GITHUB_OUTPUT
 
       - name: ExportLatestSVGDiagrams
         run: |
@@ -60,7 +62,7 @@ jobs:
             git config --global user.email 'support@lieberlieber.com' 
             Write-Output "setting remote state"
             git remote set-url origin https://x-access-token:${{secrets.PAT}}@github.com/${{github.repository}}
-            git add -A
+            git add "${{steps.prep.outputs.filesSVG}}"
             git commit -m "LemonTree.Automation SVG Update"
             git push
             Write-Output "SVG Updated in Repository"
