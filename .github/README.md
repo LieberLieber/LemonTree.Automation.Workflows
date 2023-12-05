@@ -76,4 +76,4 @@ Executes on each (re-)opening of and on each new commit in a pull-request. First
  Then, it pushes the updated EA model back to the
  originating branch, automatically keeping the two manifestations of the model in synch.
  Finally, it generates a review-session file, uploads it to artifactory and post a message in the pull request
- containing conflict status and a link to the review session 
+ containing conflict status and a link to the review session.
