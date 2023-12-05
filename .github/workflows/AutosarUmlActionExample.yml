@@ -18,8 +18,7 @@ env:
   ModelName: counting-logic
   ModelExtension: qeax
   ReviewSessionURL: 'https://nexus.lieberlieber.com/repository/lemontree-session'
-  LemonTreePipelineToolsRemovePrerenderedDiagramsExecutable: >-
-    https://nexus.lieberlieber.com/repository/lemontree-pipeline-tools/LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe
+  LemonTreePipelineToolsRemovePrerenderedDiagramsExecutable: https://nexus.lieberlieber.com/repository/lemontree-pipeline-tools/LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe
 jobs:
   AutosarUml:
     defaults:
@@ -36,8 +35,7 @@ jobs:
         id: CommitIds
         run: >
           git fetch
-          $baseId = git merge-base origin/$env:GITHUB_BASE_REF
-          origin/$env:GITHUB_HEAD_REF
+          $baseId = git merge-base origin/$env:GITHUB_BASE_REF origin/$env:GITHUB_HEAD_REF
           echo "::set-output name=baseCommitId::$baseId"
           $sourceId = git show-ref --hash origin/$env:GITHUB_HEAD_REF
           echo "::set-output name=sourceCommitId::$sourceId"
@@ -58,16 +56,14 @@ jobs:
             const prNumber = context.payload.pull_request.number
             const baseSHA = '${{steps.CommitIds.outputs.targetCommitId}}'
             const headSHA = '${{steps.CommitIds.outputs.sourceCommitId}}'
-            const filename = [repoName, 'PR', prNumber, baseSHA,
-            headSHA].join('-') + '.ltsfs'
+            const filename = [repoName, 'PR', prNumber, baseSHA, headSHA].join('-') + '.ltsfs'
             console.log(`Filename will be: ${filename}`)
             return filename
       - name: Download base-commit file
         id: baseDownload
         run: >
           git fetch origin ${{steps.CommitIds.outputs.baseCommitId}}
-          $pointer = git cat-file blob
-          ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
+          $pointer = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
           $sha = ($pointer[1] -split(":"))[1]
           if($sha -ne $null){
             $shaPart1 = $sha.Substring(0,2)
@@ -96,17 +92,13 @@ jobs:
         id: headDownload
         run: >
           git fetch origin $env:GITHUB_HEAD_REF
-          $pointer = git cat-file blob
-          ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}"
+          $pointer = git cat-file blob ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}"
           $sha = ($pointer[1] -split(":"))[1]
           $shaPart1 = $sha.Substring(0,2)
           $shaPart2 = $sha.Substring(2,2)
           echo "Model SHA: $sha"
-          git cat-file --filters
-          ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}"
-          | Out-Null
-          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha"
-          "${{env.ModelName}}_head.${{env.ModelExtension}}"
+          git cat-file --filters ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}" | Out-Null
+          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.${{env.ModelExtension}}"
       - uses: LieberLieber/setup-LemonTree.Automation@v1
         id: GetLTA
         with:
@@ -130,11 +122,7 @@ jobs:
         if: steps.baseDownload.outputs.result == 'downloaded'
         id: mergeCheck
         run: >
-          &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" merge
-          --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs
-          ${{env.ModelName}}.${{env.ModelExtension}} --mine
-          ${{env.ModelName}}_head.${{env.ModelExtension}} --dryrun --sfs ${{
-          steps.session_file.outputs.result }} --abortOnConflict true
+          &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --dryrun --sfs ${{ steps.session_file.outputs.result }} --abortOnConflict true
           echo "::set-output name=result::$LASTEXITCODE"
           echo "Return code: $LASTEXITCODE"
           if($LASTEXITCODE -eq 0){
