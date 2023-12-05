@@ -33,7 +33,7 @@ jobs:
           fetch-depth: 0
       - name: Get relevant commit IDs
         id: CommitIds
-        run: >
+        run: |
           git fetch
           $baseId = git merge-base origin/$env:GITHUB_BASE_REF origin/$env:GITHUB_HEAD_REF
           echo "::set-output name=baseCommitId::$baseId"
@@ -51,7 +51,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           result-encoding: string
-          script: >
+          script: |
             const repoName = context.payload.pull_request.base.repo.name
             const prNumber = context.payload.pull_request.number
             const baseSHA = '${{steps.CommitIds.outputs.targetCommitId}}'
@@ -61,7 +61,7 @@ jobs:
             return filename
       - name: Download base-commit file
         id: baseDownload
-        run: >
+        run: |
           git fetch origin ${{steps.CommitIds.outputs.baseCommitId}}
           $pointer = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
           $sha = ($pointer[1] -split(":"))[1]
@@ -90,7 +90,7 @@ jobs:
       - name: Download source branch head file
         if: steps.baseDownload.outputs.result == 'downloaded'
         id: headDownload
-        run: >
+        run: |
           git fetch origin $env:GITHUB_HEAD_REF
           $pointer = git cat-file blob ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}"
           $sha = ($pointer[1] -split(":"))[1]
@@ -121,7 +121,7 @@ jobs:
       - name: Check for merge conflicts
         if: steps.baseDownload.outputs.result == 'downloaded'
         id: mergeCheck
-        run: >
+        run: |
           &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --dryrun --sfs ${{ steps.session_file.outputs.result }} --abortOnConflict true
           echo "::set-output name=result::$LASTEXITCODE"
           echo "Return code: $LASTEXITCODE"
