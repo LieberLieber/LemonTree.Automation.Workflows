@@ -32,7 +32,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           lfs: true
           fetch-depth: 0
-      - uses: LieberLieber/setup-LemonTree.Automation@v1
+      - uses: LieberLieber/setup-LemonTree.Automation@v4
         id: GetLTA
         with:
           License: '${{secrets.LTALICENSE}}'
