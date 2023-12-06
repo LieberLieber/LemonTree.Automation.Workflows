@@ -112,54 +112,21 @@ jobs:
           git fetch origin $env:GITHUB_HEAD_REF
           $pointer = git cat-file blob ${{steps.CommitIds.outputs.targetCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}"
           $pointer | Out-File -FilePath "${{env.ModelName}}_target.${{env.ModelExtension}}"
-      - name: Check for merge conflicts
-        if: steps.baseDownload.outputs.result == 'downloaded'
-        id: mergeCheck
-        run: |
-          Test-Path ${{env.ModelName}}_base.${{env.ModelExtension}}
-          Test-Path ${{env.ModelName}}_target.${{env.ModelExtension}}
-          Test-Path ${{env.ModelName}}.${{env.ModelExtension}}
-          &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}_target.${{env.ModelExtension}} --mine ${{env.ModelName}}.${{env.ModelExtension}} --dryrun --sfs ${{ steps.session_file.outputs.result }} --abortOnConflict true
-          echo "::set-output name=result::$LASTEXITCODE"
-          echo "Return code: $LASTEXITCODE"
-          if($LASTEXITCODE -eq 0){
-            echo "No merge conflicts, setting message"
-            echo "message=[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:heavy_check_mark: **No merge conflicts in model**\n\nInstall [LemonTree 3.3+](https://www.lieberlieber.com/lemontree/en/) to open the Review Session file." >> $env:GITHUB_OUTPUT
-          }
-          elseif($LASTEXITCODE -eq 2){
-            echo "Internal Error when diffing. Please report such errors to support@lieberlieber.com"
-            exit 2
-          }
-          elseif($LASTEXITCODE -eq 3){
-            echo "Merge conflicts, setting message"
-            echo "message=[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:x: **Please resolve merge conflicts in model first**\n\nInstall [LemonTree 3.3+](https://www.lieberlieber.com/lemontree/en/) to open the Review Session file." >> $env:GITHUB_OUTPUT
-            exit 0
-          }
-          elseif($LASTEXITCODE -eq 6){
-            echo "Licensing issue of LemonTree.Automation"
-          }
-          else{
-            echo "Unknown error"
-          }
       - name: Create review session file
         id: checkSession
         run: |
           $Message = "${{ steps.mergeCheck.outputs.message }}"
           $sfsfilename ="${{ steps.session_file.outputs.result }}"
-          $mergecheckresult = ${{ steps.mergeCheck.outputs.result}}
-          if ($mergecheckresult  -eq 0)
+          $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --theirs ${{env.ModelName}}_target.${{env.ModelExtension}} --mine ${{env.ModelName}}.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }}
+          echo $output
+          ForEach ($line in $($output -split "`r`n"))
           {
-            $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --theirs ${{env.ModelName}}_target.${{env.ModelExtension}} --mine ${{env.ModelName}}.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }}
-            echo $output
-            ForEach ($line in $($output -split "`r`n"))
-            {
-                if ($line.EndsWith('Found 0 different elements.'))
-                {
-                  echo "No differences we don't need to publish the session file."
-                  $Message = ":heavy_check_mark: **Model is identical!**"
-                  $sfsfilename =""; 
-                }                
-            }
+              if ($line.EndsWith('Found 0 different elements.'))
+              {
+                echo "No differences we don't need to publish the session file."
+              $Message = ":heavy_check_mark: **Model is identical!**"
+                $sfsfilename =""; 
+              }
           }
           echo "$Message"
           echo "SfsFileName=$sfsfilename" >> $env:GITHUB_OUTPUT
