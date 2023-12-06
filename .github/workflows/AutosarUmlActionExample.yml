@@ -27,10 +27,30 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.ref }}
           lfs: true
           fetch-depth: 0
+      - uses: LieberLieber/setup-LemonTree.Automation@v1
+        id: GetLTA
+        with:
+          License: '${{secrets.LTALICENSE}}'
+      - name: Run IncQuery AUTOSAR-UML Bridge
+        uses: IncQueryLabs/incquery-suite-bridge-autosar-uml-action@v1
+        with:
+          arxml_folder_path: example-arxml
+          ea_model_file_path: 'counting-logic.qeax'
+          incquery_username: '${{ secrets.INCQUERY_USERNAME }}'
+          incquery_password: '${{ secrets.INCQUERY_PASSWORD }}'
+          license: '${{ secrets.INCQUERY_AUTOSAR_UML_INTEGRATION_LICENSE }}'
+      - name: Push updated model
+        run: |
+          git config --local user.name "Automatic Model Update"
+          git config --local user.email "username@users.noreply.github.com"
+          git add counting-logic.qeax
+          git commit -m "Automatic Model Update"
+          git push
       - name: Get relevant commit IDs
         id: CommitIds
         run: |
@@ -63,17 +83,15 @@ jobs:
         id: baseDownload
         run: |
           git fetch origin ${{steps.CommitIds.outputs.baseCommitId}}
-          $pointer = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
-          $sha = ($pointer[1] -split(":"))[1]
-          if($sha -ne $null){
-            $shaPart1 = $sha.Substring(0,2)
-            $shaPart2 = $sha.Substring(2,2)
-            echo "Model SHA: $sha"
-            git cat-file --filters ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}} | Out-Null
-            copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_base.${{env.ModelExtension}}"
+          $contents = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
+          echo $contents[1]
+          if($contents -ne $null){
+            echo "ps"
+            $contents | Out-File -FilePath "${{env.ModelName}}_base.${{env.ModelExtension}}"
             echo "result=downloaded" >> $env:GITHUB_OUTPUT
           }
-          else{
+          else {
+            echo "no"
             echo "result=notFound" >> $env:GITHUB_OUTPUT
           }
       - name: Post new model comment to PR
@@ -85,44 +103,23 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `Model not found on base commit / fork-off point`
+              body: `Model not found on base commit or fork-off point`
             })
-      - name: Download source branch head file
+      - name: Download target file
         if: steps.baseDownload.outputs.result == 'downloaded'
         id: headDownload
         run: |
           git fetch origin $env:GITHUB_HEAD_REF
-          $pointer = git cat-file blob ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}"
-          $sha = ($pointer[1] -split(":"))[1]
-          $shaPart1 = $sha.Substring(0,2)
-          $shaPart2 = $sha.Substring(2,2)
-          echo "Model SHA: $sha"
-          git cat-file --filters ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}" | Out-Null
-          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.${{env.ModelExtension}}"
-      - uses: LieberLieber/setup-LemonTree.Automation@v1
-        id: GetLTA
-        with:
-          License: '${{secrets.LTALICENSE}}'
-      - name: Run IncQuery AUTOSAR-UML Bridge
-        uses: IncQueryLabs/incquery-suite-bridge-autosar-uml-action@v1
-        with:
-          arxml_folder_path: example-arxml
-          ea_model_file_path: 'counting-logic.qeax'
-          incquery_username: '${{ secrets.INCQUERY_USERNAME }}'
-          incquery_password: '${{ secrets.INCQUERY_PASSWORD }}'
-          license: '${{ secrets.INCQUERY_AUTOSAR_UML_INTEGRATION_LICENSE }}'
-      - name: Push updated model
-        run: >
-          git config --local user.name "Automatic Model Update"
-          git config --local user.email "username@users.noreply.github.com"
-          git add counting-logic.qeax
-          git commit -m "Automatic Model Update"
-          git push
+          $pointer = git cat-file blob ${{steps.CommitIds.outputs.targetCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}"
+          $pointer | Out-File -FilePath "${{env.ModelName}}_target.${{env.ModelExtension}}"
       - name: Check for merge conflicts
         if: steps.baseDownload.outputs.result == 'downloaded'
         id: mergeCheck
         run: |
-          &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --dryrun --sfs ${{ steps.session_file.outputs.result }} --abortOnConflict true
+          Test-Path ${{env.ModelName}}_base.${{env.ModelExtension}}
+          Test-Path ${{env.ModelName}}_target.${{env.ModelExtension}}
+          Test-Path ${{env.ModelName}}.${{env.ModelExtension}}
+          &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}_target.${{env.ModelExtension}} --mine ${{env.ModelName}}.${{env.ModelExtension}} --dryrun --sfs ${{ steps.session_file.outputs.result }} --abortOnConflict true
           echo "::set-output name=result::$LASTEXITCODE"
           echo "Return code: $LASTEXITCODE"
           if($LASTEXITCODE -eq 0){
@@ -152,7 +149,7 @@ jobs:
           $mergecheckresult = ${{ steps.mergeCheck.outputs.result}}
           if ($mergecheckresult  -eq 0)
           {
-            $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --theirs ${{env.ModelName}}_base.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }}
+            $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --theirs ${{env.ModelName}}_target.${{env.ModelExtension}} --mine ${{env.ModelName}}.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }}
             echo $output
             ForEach ($line in $($output -split "`r`n"))
             {
