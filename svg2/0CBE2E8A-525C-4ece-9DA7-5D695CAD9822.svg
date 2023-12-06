@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" id="mainSvg" width="150" height="335" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" id="mainSvg" width="523" height="313" xmlns="http://www.w3.org/2000/svg">
   <style type="text/css"><![CDATA[
 		#viewport {
 			margin:0;
@@ -316,38 +316,63 @@
       <circle cx="0" cy="0" r="9" stroke="gray" fill="url(#gradNotePin)" />
     </g>
   </defs>
-  <g id="viewport" transform="translate(-159.5,-39.5)">
-    <g style="" id="{E461A1EB-D4C1-462f-9AFD-5BD5FFBF7944}" transform="translate(210, 293)" class="element uml-Class" data-diagram-object-guid="{ae7b4d2b-c562-4724-e2ab-5b425b3baa95}">
+  <g id="viewport" transform="translate(0.5,0.5)">
+    <g style="" id="{C99DFFFB-BA69-4989-ABBA-63C36DF65C6D}" transform="translate(10, 10)" class="element uml-Package" data-diagram-object-guid="{58ab984e-cd28-9f93-ab2d-ad354bfeb618}">
+      <rect x="0" y="0" width="503" height="291" style="fill:none" class="main-shape" />
+      <polygon points="0,0 117.7346,0 117.7346,5 104.7346,19 0,19" />
+      <text x="3" y="12" style="font-weight: bold; fill:black; stroke:none">[package] Interfaces</text>
+    </g>
+    <g style="" id="{1F8D1844-18DE-4d15-83FB-409F5A6BBF86}" transform="translate(386, 194)" class="element uml-Class" data-diagram-object-guid="{242979e9-a8ef-846c-9497-e156ef32a086}">
       <rect x="0" y="0" width="90" height="70" style="" class="main-shape" />
       <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;"></p>
+          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
+            <span class="stereotype part-object-stereotype">InterfaceBlock</span>
+          </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
-            <b>Class3 Customer B</b>
+            <b>ActiveSignal</b>
           </p>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
     </g>
-    <g style="" id="{2E19D47C-7D9D-48d5-B31E-0C53A953A45F}" transform="translate(170, 174)" class="element uml-Class" data-diagram-object-guid="{d13f8596-7050-ca22-6b74-d21a46758844}">
+    <g style="" id="{5287ABA2-38D6-456e-8B90-F53956FC19BE}" transform="translate(84, 145)" class="element uml-Class" data-diagram-object-guid="{79128ef0-04c7-3600-d987-bd1fe0034204}">
       <rect x="0" y="0" width="90" height="70" style="" class="main-shape" />
       <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;"></p>
+          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
+            <span class="stereotype part-object-stereotype">InterfaceBlock</span>
+          </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
-            <b>Class2 Customer B</b>
+            <b>CAN</b>
           </p>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
     </g>
-    <g style="" id="{2DE3C967-6BE3-47ff-89D0-38E8CA372AB5}" transform="translate(182, 50)" class="element uml-Class" data-diagram-object-guid="{ffa4877b-864d-f87c-6db2-2b963fe317c9}">
+    <g style="" id="{9511D51F-17DC-4bca-A732-BF7AA687C095}" transform="translate(260, 194)" class="element uml-Class" data-diagram-object-guid="{7dac92d2-e2d3-dca9-4d6f-3bf2f5b80e16}">
       <rect x="0" y="0" width="90" height="70" style="" class="main-shape" />
       <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;"></p>
+          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
+            <span class="stereotype part-object-stereotype">InterfaceBlock</span>
+          </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
-            <b>Class1 Customer B</b>
+            <b>MotorCommand</b>
+          </p>
+          <p class="childdiagram"></p>
+        </div>
+      </foreignObject>
+    </g>
+    <g style="" id="{11FBAAD9-1258-4772-86F0-07CAE7737F71}" transform="translate(303, 83)" class="element uml-Class" data-diagram-object-guid="{c8ae46bb-130e-7095-da77-42f62de633e5}">
+      <rect x="0" y="0" width="102" height="89" style="" class="main-shape" />
+      <foreignObject width="102" height="89" transform="translate(-0.5,-0.5)">
+        <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
+          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
+            <span class="stereotype part-object-stereotype">InterfaceBlock</span>
+          </p>
+          <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
+            <b>Intercom</b>
           </p>
           <p class="childdiagram"></p>
         </div>
