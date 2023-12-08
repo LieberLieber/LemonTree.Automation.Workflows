@@ -172,9 +172,8 @@ jobs:
         run: |
           $Message = "${{ steps.mergeCheck.outputs.message }}"
           $sfsfilename ="${{ steps.session_file.outputs.result }}"
-          $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --theirs ${{env.ModelName}}_target.${{env.ModelExtension}} --mine ${{env.ModelName}}.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }}
-          echo $output
-          ForEach ($line in $($output -split "`r`n"))
+          $mergecheckresult = ${{ steps.mergeCheck.outputs.result}}
+          if ($mergecheckresult  -eq 0)
           {
             $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --theirs ${{env.ModelName}}_base.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }}
             echo $output
