@@ -15,7 +15,7 @@ name: Review with IncQuery AUTOSAR-UML Bridge
       - synchronize
       - review_requested
 env:
-  ModelName: DemoModel
+  ModelName: counting-logic
   ModelExtension: eapx
   ReviewSessionURL: 'https://nexus.lieberlieber.com/repository/lemontree-session'
   LemonTreePipelineToolsRemovePrerenderedDiagramsExecutable: https://nexus.lieberlieber.com/repository/lemontree-pipeline-tools/LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe
@@ -40,7 +40,7 @@ jobs:
         uses: IncQueryLabs/incquery-suite-bridge-autosar-uml-action@v1
         with:
           arxml_folder_path: example-arxml
-          ea_model_file_path: 'DemoModel.eapx'
+          ea_model_file_path: 'counting-logic.eapx'
           incquery_username: '${{ secrets.INCQUERY_USERNAME }}'
           incquery_password: '${{ secrets.INCQUERY_PASSWORD }}'
           license: '${{ secrets.INCQUERY_AUTOSAR_UML_INTEGRATION_LICENSE }}'
@@ -48,7 +48,7 @@ jobs:
         run: |
           git config --local user.name "Automatic Model Update"
           git config --local user.email "username@users.noreply.github.com"
-          git add DemoModel.eapx
+          git add counting-logic.eapx
           git commit -m "Automatic Model Update"
           git push
       - name: Get relevant commit IDs
