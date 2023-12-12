@@ -100,7 +100,11 @@ jobs:
           
           while($LASTEXITCODE -ne 0) {
               $status = git status -s
-              if($status -ne "UU ${{env.ModelName}}.${{env.ModelExtension}}") {
+              $expected_status = "UU ${{env.ModelName}}.${{env.ModelExtension}}"
+              
+              Write-Output "Checking if {0} is equal to {1}" -f $expected_status, $status
+              
+              if($status -ne $expected_status) {
                 Write-Output "::error::Model is not conflicted please rebase manually."
                 echo "message=:x: Failed to rebase, the Model is not the only conflict." >> $env:GITHUB_OUTPUT
                 exit 666
