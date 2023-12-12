@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" id="mainSvg" width="111" height="212" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" id="mainSvg" width="480" height="309" xmlns="http://www.w3.org/2000/svg">
   <style type="text/css"><![CDATA[
 		#viewport {
 			margin:0;
@@ -316,10 +316,22 @@
       <circle cx="0" cy="0" r="9" stroke="gray" fill="url(#gradNotePin)" />
     </g>
   </defs>
-  <g id="viewport" transform="translate(-184.5,-39.5)">
-    <g style="" id="{0690EEC3-42D4-41c3-ACD1-95C4DFFB2A10}" transform="translate(195, 170)" class="element uml-Class" data-diagram-object-guid="{f6369f53-3ddf-1dc4-be8e-d39a50f61d9d}">
+  <g id="viewport" transform="translate(-50.5,-5.5)">
+    <g style="" id="{BC8C3788-0106-4ddf-A1D0-FE0DF689E5BE}" transform="translate(119, 202)" class="element uml-Class" data-diagram-object-guid="{56d50fc2-0e10-a66a-2771-caed6aeb1f4f}">
       <rect x="0" y="0" width="90" height="70" style="" class="main-shape" />
       <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
+        <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
+          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;"></p>
+          <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
+            <b>new element in rebase branch</b>
+          </p>
+          <p class="childdiagram"></p>
+        </div>
+      </foreignObject>
+    </g>
+    <g style="" id="{0690EEC3-42D4-41c3-ACD1-95C4DFFB2A10}" transform="translate(329, 154)" class="element uml-Class" data-diagram-object-guid="{f6369f53-3ddf-1dc4-be8e-d39a50f61d9d}">
+      <rect x="0" y="0" width="192" height="149" style="" class="main-shape" />
+      <foreignObject width="192" height="149" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;"></p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
@@ -329,9 +341,9 @@
         </div>
       </foreignObject>
     </g>
-    <g style="" id="{69D04027-E0B9-4225-871D-442CA887F246}" transform="translate(196, 50)" class="element uml-Class" data-diagram-object-guid="{fcb4c79c-bd48-0088-cf15-df77ff84a6eb}">
-      <rect x="0" y="0" width="90" height="70" style="" class="main-shape" />
-      <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
+    <g style="" id="{69D04027-E0B9-4225-871D-442CA887F246}" transform="translate(61, 16)" class="element uml-Class" data-diagram-object-guid="{fcb4c79c-bd48-0088-cf15-df77ff84a6eb}">
+      <rect x="0" y="0" width="179" height="138" style="" class="main-shape" />
+      <foreignObject width="179" height="138" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;"></p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
