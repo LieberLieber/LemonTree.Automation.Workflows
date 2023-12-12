@@ -7,7 +7,8 @@ git rebase origin/main
 
 while($LASTEXITCODE -ne 0) {
 	$status = git status -s
-	if($status -ne "UU BaseModel.eapx") {
+	if($status -ne "UU DemoModel.eapx") {
+		Write-Output "::error::Model is not conflicted please rebase manually."
 		exit 666
 	}
 	
