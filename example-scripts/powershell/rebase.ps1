@@ -6,8 +6,10 @@ $gitcmd = 'C:\Program Files\Git\git-cmd.exe'
 git rebase origin/main
 
 while($LASTEXITCODE -ne 0) {
-	$status = git status -s
-	if($status -ne "UU DemoModel.eapx") {
+	$status = git status -s -uno
+	$expected_status = "UU DemoModel.eapx"
+              
+              if($actual_status -ne $expected_status) {
 		Write-Output "::error::Model is not conflicted please rebase manually."
 		exit 666
 	}
