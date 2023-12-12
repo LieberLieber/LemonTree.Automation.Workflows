@@ -99,6 +99,7 @@ jobs:
           git rebase origin/main
           
           while($LASTEXITCODE -ne 0) {
+              git status -s
               $actual_status = git status -s
               $expected_status = "UU ${{env.ModelName}}.${{env.ModelExtension}}"
               
