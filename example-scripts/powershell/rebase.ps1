@@ -6,8 +6,8 @@ $gitcmd = 'C:\Program Files\Git\git-cmd.exe'
 git rebase origin/main
 
 while($LASTEXITCODE -ne 0) {
-	$status = git status -S:
-	if($status -neq "UU BaseModel.eapx") {
+	$status = git status -s
+	if($status -ne "UU BaseModel.eapx") {
 		exit 666
 	}
 	
