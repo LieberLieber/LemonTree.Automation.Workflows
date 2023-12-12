@@ -317,6 +317,18 @@
     </g>
   </defs>
   <g id="viewport" transform="translate(-89.5,-89.5)">
+    <g style="" id="{A3592259-95BE-426c-B328-505D12C7162A}" transform="translate(382, 199)" class="element uml-Class" data-diagram-object-guid="{65c889a8-533f-9708-850c-b11bc536cc51}">
+      <rect x="0" y="0" width="90" height="70" style="" class="main-shape" />
+      <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
+        <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
+          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;"></p>
+          <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
+            <b>Rebase Demo</b>
+          </p>
+          <p class="childdiagram"></p>
+        </div>
+      </foreignObject>
+    </g>
     <g style="" id="{FDAF303C-DAAE-41fe-9EC9-8841B36D1818}" transform="translate(369, 100)" class="element uml-Class" data-diagram-object-guid="{9e7a7586-4efc-3fe9-5a16-e235803edbdf}">
       <rect x="0" y="0" width="117" height="71" style="" class="main-shape" />
       <foreignObject width="117" height="71" transform="translate(-0.5,-0.5)">
