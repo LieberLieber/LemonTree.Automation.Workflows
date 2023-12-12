@@ -6,6 +6,11 @@ $gitcmd = 'C:\Program Files\Git\git-cmd.exe'
 git rebase origin/main
 
 while($LASTEXITCODE -ne 0) {
+	$status = git status -S:
+	if($status -neq "UU BaseModel.eapx") {
+		exit 666
+	}
+	
 	$basecommit = git merge-base HEAD REBASE_HEAD
 	$command = 'git cat-file blob {0}:DemoModel.eapx | git lfs smudge > DemoModel_base.eapx & exit' -f $basecommit
 	#this is required to get rid of the line feeds in the basecommit string
@@ -16,22 +21,22 @@ while($LASTEXITCODE -ne 0) {
 	&$lta merge --Base DemoModel_base.eapx --Theirs DemoModel_theirs.eapx --Mine DemoModel_mine.eapx --out DemoModel.eapx
 
 	if($LASTEXITCODE -eq 0){
-		echo "No merge conflicts, setting message"
+		Write-Output "No merge conflicts, setting message"
 	}
 	elseif($LASTEXITCODE -eq 2){
-		echo "::error::Internal Error when diffing. Please report such errors to support@lieberlieber.com"
+		Write-Output "::error::Internal Error when diffing. Please report such errors to support@lieberlieber.com"
 		exit 2
 	}
 	elseif($LASTEXITCODE -eq 3){
-		echo "Merge conflicts present, auto-merge failed"
+		Write-Output "Merge conflicts present, auto-merge failed"
 		exit 3
 	}
 	elseif($LASTEXITCODE -eq 6){
-		echo "::warning::Licensing issue of LemonTree.Automation"
+		Write-Output "::warning::Licensing issue of LemonTree.Automation"
 		exit 6
 	}
 	else{
-		echo "::error::Unknown error"
+		Write-Output "::error::Unknown error"
 		exit 1
 	}
 
