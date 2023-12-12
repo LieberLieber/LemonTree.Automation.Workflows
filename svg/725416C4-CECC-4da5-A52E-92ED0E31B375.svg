@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" id="mainSvg" width="406" height="93" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" id="mainSvg" width="406" height="199" xmlns="http://www.w3.org/2000/svg">
   <style type="text/css"><![CDATA[
 		#viewport {
 			margin:0;
@@ -317,6 +317,18 @@
     </g>
   </defs>
   <g id="viewport" transform="translate(-89.5,-89.5)">
+    <g style="" id="{CF028EFA-C0F5-4e26-BF0B-B2D3834E15C5}" transform="translate(382, 207)" class="element uml-Class" data-diagram-object-guid="{75eb4754-a4e9-0061-4bf6-d37d54c02d8e}">
+      <rect x="0" y="0" width="90" height="70" style="" class="main-shape" />
+      <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
+        <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
+          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;"></p>
+          <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
+            <b>Rebase Demo</b>
+          </p>
+          <p class="childdiagram"></p>
+        </div>
+      </foreignObject>
+    </g>
     <g style="" id="{FDAF303C-DAAE-41fe-9EC9-8841B36D1818}" transform="translate(369, 100)" class="element uml-Class" data-diagram-object-guid="{9e7a7586-4efc-3fe9-5a16-e235803edbdf}">
       <rect x="0" y="0" width="117" height="71" style="" class="main-shape" />
       <foreignObject width="117" height="71" transform="translate(-0.5,-0.5)">
