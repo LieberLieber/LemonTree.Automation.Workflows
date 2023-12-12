@@ -1,6 +1,6 @@
 ﻿$env:GIT_EDITOR = "true"
           
-$lta = '${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}'
+$lta = 'C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe'
 $gitcmd = 'C:\Program Files\Git\git-cmd.exe'
 
 git rebase origin/main
