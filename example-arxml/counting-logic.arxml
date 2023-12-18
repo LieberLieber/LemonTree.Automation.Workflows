@@ -19,7 +19,7 @@
                   <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/CountingLogic/Components/Counter</TYPE-TREF>
                 </SW-COMPONENT-PROTOTYPE>
                 <SW-COMPONENT-PROTOTYPE UUID="8894a408-6820-3aa4-bae8-eebe34da1469">
-                  <SHORT-NAME>generator</SHORT-NAME>
+                  <SHORT-NAME>generatorW</SHORT-NAME>
                   <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/CountingLogic/Components/CountAlterer</TYPE-TREF>
                 </SW-COMPONENT-PROTOTYPE>
               </COMPONENTS>
@@ -31,7 +31,7 @@
                     <TARGET-P-PORT-REF DEST="P-PORT-PROTOTYPE">/CountingLogic/Components/Counter/control</TARGET-P-PORT-REF>
                   </PROVIDER-IREF>
                   <REQUESTER-IREF>
-                    <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/CountingLogic/Components/Application/generator</CONTEXT-COMPONENT-REF>
+                    <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/CountingLogic/Components/Application/generatorW</CONTEXT-COMPONENT-REF>
                     <TARGET-R-PORT-REF DEST="R-PORT-PROTOTYPE">/CountingLogic/Components/CountAlterer/alterCount</TARGET-R-PORT-REF>
                   </REQUESTER-IREF>
                 </ASSEMBLY-SW-CONNECTOR>
