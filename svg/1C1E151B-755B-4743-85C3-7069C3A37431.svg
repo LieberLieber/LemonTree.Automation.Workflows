@@ -458,11 +458,12 @@
       <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">block</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">block</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>Rocker switch</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -472,19 +473,21 @@
       <foreignObject width="90" height="115" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">block</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">block</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>Power disable button NEW</b>
           </p>
-          <p class="childdiagram"></p>
-          <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
-            <p class="text-center" style="margin:0px; margin-top:4px;">
-              <i>ports</i>
-            </p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">Port1</p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">Port2</p>
+          <div class="part-object-sysmlblock">
+            <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
+              <p class="text-center" style="margin:0; margin-top:4px;">
+                <i>ports</i>
+              </p>
+              <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">Port1</p>
+              <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">Port2</p>
+            </div>
           </div>
+          <p class="childdiagram"></p>
         </div>
       </foreignObject>
     </g>
@@ -493,11 +496,12 @@
       <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">block</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">block</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>High torque sensor</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -507,11 +511,12 @@
       <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">block</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">block</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>Electric motor</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>

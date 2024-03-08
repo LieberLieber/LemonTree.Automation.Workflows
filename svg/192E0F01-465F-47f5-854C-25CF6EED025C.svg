@@ -363,7 +363,7 @@
       <foreignObject width="62" height="29" transform="translate(13,17) ">
         <div class="fo-body" xmlns="http://www.w3.org/1999/xhtml">
           <p style="padding:0px; font-size:0.9em;">
-            <span>in: External Reference</span>
+            <span> in: External Reference</span>
           </p>
         </div>
       </foreignObject>
@@ -373,7 +373,7 @@
       <foreignObject width="87" height="29" transform="translate(13,17) ">
         <div class="fo-body" xmlns="http://www.w3.org/1999/xhtml">
           <p style="padding:0px; font-size:0.9em;">
-            <span>output: External Reference</span>
+            <span> output: External Reference</span>
           </p>
         </div>
       </foreignObject>
@@ -383,7 +383,7 @@
       <foreignObject width="49" height="42" transform="translate(-23,19) ">
         <div class="fo-body" xmlns="http://www.w3.org/1999/xhtml">
           <p style="padding:0px; font-size:0.9em;">
-            <span>in: External Reference</span>
+            <span> in: External Reference</span>
           </p>
         </div>
       </foreignObject>
@@ -393,7 +393,7 @@
       <foreignObject width="55" height="42" transform="translate(13,17) ">
         <div class="fo-body" xmlns="http://www.w3.org/1999/xhtml">
           <p style="padding:0px; font-size:0.9em;">
-            <span>out: External Reference</span>
+            <span> out: External Reference</span>
           </p>
         </div>
       </foreignObject>

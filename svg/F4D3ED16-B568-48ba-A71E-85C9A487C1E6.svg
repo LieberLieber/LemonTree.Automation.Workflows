@@ -345,7 +345,7 @@
       <foreignObject width="55" height="42" transform="translate(13,17) ">
         <div class="fo-body" xmlns="http://www.w3.org/1999/xhtml">
           <p style="padding:0px; font-size:0.9em;">
-            <span>out: External Reference</span>
+            <span> out: External Reference</span>
           </p>
         </div>
       </foreignObject>
@@ -355,7 +355,7 @@
       <foreignObject width="49" height="42" transform="translate(13,17) ">
         <div class="fo-body" xmlns="http://www.w3.org/1999/xhtml">
           <p style="padding:0px; font-size:0.9em;">
-            <span>in: External Reference</span>
+            <span> in: External Reference</span>
           </p>
         </div>
       </foreignObject>
@@ -445,7 +445,7 @@
       <foreignObject width="34" height="40" transform="translate(-21,19) " style="overflow:visible;">
         <div class="fo-body" xmlns="http://www.w3.org/1999/xhtml">
           <p style="padding:0px; margin:0px; font-size:0.95em; font-weight:bold;">
-            <span>Call.in</span>
+            <span> Call.in  [1]</span>
           </p>
         </div>
       </foreignObject>
@@ -455,7 +455,7 @@
       <foreignObject width="66" height="27" transform="translate(19,1) " style="overflow:visible;">
         <div class="fo-body" xmlns="http://www.w3.org/1999/xhtml">
           <p style="padding:0px; margin:0px; font-size:0.95em; font-weight:bold;">
-            <span>Call.out</span>
+            <span> Call.out  [1]</span>
           </p>
         </div>
       </foreignObject>

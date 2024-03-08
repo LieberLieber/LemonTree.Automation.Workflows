@@ -323,27 +323,29 @@
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="part-object-parent">PWC_SystemContext</p>
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">block</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">block</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>PWC_SystemArchitecture</b>
           </p>
+          <div class="part-object-sysmlblock">
+            <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
+              <p class="text-center" style="margin:0; margin-top:4px;">
+                <i>properties</i>
+              </p>
+              <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">:Rocker switch</p>
+              <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">:Electric motor</p>
+              <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">:Power disable button NEW</p>
+              <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">:High torque sensor</p>
+            </div>
+            <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
+              <p class="text-center" style="margin:0; margin-top:4px;">
+                <i>parts</i>
+              </p>
+              <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">:PWC</p>
+            </div>
+          </div>
           <p class="childdiagram"></p>
-          <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
-            <p class="text-center" style="margin:0px; margin-top:4px;">
-              <i>properties</i>
-            </p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">:Rocker switch</p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">:Electric motor</p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">:Power disable button NEW</p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">:High torque sensor</p>
-          </div>
-          <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
-            <p class="text-center" style="margin:0px; margin-top:4px;">
-              <i>parts</i>
-            </p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">:PWC</p>
-          </div>
         </div>
       </foreignObject>
     </g>
@@ -355,6 +357,8 @@
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>:Electric motor</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
+          <div class="part-object-behaviors"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -367,6 +371,8 @@
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>:Power disable button NEW</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
+          <div class="part-object-behaviors"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -379,6 +385,8 @@
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>:Rocker switch</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
+          <div class="part-object-behaviors"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -391,6 +399,8 @@
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>:High torque sensor</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
+          <div class="part-object-behaviors"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -403,6 +413,8 @@
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>:PWC</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
+          <div class="part-object-behaviors"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -412,7 +424,7 @@
       <foreignObject width="27" height="14" transform="translate(-15,18) " style="overflow:visible;">
         <div class="fo-body" xmlns="http://www.w3.org/1999/xhtml">
           <p style="padding:0px; margin:0px; font-size:0.95em; font-weight:bold;">
-            <span></span>
+            <span> :CAN</span>
           </p>
         </div>
       </foreignObject>

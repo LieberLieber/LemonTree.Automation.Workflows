@@ -325,6 +325,7 @@
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>Class2 Customer A</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -337,6 +338,7 @@
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>Class1 Customer A</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -349,6 +351,7 @@
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>Platform::<wbr />Platform Class A</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>

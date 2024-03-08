@@ -327,11 +327,12 @@
       <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">block</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">block</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>Block  with Ports</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -354,11 +355,12 @@
       <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">block</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">block</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>Block7 TESTd</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -368,7 +370,7 @@
       <foreignObject width="26" height="14" transform="translate(-2,20) " style="overflow:visible;">
         <div class="fo-body" xmlns="http://www.w3.org/1999/xhtml">
           <p style="padding:0px; margin:0px; font-size:0.95em; font-weight:bold;">
-            <span>Port1</span>
+            <span> Port1</span>
           </p>
         </div>
       </foreignObject>
@@ -378,7 +380,7 @@
       <foreignObject width="35" height="14" transform="translate(17,18) " style="overflow:visible;">
         <div class="fo-body" xmlns="http://www.w3.org/1999/xhtml">
           <p style="padding:0px; margin:0px; font-size:0.95em; font-weight:bold;">
-            <span>MyPort</span>
+            <span> MyPort</span>
           </p>
         </div>
       </foreignObject>

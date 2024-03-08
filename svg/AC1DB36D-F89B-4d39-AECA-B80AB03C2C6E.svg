@@ -327,11 +327,12 @@
       <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">block</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">block</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>Block for SystemContect</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -341,11 +342,12 @@
       <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">block</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">block</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>Rocker switch</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -355,11 +357,12 @@
       <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">block</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">block</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>High torque sensor</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -369,30 +372,35 @@
       <foreignObject width="157" height="159" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">block</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">block</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>Power Window Controller::<wbr />PWC</b>
           </p>
-          <p class="childdiagram"></p>
-          <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
-            <p class="text-center" style="margin:0px; margin-top:4px;">
-              <i>ports</i>
-            </p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">:CAN</p>
+          <div class="part-object-sysmlblock">
+            <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
+              <p class="text-center" style="margin:0; margin-top:4px;">
+                <i>ports</i>
+              </p>
+              <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">:CAN</p>
+            </div>
+            <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
+              <p class="text-center" style="margin:0; margin-top:4px;">
+                <i>properties</i>
+              </p>
+              <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">:Casing</p>
+            </div>
           </div>
-          <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
-            <p class="text-center" style="margin:0px; margin-top:4px;">
-              <i>properties</i>
-            </p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">:Casing</p>
-          </div>
-          <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
-            <p class="text-center" style="margin:0px; margin-top:4px;">
+          <div style="border-top:1px solid black; margin:0px; margin-top:5px;" class="part-object-behaviors">
+            <p class="text-center" style="margin:0; margin-top:4px;">
               <i>owned behaviors</i>
             </p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">SystemStates</p>
+            <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">
+              <span>
+                <span class="stereotype part-object-stereotype">statemachine</span> SystemStates</span>
+            </p>
           </div>
+          <p class="childdiagram"></p>
         </div>
       </foreignObject>
       <use xlink:href="#compositeDiagramIcon" transform="translate(132,144)" />
@@ -402,22 +410,24 @@
       <foreignObject width="156" height="150" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">block</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">block</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>PWC_SystemContext</b>
           </p>
-          <p class="childdiagram"></p>
-          <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
-            <p class="text-center" style="margin:0px; margin-top:4px;">
-              <i>parts</i>
-            </p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">:PWC</p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">:Power disable button NEW</p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">:Electric motor</p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">:Rocker switch</p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">:High torque sensor</p>
+          <div class="part-object-sysmlblock">
+            <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
+              <p class="text-center" style="margin:0; margin-top:4px;">
+                <i>parts</i>
+              </p>
+              <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">:PWC</p>
+              <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">:Power disable button NEW</p>
+              <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">:Electric motor</p>
+              <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">:Rocker switch</p>
+              <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">:High torque sensor</p>
+            </div>
           </div>
+          <p class="childdiagram"></p>
         </div>
       </foreignObject>
       <use xlink:href="#compositeDiagramIcon" transform="translate(131,135)" />
@@ -427,19 +437,21 @@
       <foreignObject width="90" height="102" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">block</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">block</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>Power disable button NEW</b>
           </p>
-          <p class="childdiagram"></p>
-          <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
-            <p class="text-center" style="margin:0px; margin-top:4px;">
-              <i>ports</i>
-            </p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">Port1</p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">Port2</p>
+          <div class="part-object-sysmlblock">
+            <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
+              <p class="text-center" style="margin:0; margin-top:4px;">
+                <i>ports</i>
+              </p>
+              <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">Port1</p>
+              <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">Port2</p>
+            </div>
           </div>
+          <p class="childdiagram"></p>
         </div>
       </foreignObject>
     </g>
@@ -448,11 +460,12 @@
       <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">block</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">block</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>Electric motor</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>

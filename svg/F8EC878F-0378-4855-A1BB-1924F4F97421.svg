@@ -318,37 +318,16 @@
   </defs>
   <g id="viewport" transform="translate(12.5,-9.5)">
     <g style="" id="{B6CFD8D8-10EE-4595-B0CE-F450257875AC}" transform="translate(20, 20)" class="element uml-Class" data-diagram-object-guid="{cfd4e1fd-3a6d-777e-50c5-396dd8d5918d}">
-      <rect x="0" y="0" width="331" height="183" style="" class="main-shape" />
-      <foreignObject width="331" height="183" transform="translate(-0.5,-0.5)">
-        <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-          <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">block</span>
-          </p>
-          <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
-            <b>PWC</b>
-          </p>
-          <p class="childdiagram"></p>
-          <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
-            <p class="text-center" style="margin:0px; margin-top:4px;">
-              <i>properties</i>
-            </p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">:Casing</p>
-          </div>
-          <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
-            <p class="text-center" style="margin:0px; margin-top:4px;">
-              <i>owned behaviors</i>
-            </p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">SystemStates</p>
-          </div>
-        </div>
-      </foreignObject>
+      <rect x="0" y="0" width="331" height="183" style="fill:none" class="main-shape" />
+      <polygon points="0,0 78.391914,0 78.391914,5 65.391914,19 0,19" />
+      <text x="3" y="12" style="font-weight: bold; fill:black; stroke:none">[block] PWC</text>
     </g>
     <g style="" id="{35D9075C-E9C2-4d85-940E-C43086A07E43}" transform="translate(13, 106)" class="element uml-Port" data-diagram-object-guid="{32086081-3d63-b8a4-d319-ecf967433874}">
       <rect x="0" y="0" width="15" height="15" class="main-shape" />
       <foreignObject width="27" height="14" transform="translate(-15,18) " style="overflow:visible;">
         <div class="fo-body" xmlns="http://www.w3.org/1999/xhtml">
           <p style="padding:0px; margin:0px; font-size:0.95em; font-weight:bold;">
-            <span></span>
+            <span> :CAN</span>
           </p>
         </div>
       </foreignObject>

@@ -327,11 +327,12 @@
       <foreignObject width="186" height="56" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">requirement</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">requirement</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>Auto lower TEST</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -341,11 +342,12 @@
       <foreignObject width="186" height="56" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">requirement</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">requirement</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>Signal discrepancy</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -355,11 +357,12 @@
       <foreignObject width="186" height="56" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">requirement</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">requirement</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>Power disable button</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -387,11 +390,12 @@
       <foreignObject width="186" height="56" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">requirement</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">requirement</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>High torque detection</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -401,11 +405,12 @@
       <foreignObject width="186" height="56" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">requirement</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">requirement</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>Lock Signal New name</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -415,11 +420,12 @@
       <foreignObject width="186" height="56" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">requirement</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">requirement</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>Maximum time in motion</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -429,11 +435,12 @@
       <foreignObject width="186" height="56" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">requirement</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">requirement</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>Raise and lower window</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -444,7 +451,7 @@
       <foreignObject width="145" height="50" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0">
-            <span class="stereotype part-object-stereotype">EAMatrixSpecification</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">EAMatrixSpecification</span>
           </p>
           <p class="text-center" style="margin-top:2px;margin-bottom:5px;text-decoration:none;">
             <b>Requirements2UseCases</b>

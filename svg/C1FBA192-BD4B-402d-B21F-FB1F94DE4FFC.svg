@@ -338,11 +338,13 @@
       <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">signal</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">signal</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>motor command</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
+          <div class="part-object-behaviors"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -352,11 +354,13 @@
       <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">signal</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">signal</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>switch input</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
+          <div class="part-object-behaviors"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>

@@ -330,6 +330,8 @@
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>:PWC</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
+          <div class="part-object-behaviors"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -342,6 +344,8 @@
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>:Electric motor</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
+          <div class="part-object-behaviors"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -354,6 +358,8 @@
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>:Power disable button NEW</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
+          <div class="part-object-behaviors"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -366,6 +372,8 @@
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>:High torque sensor</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
+          <div class="part-object-behaviors"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -378,6 +386,8 @@
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>:Rocker switch</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
+          <div class="part-object-behaviors"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>

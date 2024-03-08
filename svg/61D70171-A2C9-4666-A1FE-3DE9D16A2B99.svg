@@ -327,18 +327,20 @@
       <foreignObject width="90" height="76" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">block</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">block</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>ECU</b>
           </p>
-          <p class="childdiagram"></p>
-          <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
-            <p class="text-center" style="margin:0px; margin-top:4px;">
-              <i>ports</i>
-            </p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">:Intercom</p>
+          <div class="part-object-sysmlblock">
+            <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
+              <p class="text-center" style="margin:0; margin-top:4px;">
+                <i>ports</i>
+              </p>
+              <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">:Intercom</p>
+            </div>
           </div>
+          <p class="childdiagram"></p>
         </div>
       </foreignObject>
     </g>
@@ -347,11 +349,12 @@
       <foreignObject width="110" height="44" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">requirement</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">requirement</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>PWC_Requirements::<wbr />Auto lower TEST</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -361,11 +364,12 @@
       <foreignObject width="90" height="89" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">block</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">block</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>Casing</b>
           </p>
+          <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
         </div>
       </foreignObject>
@@ -376,18 +380,20 @@
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="part-object-parent">PWC_SystemContext</p>
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">block</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">block</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>PWC_SystemArchitecture</b>
           </p>
-          <p class="childdiagram"></p>
-          <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
-            <p class="text-center" style="margin:0px; margin-top:4px;">
-              <i>parts</i>
-            </p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">:PWC</p>
+          <div class="part-object-sysmlblock">
+            <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
+              <p class="text-center" style="margin:0; margin-top:4px;">
+                <i>parts</i>
+              </p>
+              <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">:PWC</p>
+            </div>
           </div>
+          <p class="childdiagram"></p>
         </div>
       </foreignObject>
       <use xlink:href="#compositeDiagramIcon" transform="translate(131,151)" />
@@ -397,19 +403,21 @@
       <foreignObject width="90" height="89" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">block</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">block</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>JunctionBox</b>
           </p>
-          <p class="childdiagram"></p>
-          <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
-            <p class="text-center" style="margin:0px; margin-top:4px;">
-              <i>ports</i>
-            </p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">:CAN</p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">:Intercom</p>
+          <div class="part-object-sysmlblock">
+            <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
+              <p class="text-center" style="margin:0; margin-top:4px;">
+                <i>ports</i>
+              </p>
+              <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">:CAN</p>
+              <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">:Intercom</p>
+            </div>
           </div>
+          <p class="childdiagram"></p>
         </div>
       </foreignObject>
     </g>
@@ -418,24 +426,29 @@
       <foreignObject width="157" height="159" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
           <p class="text-center text-ellipsis text-stereotype" style="margin:0px;">
-            <span class="stereotype part-object-stereotype">block</span>
+            <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">block</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
             <b>Power Window Controller::<wbr />PWC</b>
           </p>
-          <p class="childdiagram"></p>
-          <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
-            <p class="text-center" style="margin:0px; margin-top:4px;">
-              <i>ports</i>
-            </p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">:CAN</p>
+          <div class="part-object-sysmlblock">
+            <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
+              <p class="text-center" style="margin:0; margin-top:4px;">
+                <i>ports</i>
+              </p>
+              <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">:CAN</p>
+            </div>
           </div>
-          <div style="border-top:1px solid black; margin:0px; margin-top:5px;">
-            <p class="text-center" style="margin:0px; margin-top:4px;">
+          <div style="border-top:1px solid black; margin:0px; margin-top:5px;" class="part-object-behaviors">
+            <p class="text-center" style="margin:0; margin-top:4px;">
               <i>owned behaviors</i>
             </p>
-            <p style="margin:0; margin-top:2px; margin-left:6px;" class="text-ellipsis">SystemStates</p>
+            <p class="text-ellipsis" style="text-align:left; margin:0; margin-top:2px; margin-left:6px;">
+              <span>
+                <span class="stereotype part-object-stereotype">statemachine</span> SystemStates</span>
+            </p>
           </div>
+          <p class="childdiagram"></p>
         </div>
       </foreignObject>
       <use xlink:href="#compositeDiagramIcon" transform="translate(132,144)" />
