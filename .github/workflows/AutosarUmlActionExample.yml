@@ -1,0 +1,222 @@
+# Copyright (c) IncQuery Labs cPlc.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The following secrets need to be defined: INCQUERY_USERNAME, INCQUERY_PASSWORD, INCQUERY_AUTOSAR_UML_INTEGRATION_LICENSE
+
+name: Review with IncQuery AUTOSAR-UML Bridge
+'on':
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+      - review_requested
+env:
+  ModelName: counting-logic
+  ModelExtension: eapx
+  ReviewSessionURL: 'https://nexus.lieberlieber.com/repository/lemontree-session'
+  LemonTreePipelineToolsRemovePrerenderedDiagramsExecutable: https://nexus.lieberlieber.com/repository/lemontree-pipeline-tools/LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe
+jobs:
+  AutosarUml:
+    defaults:
+      run:
+        shell: pwsh
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          lfs: true
+          fetch-depth: 0
+      - uses: LieberLieber/setup-LemonTree.Automation@v4
+        id: GetLTA
+        with:
+          License: '${{secrets.LTALICENSE}}'
+      - name: Run IncQuery AUTOSAR-UML Bridge
+        uses: IncQueryLabs/incquery-suite-bridge-autosar-uml-action@v1
+        with:
+          arxml_folder_path: example-arxml
+          ea_model_file_path: 'counting-logic.eapx'
+          incquery_username: '${{ secrets.INCQUERY_USERNAME }}'
+          incquery_password: '${{ secrets.INCQUERY_PASSWORD }}'
+          license: '${{ secrets.INCQUERY_AUTOSAR_UML_INTEGRATION_LICENSE }}'
+      - name: Push updated model
+        run: |
+          git config --local user.name "Automatic Model Update"
+          git config --local user.email "username@users.noreply.github.com"
+          git add counting-logic.eapx
+          git commit -m "Automatic Model Update"
+          git push
+      - name: Get relevant commit IDs
+        id: CommitIds
+        run: |
+          git fetch
+          $baseId = git merge-base origin/$env:GITHUB_BASE_REF origin/$env:GITHUB_HEAD_REF
+          echo "::set-output name=baseCommitId::$baseId"
+          $sourceId = git show-ref --hash origin/$env:GITHUB_HEAD_REF
+          echo "::set-output name=sourceCommitId::$sourceId"
+          $targetId = git show-ref --hash origin/$env:GITHUB_BASE_REF
+          echo "::set-output name=targetCommitId::$targetId"
+          echo "target branch: $env:GITHUB_BASE_REF"
+          echo "source branch: $env:GITHUB_HEAD_REF"
+          echo "target commit: $targetId"
+          echo "source commit: $sourceId"
+          echo "base commit: $baseId"
+      - name: Create sessionfile name
+        id: session_file
+        uses: actions/github-script@v6
+        with:
+          result-encoding: string
+          script: |
+            const repoName = context.payload.pull_request.base.repo.name
+            const prNumber = context.payload.pull_request.number
+            const baseSHA = '${{steps.CommitIds.outputs.targetCommitId}}'
+            const headSHA = '${{steps.CommitIds.outputs.sourceCommitId}}'
+            const filename = [repoName, 'PR', prNumber, baseSHA, headSHA].join('-') + '.ltsfs'
+            console.log(`Filename will be: ${filename}`)
+            return filename
+
+      - name: Download base-commit file
+        id: baseDownload
+        run: |
+          git fetch origin ${{steps.CommitIds.outputs.baseCommitId}}
+          $pointer = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
+          $sha = ($pointer[1] -split(":"))[1]
+          if($sha -ne $null){
+            $shaPart1 = $sha.Substring(0,2)
+            $shaPart2 = $sha.Substring(2,2)
+            echo "Model SHA: $sha"
+            git cat-file --filters ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}} | Out-Null
+            copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_base.${{env.ModelExtension}}"
+            echo "result=downloaded" >> $env:GITHUB_OUTPUT
+          }
+          else{
+            echo "result=notFound" >> $env:GITHUB_OUTPUT
+          }
+          
+      - name: Post new model comment to PR
+        if: steps.baseDownload.outputs.result == 'notFound'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `Model not found on base commit / fork-off point`
+            })
+            
+      - name: Download target branch head file
+        if: steps.baseDownload.outputs.result == 'downloaded'
+        id: headDownload
+        run: |
+          git fetch origin $env:GITHUB_HEAD_REF
+          $pointer = git cat-file blob ${{steps.CommitIds.outputs.targetId}}":${{env.ModelName}}.${{env.ModelExtension}}"
+          $sha = ($pointer[1] -split(":"))[1]
+          $shaPart1 = $sha.Substring(0,2)
+          $shaPart2 = $sha.Substring(2,2)
+          echo "Model SHA: $sha"
+          git cat-file --filters ${{steps.CommitIds.outputs.targetId}}":${{env.ModelName}}.${{env.ModelExtension}}" | Out-Null
+          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.${{env.ModelExtension}}"
+      
+      - name: Check for merge conflicts
+        if: steps.baseDownload.outputs.result == 'downloaded'
+        id: mergeCheck
+        run: |
+          &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --dryrun --sfs ${{ steps.session_file.outputs.result }} --abortOnConflict true
+          echo "::set-output name=result::$LASTEXITCODE"
+          echo "Return code: $LASTEXITCODE"
+          if($LASTEXITCODE -eq 0){
+            echo "No merge conflicts, setting message"
+            echo "message=[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:heavy_check_mark: **No merge conflicts in model**\n\nInstall [LemonTree 3.3+](https://www.lieberlieber.com/lemontree/en/) to open the Review Session file." >> $env:GITHUB_OUTPUT
+          }
+          elseif($LASTEXITCODE -eq 2){
+            echo "Internal Error when diffing. Please report such errors to support@lieberlieber.com"
+            exit 2
+          }
+          elseif($LASTEXITCODE -eq 3){
+            echo "Merge conflicts, setting message"
+            echo "message=[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:x: **Please resolve merge conflicts in model first**\n\nInstall [LemonTree 3.3+](https://www.lieberlieber.com/lemontree/en/) to open the Review Session file." >> $env:GITHUB_OUTPUT
+            exit 0
+          }
+          elseif($LASTEXITCODE -eq 6){
+            echo "Licensing issue of LemonTree.Automation"
+          }
+          else{
+            echo "Unknown error"
+          }    
+
+      # - name: Remove DIAGRAMIMAGEMAPS for Diff
+      #   if: steps.mergeCheck.outputs.result == 0
+      #   run: |
+      #     while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+      #     curl "${{env.LemonTreePipelineToolsRemovePrerenderedDiagramsExecutable}}" --output LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe
+      #     echo ".\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_base.${{env.ModelExtension}}"
+      #     .\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_base.${{env.ModelExtension}}
+      #     echo ".\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_head.${{env.ModelExtension}}"
+      #     .\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_head.${{env.ModelExtension}}
+          
+      - name: Create review session file
+        id: checkSession
+        run: |
+          $Message = "${{ steps.mergeCheck.outputs.message }}"
+          $sfsfilename ="${{ steps.session_file.outputs.result }}"
+          $mergecheckresult = ${{ steps.mergeCheck.outputs.result}}
+          if ($mergecheckresult  -eq 0)
+          {
+            $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --theirs ${{env.ModelName}}_base.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }}
+            echo $output
+            ForEach ($line in $($output -split "`r`n"))
+            {
+                if ($line.EndsWith('Found 0 different elements.'))
+                {
+                  echo "No differences we don't need to publish the session file."
+                  $Message = ":heavy_check_mark: **Model is identical!**"
+                  $sfsfilename =""; 
+                }                
+            }
+          }
+          echo "$Message"
+          echo "SfsFileName=$sfsfilename" >> $env:GITHUB_OUTPUT
+          echo "message=$Message" >> $env:GITHUB_OUTPUT
+          exit 0
+
+      - name: Upload
+        if: steps.baseDownload.outputs.result == 'downloaded'
+        run: |
+          $sessionFileName = "${{ steps.checkSession.outputs.SfsFileName }}"
+          if ([string]::IsNullOrEmpty($sessionFileName))
+          {
+            echo "Nothing to upload"
+          }
+          else
+          {
+            $targetUrl = "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
+            echo "Uploading $sessionFileName to Nexus: $targetUrl"
+            while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+            curl "-u${{secrets.NEXUSAUTHENTICATION}}" -T $sessionFileName $targetUrl
+          }
+
+      - name: Archive Session Files
+        if: steps.baseDownload.outputs.result == 'downloaded'
+        uses: actions/upload-artifact@v3
+        with:
+          name: Review Session File
+          path: ${{ steps.session_file.outputs.result }}
+          retention-days: 5
+
+      - name: Create PR comment
+        if: steps.baseDownload.outputs.result == 'downloaded'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `${{ steps.checkSession.outputs.message }}`
+            })

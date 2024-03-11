@@ -69,3 +69,11 @@ On a Desktop you can pull the published LemonTree Components to a LemonTreeCompo
 ## ConsistencyCheck
 On push the model consistency check is run, for now the results are just in the action output.   
  
+## AutosarUmlActionExample
+Executes on each (re-)opening of and on each new commit in a pull-request. Firstly, it runs the
+ [Incquery AUTOSAR-UML Bridge,](https://incquery.io/autosar-uml-bridge) using its provided
+ [action.](https://github.com/IncQueryLabs/incquery-suite-bridge-autosar-uml-action)
+ Then, it pushes the updated EA model back to the
+ originating branch, automatically keeping the two manifestations of the model in synch.
+ Finally, it generates a review-session file, uploads it to artifactory and post a message in the pull request
+ containing conflict status and a link to the review session.
