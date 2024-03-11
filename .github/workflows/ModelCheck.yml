@@ -16,16 +16,17 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           lfs: true
           fetch-depth: 0
 
       - name: Download LemonTree Check Tool
         run: |
-          #Powershell sees curly brackets as codeblocks so use quotations marks "{}" or just write your guids without them
-          while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-          curl "https://nexus.lieberlieber.com/repository/lemontree-pipeline-tools/LemonTree.Pipeline.Tools.ModelCheck.exe" --output .\LemonTree.Pipeline.Tools.ModelCheck.exe -k
+          # Powershell sees curly brackets as codeblocks so use quotations marks "{}" or just write your guids without them
+          # while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
+          # curl "https://nexus.lieberlieber.com/repository/lemontree-pipeline-tools/LemonTree.Pipeline.Tools.ModelCheck.exe" --output .\LemonTree.Pipeline.Tools.ModelCheck.exe -k
+          Invoke-WebRequest -URI "https://nexus.lieberlieber.com/repository/lemontree-pipeline-tools/LemonTree.Pipeline.Tools.ModelCheck.exe" -OutFile .\LemonTree.Pipeline.Tools.ModelCheck.exe
                       
       - name: Run LemonTree Check Tool
         id: modelcheck
