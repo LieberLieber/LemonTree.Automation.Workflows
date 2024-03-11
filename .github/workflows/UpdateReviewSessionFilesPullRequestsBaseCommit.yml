@@ -58,7 +58,7 @@ jobs:
           fetch-depth: 0
 
       # download Lemontree.Automation on a runner and setup the license
-      - uses: LieberLieber/setup-LemonTree.Automation@v1
+      - uses: LieberLieber/setup-LemonTree.Automation@v5
         if: ${{ steps.checkNumber.outputs.count > 0}}
         id: GetLTA
         with:
