@@ -2,6 +2,7 @@
 #Author: Daniel Siegl, LieberLieber Software GmbH
 #The purpose of this script is to start lemontree with a model from different branch in cherry pick mode!
 #Attention: the base and branchcopy of the file are collected from origin!
+#Attention: obslolete with LemonTree 4.0+ as it is part of the UI.
 #Supported:
 #.\example-scripts\powershell\CherryPicking.ps1 -Model DemoModel.eapx -Branch 70-test-for-discussion
 
