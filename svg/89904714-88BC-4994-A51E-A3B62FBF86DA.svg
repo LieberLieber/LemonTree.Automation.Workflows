@@ -8,6 +8,7 @@
 			text-rendering: optimizeLegibility;
 			image-rendering: optimizeQuality;
 			buffered-rendering: static;
+			color:rgb(109,112,114);
 		}
 		
 		#viewport tab { padding-left: 4em; }
@@ -28,7 +29,7 @@
 			overflow: hidden;
 		}
 	
-				g.element				{ fill: url(#gradStandardObject);stroke:black;stroke-width:1px;}
+				g.element				{ fill: url(#gradStandardObject);stroke:rgb(157,139,141);stroke-width:1px;}
 				g.uml-Enumeration		{ fill: url(#gradEnumeration) }
 				g.element rect		{ filter:url(#dropshadow)}
 				g.element circle		{ filter:url(#dropshadow)}
@@ -36,12 +37,12 @@
 				.fillBeige			{ fill: #fcf2e3; }
 	 
 		g.element text {
-			stroke: rgb(252,242,227);
+			stroke: rgb(253,250,247);
 			stroke-width:2px;
 			paint-order:stroke;
 			stroke-linecap:round;
 			stroke-linejoin:round;
-			fill: black;
+			fill: rgb(109,112,114);
 		}
 
 		#mainSvg { 
@@ -71,7 +72,6 @@
 		.text-middle			{ text-anchor:middle; }
 		
 		.fill-gray				{ fill:#3f3f3f; }
-		.fill-black				{ fill:black; }
 		.text-members			{ fill:#696969;stroke:none;text-anchor:start; }
 		.text-transition		{ fill:black;stroke:none;text-anchor:middle; }
 		.text-object-name		{ fill:black;stroke:none;text-anchor:middle;font-weight:bold; }
@@ -83,7 +83,7 @@
 	 
 		.partition-name			{ text-anchor:start;alignment-baseline:hanging; }
 		
-		.childelement-icon			{ display:inline-block;width:20px;height:16px;vertical-align:middle; }
+		.childelement-icon		{ display:inline-block;width:20px;height:16px;vertical-align:middle; }
 		.component-icon			{ fill:rgb(252,242,227); }
 		.template-arg-box		{ fill:rgb(252,242,227); stroke-dasharray: 7 4; }
 		.template-arg-text		{ text-anchor:start; alignment-baseline:hanging; }
@@ -142,22 +142,12 @@
 			text-align: right;
 		}
 		
-		.part-object-notes {
-			margin-top: 5px;
-			margin-bottom: 5px;
-			padding-top: 5px;
-			padding-left: 5px;
-			border-top: 1px solid black;
-			font-style: italic;
-			color: #a0a0a0;
-		}
-		
 		.part-object-tests {
 			margin-top: 5px;
 			margin-bottom: 5px;
 			padding-top: 5px;
 			padding-left: 5px;
-			border-top: 1px solid black;
+			border-top: 2px solid red;
 		}
 		
 		.part-usecase-extensionpoints {
@@ -166,19 +156,15 @@
 			padding-top: 3px;
 			padding-left: 12%;
 			vertical-align: top;
-			border-top: 1px solid black;
+			border-top: 2px solid red;
 		}
 		
 		.part-diagram-details { border:0; color:blue }
 		.part-diagram-details td { padding:0 }
 		
 		.part-diagram-notes { border:0 }
-		.part-diagram-notes td { padding:0 }
-		
-	    .part-occurrence-specifications p { text-align:left; margin:0px; margin-left:20px; margin-top:2px; color:#bb0000 }
+		.part-diagram-notes td { padding:0 }		
 	    
-	    .part-occurrence-specifications,
-		.part-state-operations { border-top: 1px solid black; margin:0px; padding-top:2px }
 		.part-state-operation { margin:2px 0 0 0; padding-left:5px; color:rgb(0, 71, 136) }
 		.part-state-operation-method { margin:0px; padding-left:10px; color:gray }
 		.part-state-operation-method p { margin: 2px 0px 2px 0px; }
@@ -187,8 +173,6 @@
 		.part-internal-transition-behavior { margin:2px 0 0 0; padding-left:15px; color:rgb(0, 71, 136) }
 		
 		.part-timeline-timelabel-container { fill:white }
-		
-		.uml-JoinNode, .uml-ForkNode { fill:black }
     
 	    .connected-feature_mark { fill:none; stroke-width:1 }
 	    
@@ -209,6 +193,8 @@
     
 		.part-decision-label	{ text-anchor:middle;alignment-baseline:central }
 		
+		/*==============================*/
+		
 		.shapescript-errors {
 			border: 0;
 			color: red;
@@ -219,6 +205,48 @@
 			background-color: #e5e5e5a3;
 		}
 		.shapescript-errors caption { text-align: left; font-weight: bold; background-color: inherit }
+		
+		.part-separator { border-top: 1px solid rgb(157,139,141); margin:0px; margin-top:5px }
+		.connector { fill:none; stroke:rgb(107,115,139) }
+		
+		.element.base-Action { fill:rgb(251,241,218) }
+		.element.base-Requirement { fill:url(#gradRequirement) }
+		.element.uml-Activity { fill:rgb(250,247,220) }
+		.element.uml-ActivityParameterNode { fill:rgb(247,197,195) }
+		.element.uml-Class.requirement { fill:rgb(242,251,239) }
+		.element.uml-Interface { fill:url(#gradInterface) }
+		.element.uml-Property, .element.uml-Port { fill:url(#gradProperty) }
+		.element.uml-DataType { fill:rgb(250,249,230) }
+		.element.uml-StateMachine { fill:rgb(245,247,240) }
+		.element.uml-State { fill:url(#gradState) }
+		.element.uml-InstanceSpecification { fill:rgb(224,244,245) }
+		.element.uml-Package { fill:rgb(249,243,240) }
+		.element.uml-Signal { fill:rgb(249,249,249) } /*rgb(255,255,255) - rgb(239,239,239)*/
+		.element.uml-Gate { fill:rgb(032,032,032) }
+		.element.uml-Trigger { fill:rgb(253,240,245) }
+		.element.uml-UseCase { fill:rgb(231,242,253) }
+		.element.uml-Comment { fill:white; stroke:rgb(131,181,190) }
+		
+		.element.uml-InitialNode, .element.uml-JoinNode, .element.uml-ForkNode { fill:rgb(152,132,132) }
+		.element.uml-Pseudostate.kind-Initial, .element.uml-Pseudostate.kind-Join, .element.uml-Pseudostate.kind-Fork, .element.uml-Pseudostate.kind-Junction { fill:rgb(152,132,132) }
+		.element.uml-DecisionNode, .element.uml-MergeNode, .element.uml-ActivityFinalNode, .element.uml-FinalState { fill:rgb(206,225,163) }				
+		.element.uml-Pseudostate.kind-DeepHistory,
+		.element.uml-Pseudostate.kind-ShallowHistory,
+		.element.uml-Pseudostate.kind-Choice,
+		.element.uml-Pseudostate.kind-ExitPoint,		
+		.element.uml-Pseudostate.kind-EntryPoint { fill:rgb(206,225,163) }
+		
+		.part-attribute-container { color:rgb(123,82,86) }
+		.part-operation-container { color:rgb(0, 71, 136) }
+		.part-taggedvalue-container { padding-top:4px }
+		.part-occurrence-specifications { color:rgb(123,82,86); padding-top:2px; padding-left:14px }
+		.part-object-notes { color:#a0a0a0; padding-top:10px; padding-left:11px; padding-right:2px; line-height:110% }
+		.part-timeline-container { fill:#f3fcfc }
+		
+		.requirement-text { white-space:break-spaces }
+
+		a.disabled { pointer-events:none; cursor:not-allowed; color:currentColor; text-decoration:auto }
+
 	]]></style>
   <defs>
     <g id="_EAArrow">
@@ -254,8 +282,8 @@
       <polyline points="0,10 5,0 10,10 0,10" style="fill:black" />
     </g>
     <linearGradient id="gradStandardObject" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:rgb(252,242,227);stop-opacity:1" />
-      <stop offset="100%" style="stop-color:rgb(247,220,180);stop-opacity:1" />
+      <stop offset="0%" style="stop-color:rgb(253,250,247);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgb(245,234,223);stop-opacity:1" />
     </linearGradient>
     <linearGradient id="gradEnumeration" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" style="stop-color:rgb(234,253,228);stop-opacity:1" />
@@ -265,13 +293,29 @@
       <stop offset="0%" style="stop-color:rgb(255,255,255);stop-opacity:1" />
       <stop offset="100%" style="stop-color:rgb(240,240,240);stop-opacity:1" />
     </linearGradient>
-    <filter id="dropshadow" height="130%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="0" />
+    <linearGradient id="gradRequirement" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:rgb(242,251,239);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgb(222,243,215);stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradInterface" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:rgb(241,236,250);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgb(222,212,242);stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradProperty" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:rgb(218,234,252);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgb(189,217,249);stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradState" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:rgb(244,237,217);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgb(236,225,192);stop-opacity:1" />
+    </linearGradient>
+    <filter id="dropshadow" height="140%" width="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
       <!-- stdDeviation is how much to blur -->
-      <feOffset dx="2" dy="2" result="offsetblur" />
+      <feOffset dx="3" dy="3" result="offsetblur" />
       <!-- how much to offset -->
       <feComponentTransfer>
-        <feFuncA type="linear" slope="0.1" />
+        <feFuncA type="linear" slope="0.2" />
       </feComponentTransfer>
       <feMerge>
         <feMergeNode />
@@ -368,8 +412,8 @@
     </g>
     <g id="{D556B3FE-4DE6-4455-869D-D50A85937075}" class="element uml-Usage" data-diagram-object-guid="{4ed4c835-a7b5-b6f7-ab42-c7247f9dc7dd}">
       <g class="main-shape">
-        <polyline class="connector-dash" style="stroke:#000000;" points="199,198 321,172" />
-        <use style="stroke:#000000;" xlink:href="#_EAArrow" transform="translate(316,172) rotate(77.969,5,0)" />
+        <polyline class="connector-dash" style="" points="199,198 321,172" />
+        <use style="" xlink:href="#_EAArrow" transform="translate(316,172) rotate(77.969,5,0)" />
       </g>
       <g class="part-connector-label">
         <g transform="translate(260,198)" style="text-anchor:middle; dominant-baseline:ideographic">
@@ -383,8 +427,8 @@
     </g>
     <g id="{A618490B-B848-4c7c-A095-46EE6A7B6DF2}" class="element uml-Usage" data-diagram-object-guid="{f6758b9c-92ae-f03c-69a0-7bdc3b225860}">
       <g class="main-shape">
-        <polyline class="connector-dash" style="stroke:#000000;" points="199,210 424,287" />
-        <use style="stroke:#000000;" xlink:href="#_EAArrow" transform="translate(419,287) rotate(108.892,5,0)" />
+        <polyline class="connector-dash" style="" points="199,210 424,287" />
+        <use style="" xlink:href="#_EAArrow" transform="translate(419,287) rotate(108.892,5,0)" />
       </g>
       <g class="part-connector-label">
         <g transform="translate(311,261)" style="text-anchor:middle; dominant-baseline:ideographic">
