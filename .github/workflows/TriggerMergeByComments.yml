@@ -30,7 +30,7 @@ jobs:
           github.event.comment.author_association == 'COLLABORATOR')
         run: |
           echo "org member or invited collaborator: ${{github.event.comment.author_association}}"
-          echo "::set-output name=result::True"
+          echo "result=True" >> $env:GITHUB_OUTPUT
              
       - id: userAuthByPositiveList
         env:
@@ -40,7 +40,7 @@ jobs:
             echo "${{env.authUsers}}"
             $result = ${{env.authUsers}} -contains "${{github.event.comment.user.login}}"
             echo "User is in authentication list: $result"
-            echo "::set-output name=result::$result"  
+            echo "result=$result"  >> $env:GITHUB_OUTPUT
             
       - id: SelectAuthResult
         run: |
@@ -61,7 +61,7 @@ jobs:
                 echo "Unknown authentication mode - Failed"
               }
             }
-            echo "::set-output name=result::$result"
+            echo "result=$result" >> $GITHUB_OUTPUT
             if ($result -ne "True")
             {
               echo "::error User not Authenticated"
@@ -78,7 +78,7 @@ jobs:
     
     steps:
       - name: Post start message in PR
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           script: |
             await github.rest.issues.createComment({
@@ -90,7 +90,7 @@ jobs:
             
       - name: Retrieve Rull Request details
         id: pr_details
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           result-encoding: string
           script: |
@@ -112,7 +112,7 @@ jobs:
             core.setOutput('head', triggeredPR.head.ref)
             core.setOutput('base', triggeredPR.base.ref)
             
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           lfs: true
           fetch-depth: 0
@@ -131,11 +131,11 @@ jobs:
         run: |
           git fetch
           $baseId = git merge-base origin/${{steps.pr_details.outputs.base}} origin/${{steps.pr_details.outputs.head}}
-          echo "::set-output name=baseCommitId::$baseId"
+          echo "baseCommitId=$baseId" >> $env:GITHUB_OUTPUT
           $sourceId = git show-ref --hash origin/${{steps.pr_details.outputs.head}}
-          echo "::set-output name=sourceCommitId::$sourceId"
+          echo "sourceCommitId=$sourceId" >> $env:GITHUB_OUTPUT
           $targetId = git show-ref --hash origin/${{steps.pr_details.outputs.base}}
-          echo "::set-output name=targetCommitId::$targetId"
+          echo "targetCommitId=$targetId" >> $env:GITHUB_OUTPUT
           echo "source commit: $sourceId"
           echo "base commit: $baseId"
           echo "target commit: $targetId"
@@ -179,9 +179,7 @@ jobs:
           copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.${{env.ModelExtension}}"
 
       # download Lemontree.Automation on a runner and setup the license
-      - name: GetLTA
-        #if: ${{ steps.checkNumber.outputs.count > 0}}
-        uses: LieberLieber/setup-LemonTree.Automation@v0.6
+      - uses: LieberLieber/setup-LemonTree.Automation@v5
         id: GetLTA
         with:
           License: ${{secrets.LTALICENSE}} 
@@ -191,29 +189,29 @@ jobs:
         id: mergeEA
         run: |
           &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}_target.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --out merged.${{env.ModelExtension}} --abortOnConflict true
-          echo "::set-output name=result::$LASTEXITCODE"
+          echo "result=$LASTEXITCODE" >> $GITHUB_OUTPUT
           echo "Return code: $LASTEXITCODE"
           
           if($LASTEXITCODE -eq 0){
             echo "No merge conflicts, setting message"
-            echo "::set-output name=message:::heavy_check_mark: Merge performed successfully"
+            echo "message=:heavy_check_mark: Merge performed successfully" >> $env:GITHUB_OUTPUT
           }
           elseif($LASTEXITCODE -eq 2){
             echo "::error::Internal Error when diffing. Please report such errors to support@lieberlieber.com"
-            echo "::set-output name=message:::x: Merge failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details"
+            echo ":message=:x: Merge failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details"
           }
           elseif($LASTEXITCODE -eq 3){
             echo "Merge conflicts present, auto-merge failed"
-            echo "::set-output name=message:::x: Merge conflicts present, auto-merge failed"
-            exit 0
+            echo "message=:x: Merge conflicts present, auto-merge failed" >> $env:GITHUB_OUTPUT
+            exit 0 
           }
           elseif($LASTEXITCODE -eq 6){
             echo "::warning::Licensing issue of LemonTree.Automation"
-            echo "::set-output name=message:::x: Merge failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details"
+            echo "message=:x: Merge failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details" >> $env:GITHUB_OUTPUT
           }
           else{
             echo "::error::Unknown error"
-            echo "::set-output name=message:::x: Merge failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details"
+            echo "message=:x: Merge failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details" >> $env:GITHUB_OUTPUT
           }
 
       - name: Archive Model Files
@@ -245,7 +243,7 @@ jobs:
            
       - name: Create Finish Message in PR
         if: always()
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           script: |
             await github.rest.issues.createComment({

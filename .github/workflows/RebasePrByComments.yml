@@ -1,4 +1,4 @@
-# Copyright (c) Robert Bosch GmbH
+# Copyright (c) LieberLieber GmbH & Robert Bosch GmbH
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -25,7 +25,7 @@ jobs:
     
     steps:
       - name: Post start message in PR
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           script: |
             await github.rest.issues.createComment({
@@ -37,7 +37,7 @@ jobs:
             
       - name: Retrieve Rull Request details
         id: pr_details
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           result-encoding: string
           script: |
@@ -59,7 +59,7 @@ jobs:
             core.setOutput('head', triggeredPR.head.ref)
             core.setOutput('base', triggeredPR.base.ref)
             
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           lfs: true
           fetch-depth: 0
@@ -72,138 +72,119 @@ jobs:
           echo "Setting lemontree merge-driver to 'no action'"
           git config merge.lemontree.name "lemontree merge driver"
           git config merge.lemontree.driver "echo Do nothing, manual merge required"
-
-      - name: Get relevant commit IDs
-        id: CommitIds
-        run: |
-          git fetch
-          $baseId = git merge-base origin/${{steps.pr_details.outputs.base}} origin/${{steps.pr_details.outputs.head}}
-          echo "::set-output name=baseCommitId::$baseId"
-          $sourceId = git show-ref --hash origin/${{steps.pr_details.outputs.head}}
-          echo "::set-output name=sourceCommitId::$sourceId"
-          $targetId = git show-ref --hash origin/${{steps.pr_details.outputs.base}}
-          echo "::set-output name=targetCommitId::$targetId"
-          echo "source commit: $sourceId"
-          echo "base commit: $baseId"
-          echo "target commit: $targetId"
-          
-      - name: Start merge
-        run: |
-          git merge origin/${{steps.pr_details.outputs.base}} --no-commit --no-edit --no-ff #merge in base branch to head
-          git status
-
-      - name: Download target branch head file
-        run: |
-          git fetch origin ${{steps.CommitIds.outputs.targetCommitId}}
-          $pointer = git cat-file blob ${{steps.CommitIds.outputs.targetCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
-          $sha = ($pointer[1] -split(":"))[1]
-          $shaPart1 = $sha.Substring(0,2)
-          $shaPart2 = $sha.Substring(2,2)
-          echo "Model SHA: $sha"
-          git cat-file --filters ${{steps.CommitIds.outputs.targetCommitId}}:${{env.ModelName}}.${{env.ModelExtension}} | Out-Null
-          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_target.${{env.ModelExtension}}"
-          
-      - name: Download base-commit file
-        run: |
-          git fetch origin ${{steps.CommitIds.outputs.baseCommitId}}
-          $pointer = git cat-file blob ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
-          $sha = ($pointer[1] -split(":"))[1]
-          $shaPart1 = $sha.Substring(0,2)
-          $shaPart2 = $sha.Substring(2,2)
-          echo "Model SHA: $sha"
-          git cat-file --filters ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}} | Out-Null
-          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_base.${{env.ModelExtension}}"
-
-      - name: Download source branch head file
-        run: |
-          git fetch origin $env:GITHUB_HEAD_REF
-          $pointer = git cat-file blob ${{steps.CommitIds.outputs.sourceCommitId}}:${{env.ModelName}}.${{env.ModelExtension}}
-          $sha = ($pointer[1] -split(":"))[1]
-          $shaPart1 = $sha.Substring(0,2)
-          $shaPart2 = $sha.Substring(2,2)
-          echo "Model SHA: $sha"
-          git cat-file --filters ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}" | Out-Null
-          copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.${{env.ModelExtension}}"
       
       # download Lemontree.Automation on a runner and setup the license
-      - name: GetLTA
-        uses: LieberLieber/setup-LemonTree.Automation@v0.6
+      - uses: LieberLieber/setup-LemonTree.Automation@v5
         id: GetLTA
         with:
           License: ${{secrets.LTALICENSE}} 
-      #ExeLocation &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}"         
-
-      - name: Merge EA model file
-        id: mergeEA
+      #ExeLocation &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}"
+      
+      - name: Rebase repository
+        id: Rebase
         run: |
-          &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --mine ${{env.ModelName}}_target.${{env.ModelExtension}} --theirs ${{env.ModelName}}_head.${{env.ModelExtension}} --out merged.${{env.ModelExtension}} --abortOnConflict true
-          echo "::set-output name=result::$LASTEXITCODE"
-          echo "Return code: $LASTEXITCODE"
+          $env:GIT_EDITOR = "true"
           
-          if($LASTEXITCODE -eq 0){
-            echo "No merge conflicts, setting message"
-            echo "::set-output name=message:::heavy_check_mark: Rebase performed successfully"
-          }
-          elseif($LASTEXITCODE -eq 2){
-            echo "::error::Internal Error when diffing. Please report such errors to support@lieberlieber.com"
-            echo "::set-output name=message:::x: Rebase failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details"
-          }
-          elseif($LASTEXITCODE -eq 3){
-            echo "Merge conflicts present, auto-merge failed"
-            echo "::set-output name=message:::x: Merge conflicts present, auto-rebase failed"
-            exit 0
-          }
-          elseif($LASTEXITCODE -eq 6){
-            echo "::warning::Licensing issue of LemonTree.Automation"
-            echo "::set-output name=message:::x: Rebase failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details"
-          }
-          else{
-            echo "::error::Unknown error"
-            echo "::set-output name=message:::x: Rebase failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details"
-          }
+          $lta = '${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}'
+          $gitcmd = 'C:\Program Files\Git\git-cmd.exe'
+          
+          Write-Output "set user config"
+          git config --global user.name 'LemonTree.Automation'
+          git config --global user.email 'support@lieberlieber.com'
 
-      - name: Archive Model Files
-        uses: actions/upload-artifact@v3
-        with:
-          name: Model File Archive
-          path: "*.eap*"
-          retention-days: 5
+          Write-Output "setting remote state"
+          git remote set-url origin https://x-access-token:${{secrets.PAT}}@github.com/${{ github.repository }}
+          git status --porcelain --untracked-files=no --ignored=no
+          
+          git rebase origin/main
+          
+          while($LASTEXITCODE -ne 0) {
+              $actual_status = git status -s -uno
+              $expected_status = "UU ${{env.ModelName}}.${{env.ModelExtension}}"
+              
+              if($actual_status -ne $expected_status) {
+                Write-Output "::error::Model is not conflicted please rebase manually."
+                echo "message=:x: Failed to rebase, the Model is not the only conflict." >> $env:GITHUB_OUTPUT
+                exit 666
+              }
+          
+              $basecommit = git merge-base HEAD REBASE_HEAD
+              $command = 'git cat-file blob {0}:${{env.ModelName}}.${{env.ModelExtension}} | git lfs smudge > ${{env.ModelName}}_base.${{env.ModelExtension}} & exit' -f $basecommit
+              #this is required to get rid of the line feeds in the basecommit string
+              &$gitcmd $command
+              &$gitcmd "git cat-file blob HEAD:${{env.ModelName}}.${{env.ModelExtension}} | git lfs smudge > ${{env.ModelName}}_mine.${{env.ModelExtension}} & exit"
+              &$gitcmd "git cat-file blob REBASE_HEAD:${{env.ModelName}}.${{env.ModelExtension}} | git lfs smudge > ${{env.ModelName}}_theirs.${{env.ModelExtension}} & exit"
+            
+              &$lta merge --Base ${{env.ModelName}}_base.${{env.ModelExtension}} --Theirs ${{env.ModelName}}_theirs.${{env.ModelExtension}} --Mine ${{env.ModelName}}_mine.${{env.ModelExtension}} --out ${{env.ModelName}}.${{env.ModelExtension}}
+          
+              if($LASTEXITCODE -eq 0){
+                Write-Output "No merge conflicts, setting message"
+                echo "message=:heavy_check_mark: Rebase performed successfully" >> $env:GITHUB_OUTPUT
+              }
+              elseif($LASTEXITCODE -eq 2){
+                Write-Output "::error::Internal Error when diffing. Please report such errors to support@lieberlieber.com"
+                echo "message=x: Rebase failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details" >> $env:GITHUB_OUTPUT
+                exit 2
+              }
+              elseif($LASTEXITCODE -eq 3){
+                Write-Output "Merge conflicts present, auto-merge failed"
+                echo "message=:x: Merge conflicts present, auto-rebase failed" >> $env:GITHUB_OUTPUT
+                exit 3
+              }
+              elseif($LASTEXITCODE -eq 6){
+                Write-Output "::warning::Licensing issue of LemonTree.Automation"
+                echo "message=:x: Rebase failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details" >> $env:GITHUB_OUTPUT
+                exit 6
+              }
+              else{
+                Write-Output "::error::Unknown error"
+                echo "message=x: Rebase failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details" >> $env:GITHUB_OUTPUT
+                exit 1
+              }
+              
+              git add ${{env.ModelName}}.${{env.ModelExtension}}
+              
+              Remove-Item -Path ${{env.ModelName}}_base.${{env.ModelExtension}}
+              Remove-Item -Path ${{env.ModelName}}_theirs.${{env.ModelExtension}}
+              Remove-Item -Path ${{env.ModelName}}_mine.${{env.ModelExtension}}
+              
+              git rebase --continue
+          }
+          
+          $env:GIT_EDITOR = ""
 
-      - name: Cleanup failed merge
+      - name: Cleanup failed rebase
         if: failure()
         run: |
          try{
-           git merge --abort
+           Remove-Item -Path ${{env.ModelName}}_base.${{env.ModelExtension}}
+           Remove-Item -Path ${{env.ModelName}}_theirs.${{env.ModelExtension}}
+           Remove-Item -Path ${{env.ModelName}}_mine.${{env.ModelExtension}}
+           git rebase --abort
          }
          catch{}
 
       - name: Create commit
         if: ${{ steps.mergeEA.outputs.result == 0 }}
         run: |
-         echo "copy model"
-         copy -Force merged.${{env.ModelExtension}} ${{env.ModelName}}.${{env.ModelExtension}}
          echo "set user config"
          git config --global user.name 'LemonTree.Automation'
          git config --global user.email 'support@lieberlieber.com'
-         echo "adding merged file"
-         git add ${{env.ModelName}}.${{env.ModelExtension}}
          echo "setting remote state"
          git remote set-url origin https://x-access-token:${{secrets.PAT}}@github.com/${{ github.repository }}
          git status --porcelain --untracked-files=no --ignored=no
-         echo "creating commit"
-         git commit -m "Rebased PR ${{steps.pr_details.outputs.number}}" to current ${{steps.pr_details.outputs.base}}
          echo "pushing new commit"
-         git push
+         git push --force-with-lease
            
       - name: Create Finish Message in PR
         if: always()
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           script: |
             await github.rest.issues.createComment({
               issue_number: ${{steps.pr_details.outputs.number}},
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '${{steps.mergeEA.outputs.message}}'
+              body: '${{steps.Rebase.outputs.message}}'
             })        
             

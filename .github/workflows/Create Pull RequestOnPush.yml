@@ -1,4 +1,4 @@
-# Copyright (c) Robert Bosch GmbH
+# Copyright (c) LieberLieber Software GmbH
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -15,20 +15,25 @@ jobs:
     
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Extract branch name
         shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})"  >> $GITHUB_OUTPUT
         id: extract_branch
-      - name: pull-request
-        uses: repo-sync/pull-request@v2
-        with:
-          destination_branch: "main"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          pr_label: "automated pr"
-          pr_title: "${{ steps.extract_branch.outputs.branch }}"
-          pr_allow_empty: true
-          pr_draft: true
+
+      # TODO:
+      # 1) Look for exisiting Pull Request
+      # 2) Try to crete a Pull Request - learn from PCS Repo.
+      
+      # - name: pull-request
+      #   uses: repo-sync/pull-request@v2
+      #   with:
+      #     destination_branch: "main"
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     pr_label: "automated pr"
+      #     pr_title: "${{ steps.extract_branch.outputs.branch }}"
+      #     pr_allow_empty: true
+      #     pr_draft: true
  
      
     

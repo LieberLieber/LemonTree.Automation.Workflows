@@ -1,3 +1,8 @@
+[![Model Check](https://github.com/LieberLieber/LemonTree.Automation.Workflows/actions/workflows/ModelCheck.yml/badge.svg)](https://github.com/LieberLieber/LemonTree.Automation.Workflows/actions/workflows/ModelCheck.yml)
+
+[![Consistency Check](https://github.com/LieberLieber/LemonTree.Automation.Workflows/actions/workflows/ConsistencyCheck.yml/badge.svg)](https://github.com/LieberLieber/LemonTree.Automation.Workflows/actions/workflows/ConsistencyCheck.yml)
+
+
 GitHub Actions and other Example Scripts to be used with LemonTree.Automation and Sparx Systems Enterprise Architect Models
 ==================================
 Disclaimer: we use this Repo to develop and test the scripts.
@@ -58,8 +63,9 @@ This automatically closes the pull request and deletes the feature branch.
 ## PublishComponents
 On push to Master the LemonTree Components defined in the Model specified in the Environment are written to disk. In the next steps they are published as artifacts.
 The MPMS packages are then imported on a "Pro Cloud" repository and can be accesed via: https://test.lieberlieber.com/webea/index.php?m=3
-Additionally the "LemonTree Component" files are also published on a Nexus artifact repository: https://nexus.lieberlieber.com/#browse/browse:lemontree-component
+Additionally the "LemonTree Component" files are also published on a Nexus artifact repository: https://nexus.lieberlieber.com/#browse/browse:lemontree-component 
 On a Desktop you can pull the published LemonTree Components to a LemonTreeComponents Repository folder using example-scripts/powershell/DownloadComponents.ps1
 
 ## ConsistencyCheck
-On push the model consistency check is run, for now the results are just in the action output
+On push the model consistency check is run, for now the results are just in the action output.   
+ 

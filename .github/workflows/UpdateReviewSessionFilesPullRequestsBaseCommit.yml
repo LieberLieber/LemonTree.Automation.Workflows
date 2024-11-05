@@ -25,7 +25,7 @@ jobs:
     steps:
       - name: Check for related Pull Requests
         id: linked_prs
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           result-encoding: string
           script: |
@@ -49,18 +49,17 @@ jobs:
           jsVar: ${{steps.linked_prs.outputs.result}}
         run: |
           $prList = $env:jsVar | ConvertFrom-Json
-          echo "::set-output name=count::$($prList.length)"
+          echo "count=$($prList.length)" >> $env:GITHUB_OUTPUT
           
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         if: ${{ steps.checkNumber.outputs.count > 0}}
         with:
           lfs: true
           fetch-depth: 0
 
       # download Lemontree.Automation on a runner and setup the license
-      - name: GetLTA
+      - uses: LieberLieber/setup-LemonTree.Automation@v5
         if: ${{ steps.checkNumber.outputs.count > 0}}
-        uses: LieberLieber/setup-LemonTree.Automation@v0.6
         id: GetLTA
         with:
           License: ${{secrets.LTALICENSE}} 
@@ -172,11 +171,11 @@ jobs:
           }
           $jsonResult = ConvertTo-Json -InputObject $messageList -Compress
           echo $jsonResult
-          echo "::set-output name=result::$jsonResult"
+          echo "result=$jsonResult" >> $env:GITHUB_OUTPUT
           
       - name: CreateComments
         if: ${{ steps.checkNumber.outputs.count > 0}}
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           script: |
             const prList = JSON.parse(`${{steps.WorkOnPr.outputs.result}}`)
