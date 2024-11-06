@@ -45,7 +45,7 @@ jobs:
       #    &"${{env.LemonTreeAutomationExecutable}}" import --Model ${{env.ComponentModelShortCut}} --Components "*.mpms"
 
       - name: Archive Session Files
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Model Components
           path: "*.mpms"
@@ -59,7 +59,7 @@ jobs:
             $sfName =  $file.Name
             $sfNameUri = [uri]::EscapeDataString($sfName)
             $targetUrl = "${{env.ReviewSessionURL}}$sfNameUri"
-            echo "Uploading $sfName to Nexus: $targetUrl"
+            Write-Output "Uploading $sfName to Nexus: $targetUrl"
             while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
             curl "-u${{secrets.NEXUSAUTHENTICATION}}" -T ".\$sfName" "$targetUrl"
           }
