@@ -29,42 +29,42 @@ jobs:
           github.event.comment.author_association == 'MEMBER' ||
           github.event.comment.author_association == 'COLLABORATOR')
         run: |
-          echo "org member or invited collaborator: ${{github.event.comment.author_association}}"
-          echo "result=True" >> $env:GITHUB_OUTPUT
+          Write-Output "org member or invited collaborator: ${{github.event.comment.author_association}}"
+          Write-Output "result=True" >> $env:GITHUB_OUTPUT
              
       - id: userAuthByPositiveList
         env:
           authUsers: "'danielsiegl','FlorianBeerRB'"
         run: |
-            echo "${{github.event.comment.user.login}}"
-            echo "${{env.authUsers}}"
+            Write-Output "${{github.event.comment.user.login}}"
+            Write-Output "${{env.authUsers}}"
             $result = ${{env.authUsers}} -contains "${{github.event.comment.user.login}}"
-            echo "User is in authentication list: $result"
-            echo "result=$result"  >> $env:GITHUB_OUTPUT
+            ecWrite-Outputho "User is in authentication list: $result"
+            Write-Output "result=$result"  >> $env:GITHUB_OUTPUT
             
       - id: SelectAuthResult
         run: |
             $result = "False"
             if ("${{env.AuthMode}}" -eq "Association")
             {
-              echo "Setting auth result based on association"
+              Write-Output "Setting auth result based on association"
               $result = "${{ steps.userAuthByAssociation.outputs.result }}"  
             }
             else
             {
               if ("${{env.AuthMode}}" -eq "PositiveList") {
-                echo "Setting auth result based on positive list"
+                Write-Output "Setting auth result based on positive list"
                 result = "${{ steps.userAuthByPositiveList.outputs.result }}"  
               }
               else
               {
-                echo "Unknown authentication mode - Failed"
+                Write-Output "Unknown authentication mode - Failed"
               }
             }
-            echo "result=$result" >> $GITHUB_OUTPUT
+            Write-Output "result=$result" >> $GITHUB_OUTPUT
             if ($result -ne "True")
             {
-              echo "::error User not Authenticated"
+              Write-Output "::error User not Authenticated"
             }
             
   PerformMerge:
@@ -122,7 +122,7 @@ jobs:
           
       - name: Configure merge driver for EA files
         run: |
-          echo "Setting lemontree merge-driver to 'no action'"
+          Write-Output "Setting lemontree merge-driver to 'no action'"
           git config merge.lemontree.name "lemontree merge driver"
           git config merge.lemontree.driver "echo Do nothing, manual merge required"
 
@@ -131,14 +131,14 @@ jobs:
         run: |
           git fetch
           $baseId = git merge-base origin/${{steps.pr_details.outputs.base}} origin/${{steps.pr_details.outputs.head}}
-          echo "baseCommitId=$baseId" >> $env:GITHUB_OUTPUT
+          Write-Output "baseCommitId=$baseId" >> $env:GITHUB_OUTPUT
           $sourceId = git show-ref --hash origin/${{steps.pr_details.outputs.head}}
-          echo "sourceCommitId=$sourceId" >> $env:GITHUB_OUTPUT
+          Write-Output "sourceCommitId=$sourceId" >> $env:GITHUB_OUTPUT
           $targetId = git show-ref --hash origin/${{steps.pr_details.outputs.base}}
-          echo "targetCommitId=$targetId" >> $env:GITHUB_OUTPUT
-          echo "source commit: $sourceId"
-          echo "base commit: $baseId"
-          echo "target commit: $targetId"
+          Write-Output "targetCommitId=$targetId" >> $env:GITHUB_OUTPUT
+          Write-Output "source commit: $sourceId"
+          Write-Output "base commit: $baseId"
+          Write-Output "target commit: $targetId"
           
       - name: Start merge
         run: |
@@ -152,7 +152,7 @@ jobs:
           $sha = ($pointer[1] -split(":"))[1]
           $shaPart1 = $sha.Substring(0,2)
           $shaPart2 = $sha.Substring(2,2)
-          echo "Model SHA: $sha"
+          Write-Output "Model SHA: $sha"
           git cat-file --filters ${{steps.CommitIds.outputs.targetCommitId}}:${{env.ModelName}}.${{env.ModelExtension}} | Out-Null
           copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_target.${{env.ModelExtension}}"
           
@@ -163,7 +163,7 @@ jobs:
           $sha = ($pointer[1] -split(":"))[1]
           $shaPart1 = $sha.Substring(0,2)
           $shaPart2 = $sha.Substring(2,2)
-          echo "Model SHA: $sha"
+          Write-Output "Model SHA: $sha"
           git cat-file --filters ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}} | Out-Null
           copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_base.${{env.ModelExtension}}"
 
@@ -174,7 +174,7 @@ jobs:
           $sha = ($pointer[1] -split(":"))[1]
           $shaPart1 = $sha.Substring(0,2)
           $shaPart2 = $sha.Substring(2,2)
-          echo "Model SHA: $sha"
+          Write-Output "Model SHA: $sha"
           git cat-file --filters ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}" | Out-Null
           copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.${{env.ModelExtension}}"
 
@@ -189,33 +189,33 @@ jobs:
         id: mergeEA
         run: |
           &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}_target.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --out merged.${{env.ModelExtension}} --abortOnConflict true
-          echo "result=$LASTEXITCODE" >> $GITHUB_OUTPUT
-          echo "Return code: $LASTEXITCODE"
+          Write-Output "result=$LASTEXITCODE" >> $GITHUB_OUTPUT
+          Write-Output "Return code: $LASTEXITCODE"
           
           if($LASTEXITCODE -eq 0){
-            echo "No merge conflicts, setting message"
-            echo "message=:heavy_check_mark: Merge performed successfully" >> $env:GITHUB_OUTPUT
+            Write-Output "No merge conflicts, setting message"
+            Write-Output "message=:heavy_check_mark: Merge performed successfully" >> $env:GITHUB_OUTPUT
           }
           elseif($LASTEXITCODE -eq 2){
-            echo "::error::Internal Error when diffing. Please report such errors to support@lieberlieber.com"
-            echo ":message=:x: Merge failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details"
+            Write-Output "::error::Internal Error when diffing. Please report such errors to support@lieberlieber.com"
+            Write-Output ":message=:x: Merge failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details"
           }
           elseif($LASTEXITCODE -eq 3){
-            echo "Merge conflicts present, auto-merge failed"
-            echo "message=:x: Merge conflicts present, auto-merge failed" >> $env:GITHUB_OUTPUT
+            Write-Output "Merge conflicts present, auto-merge failed"
+            Write-Output "message=:x: Merge conflicts present, auto-merge failed" >> $env:GITHUB_OUTPUT
             exit 0 
           }
           elseif($LASTEXITCODE -eq 6){
-            echo "::warning::Licensing issue of LemonTree.Automation"
-            echo "message=:x: Merge failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details" >> $env:GITHUB_OUTPUT
+            Write-Output "::warning::Licensing issue of LemonTree.Automation"
+            Write-Output "message=:x: Merge failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details" >> $env:GITHUB_OUTPUT
           }
           else{
-            echo "::error::Unknown error"
-            echo "message=:x: Merge failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details" >> $env:GITHUB_OUTPUT
+            Write-Output "::error::Unknown error"
+            Write-Output "message=:x: Merge failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details" >> $env:GITHUB_OUTPUT
           }
 
       - name: Archive Model Files
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Model File Archive
           path: "*.eap*"

@@ -35,9 +35,9 @@ jobs:
         id: downloadXmi
         run: |
           $gitcommitId = git rev-parse origin/$env:GITHUB_HEAD_REF
-          Echo "git CommitId: $gitcommitId"
+          Write-Output "git CommitId: $gitcommitId"
           $url = "${{env.xmiURL}}&name=$gitcommitId*"
-          Echo $url
+          Write-Output $url
           $json = Invoke-RestMethod -Uri $url -Method Get
           foreach ($url in $json.items.assets.downloadUrl) 
           {
@@ -47,7 +47,7 @@ jobs:
             if($file.StartsWith($gitcommitId))
             {
                          
-              Echo "Download: $file"
+              Write-Output "Download: $file"
                          
               $content = ((Invoke-WebRequest -Uri $url -Method Get) -replace "ï»¿")
               [IO.File]::WriteAllLines($file, $content)
@@ -56,7 +56,7 @@ jobs:
           exit 0
 
       - name: Archive Session Files
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Post Commit XMi
           path: ".\\*.xmi" #${{ steps.downloadXmi.outputs.result }}

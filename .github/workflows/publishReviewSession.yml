@@ -38,16 +38,16 @@ jobs:
         run: |
           git fetch
           $baseId = git merge-base origin/$env:GITHUB_BASE_REF origin/$env:GITHUB_HEAD_REF
-          echo "::set-output name=baseCommitId::$baseId"
+          Write-Output "baseCommitId=$baseId" >> $env:GITHUB_OUTPUT
           $sourceId = git show-ref --hash origin/$env:GITHUB_HEAD_REF
-          echo "::set-output name=sourceCommitId::$sourceId"
+          Write-Output "sourceCommitId=$sourceId" >> $env:GITHUB_OUTPUT
           $targetId = git show-ref --hash origin/$env:GITHUB_BASE_REF
-          echo "::set-output name=targetCommitId::$targetId"
-          echo "target branch: $env:GITHUB_BASE_REF"
-          echo "source branch: $env:GITHUB_HEAD_REF"
-          echo "target commit: $targetId"
-          echo "source commit: $sourceId"
-          echo "base commit: $baseId"
+          Write-Output "targetCommitId=$targetId" >> $env:GITHUB_OUTPUT
+          Write-Output "target branch: $env:GITHUB_BASE_REF"
+          Write-Output "source branch: $env:GITHUB_HEAD_REF"
+          Write-Output "target commit: $targetId"
+          Write-Output "source commit: $sourceId"
+          Write-Output "base commit: $baseId"
 
       - name: Create sessionfile name
         id: session_file
@@ -72,13 +72,13 @@ jobs:
           if($sha -ne $null){
             $shaPart1 = $sha.Substring(0,2)
             $shaPart2 = $sha.Substring(2,2)
-            echo "Model SHA: $sha"
+            Write-Output "Model SHA: $sha"
             git cat-file --filters ${{steps.CommitIds.outputs.baseCommitId}}:${{env.ModelName}}.${{env.ModelExtension}} | Out-Null
             copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_base.${{env.ModelExtension}}"
-            echo "result=downloaded" >> $env:GITHUB_OUTPUT
+            Write-Output "result=downloaded" >> $env:GITHUB_OUTPUT
           }
           else{
-            echo "result=notFound" >> $env:GITHUB_OUTPUT
+            Write-Output "result=notFound" >> $env:GITHUB_OUTPUT
           }
           
       - name: Post new model comment to PR
@@ -102,7 +102,7 @@ jobs:
           $sha = ($pointer[1] -split(":"))[1]
           $shaPart1 = $sha.Substring(0,2)
           $shaPart2 = $sha.Substring(2,2)
-          echo "Model SHA: $sha"
+          Write-Output "Model SHA: $sha"
           git cat-file --filters ${{steps.CommitIds.outputs.sourceCommitId}}":${{env.ModelName}}.${{env.ModelExtension}}" | Out-Null
           copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" "${{env.ModelName}}_head.${{env.ModelExtension}}"
       
@@ -118,26 +118,26 @@ jobs:
         id: mergeCheck
         run: |
           &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}" merge --base ${{env.ModelName}}_base.${{env.ModelExtension}} --theirs ${{env.ModelName}}.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --dryrun --sfs ${{ steps.session_file.outputs.result }} --abortOnConflict true
-          echo "::set-output name=result::$LASTEXITCODE"
-          echo "Return code: $LASTEXITCODE"
+          Write-Output "result=$LASTEXITCODE" >> $env:GITHUB_OUTPUT
+          Write-Output "Return code: $LASTEXITCODE"
           if($LASTEXITCODE -eq 0){
-            echo "No merge conflicts, setting message"
-            echo "message=[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:heavy_check_mark: **No merge conflicts in model**\n\nInstall [LemonTree 3.3+](https://www.lieberlieber.com/lemontree/en/) to open the Review Session file." >> $env:GITHUB_OUTPUT
+            Write-Output "No merge conflicts, setting message"
+            ecWrite-Outputho "message=[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:heavy_check_mark: **No merge conflicts in model**\n\nInstall [LemonTree 3.3+](https://www.lieberlieber.com/lemontree/en/) to open the Review Session file." >> $env:GITHUB_OUTPUT
           }
           elseif($LASTEXITCODE -eq 2){
-            echo "Internal Error when diffing. Please report such errors to support@lieberlieber.com"
+            Write-Output "Internal Error when diffing. Please report such errors to support@lieberlieber.com"
             exit 2
           }
           elseif($LASTEXITCODE -eq 3){
-            echo "Merge conflicts, setting message"
-            echo "message=[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:x: **Please resolve merge conflicts in model first**\n\nInstall [LemonTree 3.3+](https://www.lieberlieber.com/lemontree/en/) to open the Review Session file." >> $env:GITHUB_OUTPUT
+            Write-Output "Merge conflicts, setting message"
+            Write-Output "message=[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:x: **Please resolve merge conflicts in model first**\n\nInstall [LemonTree 3.3+](https://www.lieberlieber.com/lemontree/en/) to open the Review Session file." >> $env:GITHUB_OUTPUT
             exit 0
           }
           elseif($LASTEXITCODE -eq 6){
-            echo "Licensing issue of LemonTree.Automation"
+            Write-Output "Licensing issue of LemonTree.Automation"
           }
           else{
-            echo "Unknown error"
+            Write-Output "Unknown error"
           }    
 
       # - name: Remove DIAGRAMIMAGEMAPS for Diff
@@ -145,9 +145,9 @@ jobs:
       #   run: |
       #     while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
       #     curl "${{env.LemonTreePipelineToolsRemovePrerenderedDiagramsExecutable}}" --output LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe
-      #     echo ".\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_base.${{env.ModelExtension}}"
+      #     Write-Output ".\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_base.${{env.ModelExtension}}"
       #     .\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_base.${{env.ModelExtension}}
-      #     echo ".\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_head.${{env.ModelExtension}}"
+      #     Write-Output ".\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_head.${{env.ModelExtension}}"
       #     .\LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe remove --Model ${{env.ModelName}}_head.${{env.ModelExtension}}
           
       - name: Create review session file
@@ -159,20 +159,20 @@ jobs:
           if ($mergecheckresult  -eq 0)
           {
             $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --theirs ${{env.ModelName}}_base.${{env.ModelExtension}} --mine ${{env.ModelName}}_head.${{env.ModelExtension}} --sfs ${{ steps.session_file.outputs.result }}
-            echo $output
+            Write-Output $output
             ForEach ($line in $($output -split "`r`n"))
             {
                 if ($line.EndsWith('Found 0 different elements.'))
                 {
-                  echo "No differences we don't need to publish the session file."
+                  Write-Output "No differences we don't need to publish the session file."
                   $Message = ":heavy_check_mark: **Model is identical!**"
                   $sfsfilename =""; 
                 }                
             }
           }
-          echo "$Message"
-          echo "SfsFileName=$sfsfilename" >> $env:GITHUB_OUTPUT
-          echo "message=$Message" >> $env:GITHUB_OUTPUT
+          Write-Output "$Message"
+          Write-Output "SfsFileName=$sfsfilename" >> $env:GITHUB_OUTPUT
+          Write-Output "message=$Message" >> $env:GITHUB_OUTPUT
           exit 0
 
       - name: Upload
@@ -181,19 +181,19 @@ jobs:
           $sessionFileName = "${{ steps.checkSession.outputs.SfsFileName }}"
           if ([string]::IsNullOrEmpty($sessionFileName))
           {
-            echo "Nothing to upload"
+            Write-Output "Nothing to upload"
           }
           else
           {
             $targetUrl = "${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }}"
-            echo "Uploading $sessionFileName to Nexus: $targetUrl"
+            Write-Output "Uploading $sessionFileName to Nexus: $targetUrl"
             while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
             curl "-u${{secrets.NEXUSAUTHENTICATION}}" -T $sessionFileName $targetUrl
           }
 
       - name: Archive Session Files
         if: steps.baseDownload.outputs.result == 'downloaded'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Review Session File
           path: ${{ steps.session_file.outputs.result }}

@@ -69,7 +69,7 @@ jobs:
           
       - name: Configure merge driver for EA files
         run: |
-          echo "Setting lemontree merge-driver to 'no action'"
+          Write-Output "Setting lemontree merge-driver to 'no action'"
           git config merge.lemontree.name "lemontree merge driver"
           git config merge.lemontree.driver "echo Do nothing, manual merge required"
       
@@ -104,7 +104,7 @@ jobs:
               
               if($actual_status -ne $expected_status) {
                 Write-Output "::error::Model is not conflicted please rebase manually."
-                echo "message=:x: Failed to rebase, the Model is not the only conflict." >> $env:GITHUB_OUTPUT
+                Write-Output "message=:x: Failed to rebase, the Model is not the only conflict." >> $env:GITHUB_OUTPUT
                 exit 666
               }
           
@@ -119,26 +119,26 @@ jobs:
           
               if($LASTEXITCODE -eq 0){
                 Write-Output "No merge conflicts, setting message"
-                echo "message=:heavy_check_mark: Rebase performed successfully" >> $env:GITHUB_OUTPUT
+                Write-Output "message=:heavy_check_mark: Rebase performed successfully" >> $env:GITHUB_OUTPUT
               }
               elseif($LASTEXITCODE -eq 2){
                 Write-Output "::error::Internal Error when diffing. Please report such errors to support@lieberlieber.com"
-                echo "message=x: Rebase failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details" >> $env:GITHUB_OUTPUT
+                Write-Output "message=x: Rebase failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details" >> $env:GITHUB_OUTPUT
                 exit 2
               }
               elseif($LASTEXITCODE -eq 3){
                 Write-Output "Merge conflicts present, auto-merge failed"
-                echo "message=:x: Merge conflicts present, auto-rebase failed" >> $env:GITHUB_OUTPUT
+                Write-Output "message=:x: Merge conflicts present, auto-rebase failed" >> $env:GITHUB_OUTPUT
                 exit 3
               }
               elseif($LASTEXITCODE -eq 6){
                 Write-Output "::warning::Licensing issue of LemonTree.Automation"
-                echo "message=:x: Rebase failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details" >> $env:GITHUB_OUTPUT
+                Write-Output "message=:x: Rebase failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details" >> $env:GITHUB_OUTPUT
                 exit 6
               }
               else{
                 Write-Output "::error::Unknown error"
-                echo "message=x: Rebase failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details" >> $env:GITHUB_OUTPUT
+                Write-Output "message=x: Rebase failed, check [action log](${{env.GitHubProjectRoot}}/actions/runs/${{ github.run_id }}) for details" >> $env:GITHUB_OUTPUT
                 exit 1
               }
               
@@ -167,13 +167,13 @@ jobs:
       - name: Create commit
         if: ${{ steps.mergeEA.outputs.result == 0 }}
         run: |
-         echo "set user config"
+         Write-Output "set user config"
          git config --global user.name 'LemonTree.Automation'
          git config --global user.email 'support@lieberlieber.com'
-         echo "setting remote state"
+         Write-Output "setting remote state"
          git remote set-url origin https://x-access-token:${{secrets.PAT}}@github.com/${{ github.repository }}
          git status --porcelain --untracked-files=no --ignored=no
-         echo "pushing new commit"
+         Write-Output "pushing new commit"
          git push --force-with-lease
            
       - name: Create Finish Message in PR

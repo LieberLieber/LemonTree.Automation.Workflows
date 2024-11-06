@@ -40,14 +40,14 @@ jobs:
       - name: Run SysML Check Tool
         id: sysmlCheck
         run: |
-          echo "starting validation"
+          Write-Output "starting validation"
           
           #.\ea-iqs\Com.Incquerylabs.Incquery.Connector.Cli.exe -i "${{secrets.IQSVALIDATIONSERVER}}" --sso -u "${{secrets.IQSUSER}}" -p "${{secrets.IQSPWD}}" -o "output.md" -c "${{env.ModelName}}.${{env.ModelExtension}}"
           .\ea-iqs\assemblies\IncQueryServer.EA.Connector.DemoWorkflow.exe -i "${{secrets.IQSVALIDATIONSERVER}}" --sso -u "${{secrets.IQSUSER}}" -p "${{secrets.IQSPWD}}" -o "output.md" -m "${{env.ModelName}}.${{env.ModelExtension}}"
           
           type "output.md"
 
-          echo "finished validation with $LASTEXITCODE"
+          Write-Output "finished validation with $LASTEXITCODE"
 
           #  Exit codes of the CLI application:
           #  * 0 = model is valid (no error, no warning, no runtime exception)
@@ -58,7 +58,7 @@ jobs:
 
           $Message = "output.md"
 
-          echo "ValidationExitCode=$($LASTEXITCODE)" >> $env:GITHUB_OUTPUT
+          Write-Output "ValidationExitCode=$($LASTEXITCODE)" >> $env:GITHUB_OUTPUT
       
           #for now never stop 
           exit 0
@@ -95,8 +95,8 @@ jobs:
 
       - name: evaulate Exit Code
         run: |
-          echo "set job failed on ..."
-          echo "Current Exit Code ${{ steps.sysmlCheck.outputs.ValidationExitCode }}"
+          Write-Output "set job failed on ..."
+          Write-Output "Current Exit Code ${{ steps.sysmlCheck.outputs.ValidationExitCode }}"
 
           #  Exit codes of the CLI application:
           #  * 0 = model is valid (no error, no warning, no runtime exception)
@@ -108,7 +108,7 @@ jobs:
           if (${{ steps.sysmlCheck.outputs.ValidationExitCode }} -eq 3)
           {
             #fail on warning
-            Echo "model has at least one warning"
+            Write-Output "model has at least one warning"
             #fail on warning
             #exit 3
             #ignore warning
@@ -117,13 +117,13 @@ jobs:
           elseif (${{ steps.sysmlCheck.outputs.ValidationExitCode }} -eq 4)
           {
               #fail on Error
-              echo "model has at least one error"
+              Write-Output "model has at least one error"
               exit 4
           }
           elseif (${{ steps.sysmlCheck.outputs.ValidationExitCode }} -eq 0)
           {
             #brilliant model
-            Echo "model is valid"
+            Write-Output "model is valid"
             exit 0
           }
           else

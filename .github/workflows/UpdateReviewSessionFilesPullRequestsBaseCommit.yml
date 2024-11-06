@@ -49,7 +49,7 @@ jobs:
           jsVar: ${{steps.linked_prs.outputs.result}}
         run: |
           $prList = $env:jsVar | ConvertFrom-Json
-          echo "count=$($prList.length)" >> $env:GITHUB_OUTPUT
+          Write-Output "count=$($prList.length)" >> $env:GITHUB_OUTPUT
           
       - uses: actions/checkout@v4
         if: ${{ steps.checkNumber.outputs.count > 0}}
@@ -72,34 +72,34 @@ jobs:
          jsVar: ${{steps.linked_prs.outputs.result}}
         run: |
           #Create review session files for each pull requestReviewers
-          echo "Starting process"
+          Write-Output "Starting process"
           function getCommitIds($baseRef, $headRef)
           {
             $ret =@{}
             $ret["baseId"] = git merge-base origin/$baseRef origin/$headRef
             $ret["sourceId"] = git show-ref --hash origin/$headRef            
             $ret["targetId"] = git show-ref --hash origin/$baseRef
-            echo "target branch: $baseRef"
-            echo "source branch: $headRef"
-            echo "target commit: $($ret.targetId)"
-            echo "source commit: $($ret.sourceId)"
-            echo "base commit:   $($ret.baseId)"
+            Write-Output "target branch: $baseRef"
+            Write-Output "source branch: $headRef"
+            Write-Output "target commit: $($ret.targetId)"
+            Write-Output "source commit: $($ret.sourceId)"
+            Write-Output "base commit:   $($ret.baseId)"
             return $ret
           }
           
           function downloadFileVersion($fileName, $commitId)
           {
-            echo "Filename: $fileName@$commitId"
+            Write-Output "Filename: $fileName@$commitId"
             #git fetch origin $commitId
             $pointer = git cat-file blob $commitId":"$fileName
             $sha = ($pointer[1] -split(":"))[1]
-            echo "SHA: $sha"
+            Write-Output "SHA: $sha"
             $shaPart1 = $sha.Substring(0,2)
             $shaPart2 = $sha.Substring(2,2)
             git cat-file --filters $commitId":"$fileName | Out-Null
             $targetFile = $fileName+"_"+$commitId
             copy ".git\lfs\objects\$shaPart1\$shaPart2\$sha" $targetFile
-            echo "Version file: $targetFile"
+            Write-Output "Version file: $targetFile"
           }
           
           function getSessionFileName($repoName, $prNumber, $sourceCommit, $targetCommit)
@@ -113,19 +113,19 @@ jobs:
           $modelFileName = "${{env.ModelName}}.${{env.ModelExtension}}"
           foreach($pr in $prList)
           {
-            echo "Processing PR $($pr.number)"
+            Write-Output "Processing PR $($pr.number)"
             $commitIds = getCommitIds $pr.base.ref $pr.head.ref
             $sessionFileName = getSessionFileName ${{ github.repository }} $pr.number $commitIds.sourceId $commitIds.targetId
-            echo "Session filename: $sessionFileName"
+            Write-Output "Session filename: $sessionFileName"
             
-            echo "Downloading base file"
+            Write-Output "Downloading base file"
             downloadFileVersion $modelFileName $commitIds.baseId
-            echo "Downloading source file"
+            Write-Output "Downloading source file"
             downloadFileVersion $modelFileName $commitIds.sourceId
-            echo "Downloading target file"
+            Write-Output "Downloading target file"
             downloadFileVersion $modelFileName $commitIds.targetId
             
-            echo "Starting check for merge conflicts"
+            Write-Output "Starting check for merge conflicts"
             
             $baseFile = $modelFileName +"_"+$commitIds.baseId
             $targetFile = $modelFileName +"_"+$commitIds.targetId
@@ -143,16 +143,16 @@ jobs:
             
             if($LASTEXITCODE -eq 0)
             {
-              echo "No merge conflicts, update only on target branch. No new review session file required."
+              Write-Output "No merge conflicts, update only on target branch. No new review session file required."
             }
             elseif($LASTEXITCODE -eq 2)
             {
-              echo "Internal Error when diffing. Please report such errors to support@lieberlieber.com"
+              Write-Output "Internal Error when diffing. Please report such errors to support@lieberlieber.com"
             }
             elseif($LASTEXITCODE -eq 3)
             {
-              echo "Merge conflicts"
-              echo "Uploading $sessionFileName to Nexus: $targetUrl"
+              Write-Output "Merge conflicts"
+              Write-Output "Uploading $sessionFileName to Nexus: $targetUrl"
               while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
               curl "-u${{secrets.NEXUSAUTHENTICATION}}" -T $sessionFileName $targetUrl
               $prMessage =@{}
@@ -162,16 +162,16 @@ jobs:
             }
             elseif($LASTEXITCODE -eq 6)
             {
-              echo "Licensing issue of LemonTree.Automation"
+              Write-Output "Licensing issue of LemonTree.Automation"
             }
             else
             {
-              echo "Unknown error, exit code: $LASTEXITCODE"
+              Write-Output "Unknown error, exit code: $LASTEXITCODE"
             }
           }
           $jsonResult = ConvertTo-Json -InputObject $messageList -Compress
-          echo $jsonResult
-          echo "result=$jsonResult" >> $env:GITHUB_OUTPUT
+          Write-Output $jsonResult
+          Write-Output "result=$jsonResult" >> $env:GITHUB_OUTPUT
           
       - name: CreateComments
         if: ${{ steps.checkNumber.outputs.count > 0}}
