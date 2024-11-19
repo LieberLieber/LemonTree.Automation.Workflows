@@ -23,8 +23,8 @@ Copy-Item -Path "C:\ProgramData\LieberLieber\LemonTree\Examples\Base.qeax" -Dest
 
 docker stop ltacli
 docker rm ltacli
-docker run -itd --name ltacli -v "${ltaData}:/data" -v "${ltaLicenses}:/app/licenses" nexus.lieberlieber.com:5000/lieberlieber/lemontree.automation:latest
+docker run -id --name ltacli -v "${ltaData}:/data" -v "${ltaLicenses}:/app/licenses" nexus.lieberlieber.com:5000/lieberlieber/lemontree.automation:latest
 	
-docker exec -it ltacli ./lemontree.automation diff --license /app/licenses/ --base /data/Base.qeax --theirs /data/A.qeax --mine /data/B.qeax
+docker exec -i ltacli ./lemontree.automation diff --license /app/licenses/ --base /data/Base.qeax --theirs /data/A.qeax --mine /data/B.qeax
  
 
