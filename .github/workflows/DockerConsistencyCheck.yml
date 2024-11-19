@@ -1,0 +1,46 @@
+# Copyright (c) Robert Bosch GmbH and LieberLieber Software GmbH
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+name: Verfiy LTA ConsistencyCheck
+
+on:
+ push:
+#   branches:
+#      - main
+
+env:
+  ModelName: VacuumCleanerRobotModel.qeax
+
+jobs:
+  ConsistencyCheck:
+    defaults:
+      run:
+        shell: pwsh
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+          fetch-depth: 0 
+
+      # download Lemontree.Automation on a runner and setup the license
+      - name: GetLTA
+        uses: LieberLieber/setup-LemonTree.Automation@v6
+        id: GetLTA
+        with:
+          License: ${{secrets.LTALICENSE}} 
+        #ExeLocation &"${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}"
+
+      - name: ConsistencyCheck
+        run: |
+          $LemonTreeExe = "./LTA/lemontree.automation"
+          #workaround because github artifacts logic doesn't maintain properties
+          chmod +x $LemonTreeExe   
+          &$LemonTreeExe ConsistencyCheck --Model ${{env.ModelName}}
+
+ 
+     
+    
