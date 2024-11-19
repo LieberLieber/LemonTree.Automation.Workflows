@@ -4,10 +4,11 @@
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #this is not a finished script - it is just the basic info to get you started using LemonTree.Automation deployed as a Docker Container into your pipeline.
+#sample models can be found on computers with LemonTree Desktop installed: C:\ProgramData\LieberLieber\LemonTree\Examples
 
 docker rm ltacli
 docker run -itd --name ltacli `
-    -v "$(Get-Location)\data:/data" `
+    -v "$(Get-Location)\data:/data" ` 
     -v "$(Get-Location)\licenses:/app/licenses" `
     nexus.lieberlieber.com:5000/lieberlieber/lemontree.automation:latest
 	
