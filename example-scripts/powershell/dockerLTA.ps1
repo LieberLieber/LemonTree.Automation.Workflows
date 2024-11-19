@@ -6,6 +6,7 @@
 #this is not a finished script - it is just the basic info to get you started using LemonTree.Automation deployed as a Docker Container into your pipeline.
 #sample models can be found on computers with LemonTree Desktop installed: C:\ProgramData\LieberLieber\LemonTree\Examples
 
+#as is this script is built to run on a Windows Desktop with Docker Desktop installed.
 
 $ltaLicenses = "$(Get-Location)/licenses"
 $ltaData ="$(Get-Location)/data"
