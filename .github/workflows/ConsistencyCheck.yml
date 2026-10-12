@@ -10,7 +10,7 @@ on:
 
 env:
   ModelName: DemoModel
-  ModelExtension: eapx
+  ModelExtension: qeax
   LemonTreeAutomationExecutable: C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe
 
 jobs:

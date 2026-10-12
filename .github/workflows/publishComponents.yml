@@ -11,7 +11,7 @@ on:
       - main
 env:
   ModelName: DemoModel
-  ModelExtension: eapx
+  ModelExtension: qeax
   ReviewSessionURL: https://lieberlieber.nexus/repository/lemontree-component/
   #ComponentModelShortCut: C:\tools\Shortcuts\Shortcut_LL_TEST_COMPONENTS.eap
 
