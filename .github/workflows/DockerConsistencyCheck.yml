@@ -28,7 +28,7 @@ jobs:
 
       # download Lemontree.Automation on a runner and setup the license
       - name: GetLTA
-        uses: LieberLieber/setup-LemonTree.Automation@v6
+        uses: LieberLieber/setup-LemonTree.Automation@v7
         id: GetLTA
         with:
           License: ${{secrets.LTALICENSE}} 
