@@ -503,7 +503,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(398,139) rotate(93.16,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(321,147)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(321,147)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«trace»</tspan>

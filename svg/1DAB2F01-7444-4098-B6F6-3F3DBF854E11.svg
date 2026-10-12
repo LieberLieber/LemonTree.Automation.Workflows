@@ -415,7 +415,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(284,370) rotate(163.393,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(272,326)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(272,326)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«trace»</tspan>
@@ -430,7 +430,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(307,370) rotate(230.643,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(381,326)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(381,326)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«trace»</tspan>

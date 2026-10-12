@@ -495,7 +495,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(353,262) rotate(129.5,5,0)" />
       </g>
       <g class="part-controlflow-label">
-        <g transform="translate(321,244)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(321,244)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">[true]</text>
           </g>

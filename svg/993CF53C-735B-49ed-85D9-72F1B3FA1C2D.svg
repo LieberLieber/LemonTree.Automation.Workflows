@@ -573,7 +573,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(520,445) rotate(0,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(525,485)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(525,485)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«ArchiMate_Realization»</tspan>
@@ -588,7 +588,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(520,154) rotate(0,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(525,215)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(525,215)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«ArchiMate_Access»</tspan>
@@ -603,7 +603,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(520,320) rotate(0,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(525,367)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(525,367)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«ArchiMate_Serving»</tspan>
@@ -618,7 +618,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(354,154) rotate(0,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(359,215)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(359,215)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«ArchiMate_Access»</tspan>
@@ -633,7 +633,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(319,320) rotate(0,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(275,375)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(275,375)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«ArchiMate_Serving»</tspan>
@@ -648,7 +648,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(171,154) rotate(0,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(176,215)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(176,215)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«ArchiMate_Access»</tspan>
@@ -663,7 +663,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(344,445) rotate(0,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(375,520)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(375,520)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«ArchiMate_Realization»</tspan>
@@ -678,7 +678,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(343,445) rotate(3.621,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(343,537)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(343,537)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«ArchiMate_Realization»</tspan>
@@ -693,7 +693,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(293,285) rotate(90,5,0)" />
       </g>
       <g class="part-controlflow-label">
-        <g transform="translate(263,298)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(263,298)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«ArchiMate_Triggering»</tspan>
@@ -708,7 +708,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(150,320) rotate(0,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(155,367)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(155,367)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«ArchiMate_Serving»</tspan>
@@ -723,7 +723,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(468,285) rotate(90,5,0)" />
       </g>
       <g class="part-controlflow-label">
-        <g transform="translate(437,298)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(437,298)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«ArchiMate_Triggering»</tspan>
@@ -738,7 +738,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(171,445) rotate(0,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(176,486)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(176,486)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«ArchiMate_Realization»</tspan>
@@ -753,7 +753,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(345,320) rotate(0,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(350,367)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(350,367)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«ArchiMate_Serving»</tspan>
@@ -768,7 +768,7 @@
         <use style="" xlink:href="#_EAArrow3" transform="translate(286,609) rotate(122.152,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(256,600)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(256,600)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«ArchiMate_Aggregation»</tspan>

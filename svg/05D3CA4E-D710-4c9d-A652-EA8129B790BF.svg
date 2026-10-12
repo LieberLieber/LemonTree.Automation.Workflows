@@ -444,7 +444,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(108,336) rotate(168.822,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(96,265)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(96,265)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">trg_raise</text>
           </g>
@@ -457,7 +457,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(242,448) rotate(221.496,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(270,435)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(270,435)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">trg_downTimeExceeded</text>
           </g>
@@ -470,7 +470,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(352,336) rotate(188.746,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(369,271)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(369,271)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">trg_lower</text>
           </g>
@@ -483,7 +483,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(213,227) rotate(358.21,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(219,272)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(219,272)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">trg_activeSignal,trg_maximumTimeInMotionExceeded</text>
           </g>

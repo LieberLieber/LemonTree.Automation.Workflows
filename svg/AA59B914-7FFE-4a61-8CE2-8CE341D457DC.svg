@@ -437,7 +437,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(333,190) rotate(101.168,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(221,180)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(221,180)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«use»</tspan>
@@ -452,7 +452,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(333,217) rotate(72.878,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(232,262)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(232,262)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«use»</tspan>
@@ -467,7 +467,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(272,110) rotate(81.404,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(191,136)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(191,136)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«use»</tspan>

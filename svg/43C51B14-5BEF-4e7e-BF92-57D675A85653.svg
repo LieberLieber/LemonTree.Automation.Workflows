@@ -460,7 +460,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(470,243) rotate(71.565,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(412,277)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(412,277)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«trace»</tspan>
@@ -475,7 +475,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(428,81) rotate(269.236,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(470,93)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(470,93)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«trace»</tspan>
@@ -490,7 +490,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(318,81) rotate(90.955,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(263,93)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(263,93)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«trace»</tspan>
@@ -505,7 +505,7 @@
         <use style="" xlink:href="#_EAArrow" transform="translate(532,193) rotate(192.395,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(547,160)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(547,160)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«trace»</tspan>
