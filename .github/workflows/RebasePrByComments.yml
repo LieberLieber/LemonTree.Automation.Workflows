@@ -21,11 +21,11 @@ jobs:
         shell: pwsh
     runs-on: windows-latest
     timeout-minutes: 15
-    if: ${{ github.event.issue.pull_request && github.event.comment.body == '/rebase/'}}
+    if: ${{ github.event.issue.pull_request && github.event.comment.body == '/rebase/' && (github.event.comment.author_association == 'OWNER' || github.event.comment.author_association == 'MEMBER' || github.event.comment.author_association == 'COLLABORATOR')}}
     
     steps:
       - name: Post start message in PR
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             await github.rest.issues.createComment({
@@ -37,7 +37,7 @@ jobs:
             
       - name: Retrieve Rull Request details
         id: pr_details
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           result-encoding: string
           script: |
@@ -57,24 +57,29 @@ jobs:
             console.log(`Base: ${triggeredPR.base.ref}`)
             core.setOutput('number', triggeredPR.number)
             core.setOutput('head', triggeredPR.head.ref)
+            core.setOutput('head_sha', triggeredPR.head.sha)
             core.setOutput('base', triggeredPR.base.ref)
             
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           lfs: true
           fetch-depth: 0
-          ref: ${{steps.pr_details.outputs.head}} #head instead of base for rebase
+          ref: ${{steps.pr_details.outputs.head_sha}} #head instead of base for rebase
           persist-credentials: false
           token: ${{secrets.PAT}} #If default token of automation user is used, no workflows for merge commit are triggered
           
       - name: Configure merge driver for EA files
+        env:
+          PR_HEAD_REF: ${{steps.pr_details.outputs.head}}
+          PR_HEAD_SHA: ${{steps.pr_details.outputs.head_sha}}
         run: |
+          git switch -C "$env:PR_HEAD_REF" "$env:PR_HEAD_SHA"
           Write-Output "Setting lemontree merge-driver to 'no action'"
           git config merge.lemontree.name "lemontree merge driver"
           git config merge.lemontree.driver "echo Do nothing, manual merge required"
       
       # download Lemontree.Automation on a runner and setup the license
-      - uses: LieberLieber/setup-LemonTree.Automation@v5
+      - uses: LieberLieber/setup-LemonTree.Automation@v6
         id: GetLTA
         with:
           License: ${{secrets.LTALICENSE}} 
@@ -166,6 +171,9 @@ jobs:
 
       - name: Create commit
         if: ${{ steps.mergeEA.outputs.result == 0 }}
+        env:
+          PR_HEAD_REF: ${{steps.pr_details.outputs.head}}
+          PR_HEAD_SHA: ${{steps.pr_details.outputs.head_sha}}
         run: |
          Write-Output "set user config"
          git config --global user.name 'LemonTree.Automation'
@@ -174,11 +182,13 @@ jobs:
          git remote set-url origin https://x-access-token:${{secrets.PAT}}@github.com/${{ github.repository }}
          git status --porcelain --untracked-files=no --ignored=no
          Write-Output "pushing new commit"
-         git push --force-with-lease
+         $branchRef = "refs/heads/$($env:PR_HEAD_REF)"
+         $lease = "$branchRef`:$($env:PR_HEAD_SHA)"
+         git push "--force-with-lease=$lease" origin "HEAD:$branchRef"
            
       - name: Create Finish Message in PR
         if: always()
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             await github.rest.issues.createComment({
