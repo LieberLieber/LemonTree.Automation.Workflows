@@ -19,7 +19,7 @@ $file = [System.IO.Path]::GetFullPath($file)
 #not the savest way on earth but a pragmatic solution for the sake of this demo
 $SecureCredential = Get-Content "$file" | ConvertTo-SecureString
 $login = (New-Object PSCredential "username",$SecureCredential).GetNetworkCredential().Password
-$targetUrl = "https://nexus.lieberlieber.com/repository/xmi/"
+$targetUrl = "https://lieberlieber.nexus/repository/xmi/"
 
 #start EA and load the Model
 Write-Output "Create EA"

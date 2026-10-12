@@ -3,7 +3,7 @@
 
 
 $gitcommitId = git rev-parse HEAD
-$url = "https://nexus.lieberlieber.com/service/rest/v1/search?repository=xmi&name=$gitcommitId*"
+$url = "https://lieberlieber.nexus/service/rest/v1/search?repository=xmi&name=$gitcommitId*"
 Write-Host $url
 $json = Invoke-RestMethod -Uri $url -Method Get
 

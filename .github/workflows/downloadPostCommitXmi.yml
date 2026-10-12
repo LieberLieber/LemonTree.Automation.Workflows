@@ -15,7 +15,7 @@ on:
       - review_requested
 
 env:
-  xmiURL: https://nexus.lieberlieber.com/service/rest/v1/search?repository=xmi
+  xmiURL: https://lieberlieber.nexus/service/rest/v1/search?repository=xmi
   
 
 jobs:

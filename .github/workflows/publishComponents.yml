@@ -12,7 +12,7 @@ on:
 env:
   ModelName: DemoModel
   ModelExtension: eapx
-  ReviewSessionURL: https://nexus.lieberlieber.com/repository/lemontree-component/
+  ReviewSessionURL: https://lieberlieber.nexus/repository/lemontree-component/
   #ComponentModelShortCut: C:\tools\Shortcuts\Shortcut_LL_TEST_COMPONENTS.eap
 
 jobs:
