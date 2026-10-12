@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" id="mainSvg" width="564" height="611" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" id="mainSvg" width="564" height="609" xmlns="http://www.w3.org/2000/svg">
   <style type="text/css"><![CDATA[
 		#viewport {
 			margin:0;
@@ -384,7 +384,7 @@
             <span class="stereotype part-object-stereotype" xmlns="http://www.w3.org/1999/xhtml">ArchiMate_ApplicationComponent</span>
           </p>
           <p class="text-center part-object-name" style="margin-top:0px;margin-bottom:2px;text-decoration:none;">
-            <b>LemonTree</b>
+            <b>LieberLieber LemonTree</b>
           </p>
           <div class="part-object-sysmlblock"></div>
           <p class="childdiagram"></p>
@@ -449,7 +449,7 @@
         </div>
       </foreignObject>
     </g>
-    <g style="" id="{9E2EE5E6-64E6-46db-9730-F88D8C9A78D7}" transform="translate(291, 603)" class="element uml-Component" data-diagram-object-guid="{98669b11-4cd5-e55b-1452-7a26f5385d72}">
+    <g style="" id="{9E2EE5E6-64E6-46db-9730-F88D8C9A78D7}" transform="translate(305, 601)" class="element uml-Component" data-diagram-object-guid="{98669b11-4cd5-e55b-1452-7a26f5385d72}">
       <rect x="0" y="0" width="90" height="70" style="stroke-width:1px;" class="main-shape" />
       <foreignObject width="90" height="70" transform="translate(-0.5,-0.5)">
         <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
@@ -674,11 +674,11 @@
     </g>
     <g id="{D4CA29EE-2AB4-4052-B267-AE4AD26BF04A}" class="element uml-Dependency" data-diagram-object-guid="{8cc5f89f-cf8d-40c6-f8b6-3041749c8471}">
       <g class="main-shape">
-        <polyline class="connector-dash" style="" points="338,603 348,445" />
-        <use style="" xlink:href="#_EAArrow" transform="translate(343,445) rotate(3.621,5,0)" />
+        <polyline class="connector-dash" style="" points="350,601 350,445" />
+        <use style="" xlink:href="#_EAArrow" transform="translate(345,445) rotate(0,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(343,537)" style="text-anchor:yqe; dominant-baseline:ideographic">
+        <g transform="translate(350,536)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«ArchiMate_Realization»</tspan>
@@ -764,11 +764,11 @@
     </g>
     <g id="{D7404DA2-DBBF-4044-8FBD-8068E0C768E9}" class="element uml-Association" data-diagram-object-guid="{f7d0d2cf-bc4a-3c08-539f-1018e7d51936}">
       <g class="main-shape">
-        <polyline class="connector" style="" points="291,609 221,565" />
-        <use style="" xlink:href="#_EAArrow3" transform="translate(286,609) rotate(122.152,5,0)" />
+        <polyline class="connector" style="" points="305,610 221,562" />
+        <use style="" xlink:href="#_EAArrow3" transform="translate(300,610) rotate(119.745,5,0)" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(256,600)" style="text-anchor:yqe; dominant-baseline:ideographic">
+        <g transform="translate(263,599)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">
               <tspan class="stereotype part-connector-stereotype">«ArchiMate_Aggregation»</tspan>
