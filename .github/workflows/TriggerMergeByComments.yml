@@ -39,7 +39,7 @@ jobs:
             Write-Output "${{github.event.comment.user.login}}"
             Write-Output "${{env.authUsers}}"
             $result = ${{env.authUsers}} -contains "${{github.event.comment.user.login}}"
-            ecWrite-Outputho "User is in authentication list: $result"
+            Write-Output "User is in authentication list: $result"
             Write-Output "result=$result"  >> $env:GITHUB_OUTPUT
             
       - id: SelectAuthResult
