@@ -122,7 +122,7 @@ jobs:
           Write-Output "Return code: $LASTEXITCODE"
           if($LASTEXITCODE -eq 0){
             Write-Output "No merge conflicts, setting message"
-            ecWrite-Outputho "message=[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:heavy_check_mark: **No merge conflicts in model**\n\nInstall [LemonTree 3.3+](https://www.lieberlieber.com/lemontree/en/) to open the Review Session file." >> $env:GITHUB_OUTPUT
+            Write-Output "message=[Review Session file](${{env.ReviewSessionURL}}/${{ steps.session_file.outputs.result }})\n:heavy_check_mark: **No merge conflicts in model**\n\nInstall [LemonTree 3.3+](https://www.lieberlieber.com/lemontree/en/) to open the Review Session file." >> $env:GITHUB_OUTPUT
           }
           elseif($LASTEXITCODE -eq 2){
             Write-Output "Internal Error when diffing. Please report such errors to support@lieberlieber.com"
