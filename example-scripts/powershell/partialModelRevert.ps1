@@ -1,6 +1,6 @@
 ﻿Import-Module .\Modules\LemonTree.Desktop.psm1
 
-$filename =".\DemoModel.eapx"
+$filename =".\DemoModel.qeax"
 
 #convert the "windows path to a git path - works with realtive and absolute path. return -1 one on failure
 $gitFilename = Get-GitMappedFilePaths($filename)

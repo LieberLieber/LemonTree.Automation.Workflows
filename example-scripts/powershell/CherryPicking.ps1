@@ -4,11 +4,11 @@
 #Attention: the base and branchcopy of the file are collected from origin!
 #Attention: obslolete with LemonTree 4.0+ as it is part of the UI.
 #Supported:
-#.\example-scripts\powershell\CherryPicking.ps1 -Model DemoModel.eapx -Branch 70-test-for-discussion
+#.\example-scripts\powershell\CherryPicking.ps1 -Model DemoModel.qeax -Branch 70-test-for-discussion
 
 param
 (
-        [Parameter(Mandatory = $true, HelpMessage="Relative or absolute path to the EA model")][string] $Model = "..\DemoModel.eapx",
+        [Parameter(Mandatory = $true, HelpMessage="Relative or absolute path to the EA model")][string] $Model = "..\DemoModel.qeax",
         [Parameter(Mandatory = $false, HelpMessage="Branch for cherry-picking, interactive selection if not provided")][string] $Branch = "",
         [Parameter(Mandatory = $false, HelpMessage="Comma-separated list of root GUIDs, if not provided extracted via database analysis")][string] $ModelRootIds = ""#,
         #for future use - filters are not supported by lemontree commandline - just by Session Files

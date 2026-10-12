@@ -5,7 +5,7 @@
 
 #Parameters
 #need to be setup for your repo
-$eaModel = "DemoModel.eapx"
+$eaModel = "DemoModel.qeax"
 
 #prepare environment
 Write-Output "post-commit publish of XMI to Nexus"
