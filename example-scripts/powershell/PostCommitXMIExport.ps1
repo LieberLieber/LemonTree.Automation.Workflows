@@ -2,7 +2,7 @@
 Echo "Create EA"
 $ea = New-Object -ComObject "EA.Repository" -Strict
 Echo "Created EA"
-$ea.OpenFile("C:\github\LemonTree.Automation.Workflows\DemoModel.eapx")
+$ea.OpenFile("C:\github\LemonTree.Automation.Workflows\DemoModel.qeax")
 
 foreach($model in $ea.models) 
 { 

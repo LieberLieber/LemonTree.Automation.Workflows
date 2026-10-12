@@ -5,7 +5,7 @@
 
 #this scripts downloads and prepares Lemontree.Automation on a Linux machine.
 
-$LemonTreePackageURL = "https://nexus.lieberlieber.com/repository/lemontree-release/LemonTree.Automation/LemonTree.Automation.Linux.Zip_latest.zip"
+$LemonTreePackageURL = "https://lieberlieber.nexus/repository/lemontree-release/LemonTree.Automation/LemonTree.Automation.Linux.Zip_latest.zip"
 
 Write-Output "Download LemonTree.Automtion from Repo"
 Invoke-WebRequest -URI "$LemonTreePackageURL" -OutFile "LTA.zip"

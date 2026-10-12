@@ -467,7 +467,7 @@
         <polyline class="connector" style="" points="547,270 547,174 527,174 527,134" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(537,174)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(537,174)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">sends control command to</text>
           </g>
@@ -479,7 +479,7 @@
         <polyline class="connector" style="" points="175,454 498,454 498,340" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(400,472)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(400,472)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">sends input to</text>
           </g>

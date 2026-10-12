@@ -1,6 +1,6 @@
 #Powershell sees curly brackets as codeblocks so use quotations marks "{}" or just write your guids without them
 while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-curl -s "https://nexus.lieberlieber.com/repository/lemontree-pipeline-tools/templatemodels/empty.qeax" --output "empty.qeax" -k
+curl -s "https://lieberlieber.nexus/repository/lemontree-pipeline-tools/templatemodels/empty.qeax" --output "empty.qeax" -k
 
 $files = Get-ChildItem -Filter *.eap?
 $files | ForEach-Object -Process {

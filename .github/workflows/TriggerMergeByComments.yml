@@ -11,7 +11,7 @@ on:
     
 env:
   ModelName: DemoModel
-  ModelExtension: eapx
+  ModelExtension: qeax
   GitHubProjectRoot: https://github.com/LieberLieber/LemonTree.Automation.Workflows
   #AuthMode: PositiveList
   AuthMode: Association

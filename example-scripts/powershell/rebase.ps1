@@ -7,7 +7,7 @@ git rebase origin/main
 
 while($LASTEXITCODE -ne 0) {
 	$status = git status -s -uno
-	$expected_status = "UU DemoModel.eapx"
+	$expected_status = "UU DemoModel.qeax"
               
               if($actual_status -ne $expected_status) {
 		Write-Output "::error::Model is not conflicted please rebase manually."
@@ -15,13 +15,13 @@ while($LASTEXITCODE -ne 0) {
 	}
 	
 	$basecommit = git merge-base HEAD REBASE_HEAD
-	$command = 'git cat-file blob {0}:DemoModel.eapx | git lfs smudge > DemoModel_base.eapx & exit' -f $basecommit
+	$command = 'git cat-file blob {0}:DemoModel.qeax | git lfs smudge > DemoModel_base.eapx & exit' -f $basecommit
 	#this is required to get rid of the line feeds in the basecommit string
 	&$gitcmd $command
-	&$gitcmd "git cat-file blob HEAD:DemoModel.eapx | git lfs smudge > DemoModel_mine.eapx & exit"
-	&$gitcmd "git cat-file blob REBASE_HEAD:DemoModel.eapx | git lfs smudge > DemoModel_theirs.eapx & exit"
+	&$gitcmd "git cat-file blob HEAD:DemoModel.qeax | git lfs smudge > DemoModel_mine.eapx & exit"
+	&$gitcmd "git cat-file blob REBASE_HEAD:DemoModel.qeax | git lfs smudge > DemoModel_theirs.eapx & exit"
 
-	&$lta merge --Base DemoModel_base.eapx --Theirs DemoModel_theirs.eapx --Mine DemoModel_mine.eapx --out DemoModel.eapx
+	&$lta merge --Base DemoModel_base.eapx --Theirs DemoModel_theirs.eapx --Mine DemoModel_mine.eapx --out DemoModel.qeax
 
 	if($LASTEXITCODE -eq 0){
 		Write-Output "No merge conflicts, setting message"
@@ -43,7 +43,7 @@ while($LASTEXITCODE -ne 0) {
 		exit 1
 	}
 
-	git add DemoModel.eapx
+	git add DemoModel.qeax
 
 	Remove-Item -Path DemoModel_base.eapx
 	Remove-Item -Path DemoModel_theirs.eapx

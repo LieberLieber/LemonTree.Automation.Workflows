@@ -10,7 +10,7 @@ on:
 
 env:
   ModelName: DemoModel
-  ModelExtension: eapx
+  ModelExtension: qeax
   SVGFolder: .\svg\
 
 jobs:

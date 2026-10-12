@@ -16,9 +16,9 @@ on:
 
 env:
   ModelName: DemoModel
-  ModelExtension: eapx
-  ReviewSessionURL: https://nexus.lieberlieber.com/repository/lemontree-session
-  LemonTreePipelineToolsRemovePrerenderedDiagramsExecutable: https://nexus.lieberlieber.com/repository/lemontree-pipeline-tools/LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe 
+  ModelExtension: qeax
+  ReviewSessionURL: https://lieberlieber.nexus/repository/lemontree-session
+  LemonTreePipelineToolsRemovePrerenderedDiagramsExecutable: https://lieberlieber.nexus/repository/lemontree-pipeline-tools/LemonTree.Pipeline.Tools.RemovePrerenderedDiagrams.exe 
 
 jobs:
   PublishReviewSession:

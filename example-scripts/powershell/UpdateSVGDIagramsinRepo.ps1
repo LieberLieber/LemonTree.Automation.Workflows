@@ -20,7 +20,7 @@ Write-Output "deleting files $filesSVG"
 Remove-Item "$filesSVG"
 
 #create SVG Files 
-&'C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe' SVGExport --Model .\DemoModel.eapx --DiagramDirectory '.\svg'
+&'C:\Program Files\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe' SVGExport --Model .\DemoModel.qeax --DiagramDirectory '.\svg'
 
 #git commit
 git add -A

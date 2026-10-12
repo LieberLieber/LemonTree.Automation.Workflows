@@ -9,7 +9,7 @@ on:
  push:
 
 env:
-  ModelName: DemoModel.eapx
+  ModelName: DemoModel.qeax
 
 jobs:
   ModelReadinessCheck:
@@ -25,8 +25,8 @@ jobs:
         run: |
           # Powershell sees curly brackets as codeblocks so use quotations marks "{}" or just write your guids without them
           # while (Test-Path Alias:curl) {Remove-Item Alias:curl} #remove the alias binding from curl to Invoke-WebRequest
-          # curl "https://nexus.lieberlieber.com/repository/lemontree-pipeline-tools/LemonTree.Pipeline.Tools.ModelCheck.exe" --output .\LemonTree.Pipeline.Tools.ModelCheck.exe -k
-          Invoke-WebRequest -URI "https://nexus.lieberlieber.com/repository/lemontree-pipeline-tools/LemonTree.Pipeline.Tools.ModelCheck.exe" -OutFile .\LemonTree.Pipeline.Tools.ModelCheck.exe
+          # curl "https://lieberlieber.nexus/repository/lemontree-pipeline-tools/LemonTree.Pipeline.Tools.ModelCheck.exe" --output .\LemonTree.Pipeline.Tools.ModelCheck.exe -k
+          Invoke-WebRequest -URI "https://lieberlieber.nexus/repository/lemontree-pipeline-tools/LemonTree.Pipeline.Tools.ModelCheck.exe" -OutFile .\LemonTree.Pipeline.Tools.ModelCheck.exe
                       
       - name: Run LemonTree Check Tool
         id: modelcheck

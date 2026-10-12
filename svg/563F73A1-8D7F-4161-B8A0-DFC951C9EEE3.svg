@@ -449,7 +449,7 @@
       <g class="part-connector-label">
         <foreignObject width="87" height="14" transform="translate(185,231)">
           <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-            <p style="margin:1px; text-align:center;">motor command</p>
+            <p style="margin:1px; text-align:nai;">motor command</p>
           </div>
         </foreignObject>
       </g>
@@ -462,7 +462,7 @@
       <g class="part-connector-label">
         <foreignObject width="36" height="27" transform="translate(421,254)">
           <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-            <p style="margin:1px; text-align:center;">lower, raise</p>
+            <p style="margin:1px; text-align:nai;">lower, raise</p>
           </div>
         </foreignObject>
       </g>
@@ -475,7 +475,7 @@
       <g class="part-connector-label">
         <foreignObject width="65" height="14" transform="translate(388,88)">
           <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-            <p style="margin:1px; text-align:center;">active signal</p>
+            <p style="margin:1px; text-align:nai;">active signal</p>
           </div>
         </foreignObject>
       </g>
@@ -488,7 +488,7 @@
       <g class="part-connector-label">
         <foreignObject width="65" height="14" transform="translate(226,155)">
           <div class="fo-body text-content" xmlns="http://www.w3.org/1999/xhtml">
-            <p style="margin:1px; text-align:center;">active signal</p>
+            <p style="margin:1px; text-align:nai;">active signal</p>
           </div>
         </foreignObject>
       </g>

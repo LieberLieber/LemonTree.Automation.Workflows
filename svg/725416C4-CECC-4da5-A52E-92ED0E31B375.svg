@@ -392,7 +392,7 @@
         <polyline class="connector" style="" points="217,137 369,137" />
       </g>
       <g class="part-connector-label">
-        <g transform="translate(285,135)" style="text-anchor:middle; dominant-baseline:ideographic">
+        <g transform="translate(285,135)" style="text-anchor:yqe; dominant-baseline:ideographic">
           <g>
             <text dy="0em">Association A</text>
           </g>

@@ -7,7 +7,7 @@ GitHub Actions and other Example Scripts to be used with LemonTree.Automation an
 ==================================
 Disclaimer: we use this Repo to develop and test the scripts.
 This Repo contains:
-* DemoModel.eapx
+* DemoModel.qeax
 * GitHub Actions that automate and support the handling of Sparx Systems Enterprise Architect Models with LemonTree.Automation
 * A set of generic scripts to be used with LemonTree.Automation in other environments Jenkins, Teamcity, Azure Devops, ... https://github.com/LieberLieber/LemonTree.Automation.Workflows/tree/main/example-scripts
 
@@ -63,7 +63,7 @@ This automatically closes the pull request and deletes the feature branch.
 ## PublishComponents
 On push to Master the LemonTree Components defined in the Model specified in the Environment are written to disk. In the next steps they are published as artifacts.
 The MPMS packages are then imported on a "Pro Cloud" repository and can be accesed via: https://test.lieberlieber.com/webea/index.php?m=3
-Additionally the "LemonTree Component" files are also published on a Nexus artifact repository: https://nexus.lieberlieber.com/#browse/browse:lemontree-component 
+Additionally the "LemonTree Component" files are also published on a Nexus artifact repository: https://lieberlieber.nexus/#browse/browse:lemontree-component 
 On a Desktop you can pull the published LemonTree Components to a LemonTreeComponents Repository folder using example-scripts/powershell/DownloadComponents.ps1
 
 ## ConsistencyCheck
