@@ -23,13 +23,13 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           lfs: true
           fetch-depth: 0
                       
       # download Lemontree.Automation on a runner and setup the license
-      - uses: LieberLieber/setup-LemonTree.Automation@v5
+      - uses: LieberLieber/setup-LemonTree.Automation@v6
         id: GetLTA
         with:
           License: ${{secrets.LTALICENSE}} 
@@ -45,7 +45,7 @@ jobs:
       #    &"${{env.LemonTreeAutomationExecutable}}" import --Model ${{env.ComponentModelShortCut}} --Components "*.mpms"
 
       - name: Archive Session Files
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: Model Components
           path: "*.mpms"
