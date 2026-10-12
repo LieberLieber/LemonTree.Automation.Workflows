@@ -6,7 +6,7 @@
 name: Download XMI files for Commit ID
 
 on:
-  pull_request_target:
+  pull_request:
     types:
       - opened
       - edited
